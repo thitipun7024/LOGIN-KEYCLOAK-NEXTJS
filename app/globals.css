@@ -34,7 +34,7 @@ body {
 
 .logoContainer {
   opacity: 0;
-  transform: translateY(50px);
+  transform: translateY(30px);
   animation: floatUp 2s forwards;
 }
 
@@ -43,4 +43,23 @@ body {
       opacity: 1;
       transform: translateY(0);
   }
+}
+
+.background::before {
+  content: "";
+  background-image: url('https://minio.saksiam.co.th/public/saktech/logo/260439-P4TBBB-678-ai.png');
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+  z-index: -1;
+  animation: moveBackground 10s linear infinite; /* ใช้ animation */
+}
+
+@keyframes moveBackground {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-30px); }
+  100% { transform: translateY(0); }
 }

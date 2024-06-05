@@ -9,7 +9,7 @@ const ClientLogo: React.FC = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            router.push('/home');
+            router.push('/Login');
         }, 5000); // ระยะเวลาแอนิเมชัน 5 วินาที
 
         return () => clearTimeout(timer);

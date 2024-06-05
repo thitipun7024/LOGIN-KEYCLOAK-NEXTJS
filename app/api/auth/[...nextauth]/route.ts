@@ -1,5 +1,6 @@
 import NextAuth from "next-auth"
 import KeycloakProvider from "next-auth/providers/keycloak";
+import { redirect } from "next/dist/server/api-utils";
 
 function requestRefreshOfAccessToken(token) {
   return fetch(`${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/token`, {
@@ -32,6 +33,7 @@ const handler = NextAuth({
     maxAge: 60 * 30
   },
   callbacks: {
+    
     async jwt({ token, account }) {
       if (account) {
         token.idToken = account.id_token
@@ -68,7 +70,10 @@ const handler = NextAuth({
       session.accessToken = token.accessToken
       session.error = token.error
       return session
-    }
+    },
+    async redirect({ baseUrl }) {
+      return baseUrl + '/home';
+    } 
   }
 })
   

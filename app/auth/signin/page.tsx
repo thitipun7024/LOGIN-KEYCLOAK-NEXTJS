@@ -41,25 +41,10 @@ export default function Signin({
 }: SignInPageProp) {
   const { data: session } = useSession();
   if (session) {
-    redirect(callbackUrl || "/");
+    redirect(callbackUrl || "/home");
   } else {
     return(
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <CssBaseline />
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-        }}
-      ></Drawer>
-      <Toolbar />
-      
-      <Image src={img} alt="Logo" width={1300} height={700} style={{marginBottom: -120, marginTop: -60}} />
-      <Typography variant="h3" align="center" sx={{textAlign: "center", fontWeight: "bold" }}>
-        กรุณาเข้าสู่ระบบด้วยนะครับ <a href="#" onClick={() => signIn("keycloak")} style={{color: "#2170E7"}}>Sign in</a>
-      </Typography>
-    </Box>
+      redirect("/Login")
     )
   }
 
