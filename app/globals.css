@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
@@ -29,5 +29,18 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+} */
+
+.logoContainer {
+  opacity: 0;
+  transform: translateY(50px);
+  animation: floatUp 2s forwards;
+}
+
+@keyframes floatUp {
+  to {
+      opacity: 1;
+      transform: translateY(0);
   }
 }
