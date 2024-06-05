@@ -22,6 +22,7 @@ export default function RootLayout({
       <Providers>
           <SessionGuard>
             {children}
+            
           </SessionGuard>
         </Providers>
       </body>
