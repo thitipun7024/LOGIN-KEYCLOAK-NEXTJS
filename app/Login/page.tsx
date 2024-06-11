@@ -21,6 +21,7 @@ export default function page() {
 
             <div className="flex justify-center items-center mt-20">
                 <Button />
+                
             </div>
         </div>
   )
