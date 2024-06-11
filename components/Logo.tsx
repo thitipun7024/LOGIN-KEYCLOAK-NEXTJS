@@ -9,8 +9,8 @@ const ClientLogo: React.FC = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            router.push('/Login');
-        }, 5000); // ระยะเวลาแอนิเมชัน 5 วินาที
+            router.push('/login'); // เปลี่ยนเป็น '/login' แทน '/Login'
+        }, 3000); // ระยะเวลาแอนิเมชัน 3 วินาที
 
         return () => clearTimeout(timer);
     }, [router]);

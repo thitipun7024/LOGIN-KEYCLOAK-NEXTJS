@@ -1,18 +1,7 @@
 "use client";
-
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-
-
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
 import "@/app/globals.css";
-import Toolbar from "@mui/material/Toolbar";
-import Drawer from "@mui/material/Drawer";
-import Image from 'next/image';
-import Typography from '@mui/material/Typography';
-import img from "@/components/image/Animation1.png";
-import { signIn } from "next-auth/react";
 const drawerWidth = 210;
 
 const signinErrors: Record<string | "default", string> = {
@@ -41,10 +30,10 @@ export default function Signin({
 }: SignInPageProp) {
   const { data: session } = useSession();
   if (session) {
-    redirect(callbackUrl || "/home");
+    redirect(callbackUrl || "/Home");
   } else {
     return(
-      redirect("/Login")
+      redirect("/login")
     )
   }
 
