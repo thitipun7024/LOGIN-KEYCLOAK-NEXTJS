@@ -1,6 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, createContext, useContext } from "react";
 import Quagga from "quagga";
+
+const DataContext = createContext(null);
+
+
 
 interface QuaggaState {
   inputStream: {
@@ -23,6 +27,18 @@ interface QuaggaState {
   locate: boolean;
   multiple: boolean;
 }
+
+interface BarcodeContextType {
+  barcode: string;
+  setBarcode: (barcode: string) => void;
+}
+
+const defaultValue: BarcodeContextType = {
+  barcode: '',
+  setBarcode: () => {},
+};
+
+//const BarcodeContext = createContext<BarcodeContextType>(defaultValue);
 
 const BarcodeScanner = () => {
   const [state, setState] = useState<QuaggaState>({
@@ -139,40 +155,40 @@ const BarcodeScanner = () => {
       const drawingCanvas = Quagga.canvas.dom.overlay;
       const drawingCtx = drawingCanvas.getContext("2d", { willReadFrequently: true });
 
-      if (result && drawingCtx) {
-        if (result.boxes) {
-          drawingCtx.clearRect(
-            0,
-            0,
-            parseInt(drawingCanvas.getAttribute("width")!),
-            parseInt(drawingCanvas.getAttribute("height")!)
-          );
-          result.boxes
-            .filter((box: any) => box !== result.box)
-            .forEach((box: any) => {
-              Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, {
-                color: "green",
-                lineWidth: 2,
-              });
-            });
-        }
+      // if (result && drawingCtx) {
+      //   if (result.boxes) {
+      //     drawingCtx.clearRect(
+      //       0,
+      //       0,
+      //       parseInt(drawingCanvas.getAttribute("width")!),
+      //       parseInt(drawingCanvas.getAttribute("height")!)
+      //     );
+      //     result.boxes
+      //       .filter((box: any) => box !== result.box)
+      //       .forEach((box: any) => {
+      //         Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, {
+      //           color: "green",
+      //           lineWidth: 2,
+      //         });
+      //       });
+      //   }
 
-        if (result.box) {
-          Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, {
-            color: "#00F",
-            lineWidth: 2,
-          });
-        }
+      //   if (result.box) {
+      //     Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, {
+      //       color: "#00F",
+      //       lineWidth: 2,
+      //     });
+      //   }
 
-        if (result.codeResult && result.codeResult.code) {
-          Quagga.ImageDebug.drawPath(
-            result.line,
-            { x: "x", y: "y" },
-            drawingCtx,
-            { color: "red", lineWidth: 3 }
-          );
-        }
-      }
+      //   if (result.codeResult && result.codeResult.code) {
+      //     Quagga.ImageDebug.drawPath(
+      //       result.line,
+      //       { x: "x", y: "y" },
+      //       drawingCtx,
+      //       { color: "red", lineWidth: 3 }
+      //     );
+      //   }
+      // }
     });
 
     let lastResult = "";

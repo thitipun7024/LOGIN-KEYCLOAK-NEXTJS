@@ -60,7 +60,7 @@ export default function Page() {
             <h2 className="text-white lg:text-4xl text-2xl  font-bold mb-4">
               ระบบตรวจนับพัสดุ
             </h2>
-            <div className="card bg-clip-border lg:w-2/5 md:w-2/4 w-11/12 p-1 bg-base-100  shadow-xl flex flex-row items-center justify-center">
+            <div className="card bg-clip-border lg:w-2/5 md:w-3/5 w-11/12 p-1 bg-base-100  shadow-xl flex flex-row items-center justify-center">
               <img
                 src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
                 className="lg:h-28 h-20 lg:w-28 w-20 m-4 lg:-ml-1 ml-2"
@@ -100,7 +100,7 @@ export default function Page() {
               </div>
             </div>
             <div className="container contents">
-              <div className="grid lg:gap-x-20 md:gap-x-20 gap-x-3 gap-y-4 lg:grid-cols-6 md:grid-cols-6 grid-cols-3 mt-10 justify-center">
+              <div className="grid lg:gap-x-20 md:gap-x-20 gap-x-3 gap-y-4 lg:grid-cols-5 md:grid-cols-4 grid-cols-3 mt-10 justify-center">
                 <div className="flex flex-col items-center">
                   <a href="/home/CheckThePackage">
                     <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
