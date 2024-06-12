@@ -1,0 +1,141 @@
+name: Deploy-Dev
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:
+  push:
+    branches: [dev]
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+
+
+jobs:
+
+  # sonarqube:
+  #   name: sonarqube
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+  #     - uses: sonarsource/sonarqube-scan-action@master
+  #       env:
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          
+  build:
+
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+
+     # ส่ง docker image tag ออกไปเป็น output ของ build job
+    outputs:
+      image_tags: ${{ steps.meta.outputs.tags }}
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Install the cosign tool except on PR
+      # https://github.com/sigstore/cosign-installer
+      - name: Install cosign
+        if: github.event_name != 'pull_request'
+        uses: sigstore/cosign-installer@v3.1.1
+        with:
+          cosign-release: 'v2.1.1'
+
+
+      # Workaround: https://github.com/docker/build-push-action/issues/461
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
+
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Extract metadata (tags, labels) for Docker
+      # https://github.com/docker/metadata-action
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,prefix=web-,format=short
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+
+
+# patch docker image ใน gitops repository เพื่อให้ CD ทำงาน
+  deploy:
+    # ทำหลังจาก job build ทำงานเสร็จแล้ว
+    needs: build
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      #Deploying database changes using Prisma by yai kong
+      # - name: Checkout repo
+      #   uses: actions/checkout@v3
+      # - name: Setup Node
+      #   uses: actions/setup-node@v3
+      # - name: Install dependencies
+      #   run: npm install
+      # - run: npm run build
+      # - name: Apply all pending migrations to the database
+      #   run: npx prisma generate
+      #   env:
+      #     DATABASE_URL: sqlserver://10.5.15.239:1433;database=SAK_SMS;user=sa;password=Saksiam#2566;integratedSecurity=true;trustServerCertificate=true;
+
+      - name: Setup
+        run: |
+          git config --global user.name "Github Actions"
+          git config --global user.email "actions@github.com"
+      # checkout gitops repository ที่จะทำการ patch
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          repository: SAKSIAM-TECH/sak-gitops
+          ref: main
+          # เพิ่ม GH_PAT secrets ที่ใช้ในการ clone ไว้ใน settings ของ repository
+          token: ${{ secrets.GH_PAT }}
+
+      - uses: imranismail/setup-kustomize@v1
+
+      # หาก push มาที่ branch develop 
+      # ให้ deploy ไปที่ develop environment
+      - name: Deploy DEV
+        run: |
+          cd apps/overlays/develop/sak-tech-asset
+          kustomize edit set image ${{ needs.build.outputs.image_tags }}
+          git add .
+          git commit -m "Set 'web' image tag to '${{ needs.build.outputs.image_tags }}'"
+      - run: git push
+
