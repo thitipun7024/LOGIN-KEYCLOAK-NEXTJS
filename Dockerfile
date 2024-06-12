@@ -22,7 +22,7 @@ FROM base AS builder
 WORKDIR /saksiam-app
 COPY --from=deps /saksiam-app/node_modules ./node_modules
 COPY . .
-COPY prisma /saksiam-app/prisma
+#COPY prisma /saksiam-app/prisma
 
 #
 # Next.js collects completely anonymous telemetry data about general usage.
@@ -40,7 +40,7 @@ RUN \
 # Production image, copy all the files and run next
 
 RUN npm i sharp
-RUN npx prisma generate
+#RUN npx prisma generate
 
 
 FROM base AS runner
