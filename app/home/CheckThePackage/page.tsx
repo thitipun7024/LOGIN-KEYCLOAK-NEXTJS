@@ -1,12 +1,9 @@
 "use client";
 import React from "react";
 import { useSession } from "next-auth/react";
-import { jwtDecode } from "jwt-decode";
-import { Token } from "next-auth/jwt";
-import { useRouter } from "next/navigation";
 
-export default function page() {
-  const { data: session, status } = useSession();
+export default function Page() {
+  const { status } = useSession();
 
   if (status === "loading") {
     return (
@@ -16,15 +13,15 @@ export default function page() {
     );
   }
 
-  if (!session || !session.accessToken) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <p>Logout...</p>
-      </div>
-    );
-  }
+  // if (!session || !session.accessToken) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen">
+  //       <p>Logout...</p>
+  //     </div>
+  //   );
+  // }
 
-  const decoded = jwtDecode<Token>(session.accessToken);
+  // const decoded = jwtDecode<Token>(session.accessToken);
   return (
     <div className="background2">
       <div className="flex flex-col justi-fycenter items-center min-h-screen">
@@ -46,7 +43,7 @@ export default function page() {
             <h2 className="text-white lg:text-4xl text-2xl  font-bold mb-4">
               ระบบตรวจนับพัสดุ
             </h2>
-            <label className="input input-bordered flex items-center gap-2 lg:w-1/3 md:w-2/3 w-4/5">
+            <label className="input input-bordered flex items-center gap-2 lg:w-1/3 md:w-2/3 sm:w-4/5">
               <input
                 type="text"
                 className="grow"
