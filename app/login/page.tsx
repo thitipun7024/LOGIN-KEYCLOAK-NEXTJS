@@ -15,7 +15,7 @@ export default function page() {
 
             <div className="flex justify-center items-center mt-2">
                 <div className="badge badge-warning badge-lg text-center">
-                    บริษัท ศักดิ์สยามลิสซิ่ง จำกัด (มหาชน)  <span>© 2024 COPYRIGHT BY SAKTECH</span>
+                    บริษัท ศักดิ์สยามลิสซิ่ง จำกัด (มหาชน)
                 </div>
             </div>
 
