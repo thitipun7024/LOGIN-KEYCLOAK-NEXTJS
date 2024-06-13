@@ -4,8 +4,6 @@ import Quagga from "quagga";
 
 const DataContext = createContext(null);
 
-
-
 interface QuaggaState {
   inputStream: {
     type: string;
@@ -32,13 +30,6 @@ interface BarcodeContextType {
   barcode: string;
   setBarcode: (barcode: string) => void;
 }
-
-const defaultValue: BarcodeContextType = {
-  barcode: '',
-  setBarcode: () => {},
-};
-
-//const BarcodeContext = createContext<BarcodeContextType>(defaultValue);
 
 const BarcodeScanner = () => {
   const [state, setState] = useState<QuaggaState>({
@@ -69,10 +60,18 @@ const BarcodeScanner = () => {
     window.location.reload();
   };
 
+  useEffect(() => {
+    if (showResult !== "") {
+      window.location.href = `/home/CheckThePackage?asset=${showResult}`;
+    }
+  }, [showResult]);
+
   const initCameraSelection = async () => {
     const devices = await Quagga.CameraAccess.enumerateVideoDevices();
     const streamLabel = Quagga.CameraAccess.getActiveStreamLabel();
-    const deviceSelection = document.getElementById("deviceSelection") as HTMLSelectElement;
+    const deviceSelection = document.getElementById(
+      "deviceSelection"
+    ) as HTMLSelectElement;
 
     if (deviceSelection) {
       while (deviceSelection.firstChild) {
@@ -100,12 +99,15 @@ const BarcodeScanner = () => {
       });
     }
 
-    const readerConfigGroup = document.querySelector(".controls .reader-config-group");
+    const readerConfigGroup = document.querySelector(
+      ".controls .reader-config-group"
+    );
     if (readerConfigGroup) {
       readerConfigGroup.addEventListener("change", (e: Event) => {
         e.preventDefault();
         const target = e.target as HTMLInputElement;
-        const value = target.type === "checkbox" ? querySelectedReaders() : target.value;
+        const value =
+          target.type === "checkbox" ? querySelectedReaders() : target.value;
         const name = target.name;
         const statePath = convertNameToState(name);
 
@@ -123,22 +125,29 @@ const BarcodeScanner = () => {
       stopButton.removeEventListener("click", () => Quagga.stop());
     }
 
-    const readerConfigGroup = document.querySelector(".controls .reader-config-group");
+    const readerConfigGroup = document.querySelector(
+      ".controls .reader-config-group"
+    );
     if (readerConfigGroup) {
       readerConfigGroup.removeEventListener("change", () => {});
     }
   };
 
   const querySelectedReaders = () => {
-    return Array.from(document.querySelectorAll(".readers input[type=checkbox]"))
+    return Array.from(
+      document.querySelectorAll(".readers input[type=checkbox]")
+    )
       .filter((element) => (element as HTMLInputElement).checked)
       .map((element) => (element as HTMLInputElement).name);
   };
 
   const convertNameToState = (name: string) => {
-    return name.replace("_", ".").split("-").reduce((result, value) => {
-      return result + value.charAt(0).toUpperCase() + value.substring(1);
-    });
+    return name
+      .replace("_", ".")
+      .split("-")
+      .reduce((result, value) => {
+        return result + value.charAt(0).toUpperCase() + value.substring(1);
+      });
   };
 
   useEffect(() => {
@@ -153,7 +162,9 @@ const BarcodeScanner = () => {
 
     Quagga.onProcessed((result: any) => {
       const drawingCanvas = Quagga.canvas.dom.overlay;
-      const drawingCtx = drawingCanvas.getContext("2d", { willReadFrequently: true });
+      const drawingCtx = drawingCanvas.getContext("2d", {
+        willReadFrequently: true,
+      });
 
       // if (result && drawingCtx) {
       //   if (result.boxes) {
@@ -227,9 +238,46 @@ const BarcodeScanner = () => {
 
   if (showResult === "") {
     return (
-      <div className="container flex flex-col items-center justify-center min-h-screen mx-auto p-4">
-        <div className="card w-11/12 max-w-lg items-center">
-          <div id="interactive" className="viewport w-full h-full"></div>
+      // <div className="container flex flex-col items-center justify-center min-h-screen mx-auto p-4">
+      //   <div className="card w-11/12 max-w-lg items-center">
+      //     <div id="interactive" className="viewport w-full"></div>
+      //   </div>
+      // </div>
+      <div className="background2">
+        <div className="flex flex-col justify-center items-center min-h-screen">
+          <div className="absolute top-0 left-0 right-0 h-44 bg-blue-950 transform rounded-b-3xl">
+          <a className="btn btn-ghost mt-4 ml-3 text-white" href="/home/CheckThePackage">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="30"
+              height="30"
+              fill="currentColor"
+              className="bi bi-chevron-double-left"
+              viewBox="0 0 16 16"
+            >
+              <path d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+              <path d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+            </svg>
+          </a>
+            <div className="flex flex-col justify-center items-center -mt-2">
+              <h2 className="text-white lg:text-4xl text-2xl  font-bold mb-4">
+                ระบบตรวจนับพัสดุ
+              </h2>
+              <div className="card bg-clip-border lg:w-2/5 md:w-3/5 w-11/12 p-1 bg-base-100  shadow-xl flex flex-row items-center justify-center h-32">
+                <h2 className="text-4xl font-bold">SCAN BARCODE</h2>
+              </div>
+              <div className="container flex flex-col items-center justify-center min-h-screen mx-auto p-4">
+                <div className="card w-11/12 max-w-lg items-center">
+                  <div id="interactive" className="viewport w-full"></div>
+                </div>
+              </div>
+              <footer className="footer footer-center p-4 text-base-content mt-80">
+                <aside>
+                  <p>Copyright © 2024</p>
+                </aside>
+              </footer>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -237,35 +285,11 @@ const BarcodeScanner = () => {
 
   if (showResult !== "") {
     return (
-      <main className="flex min-h-screen flex-col items-center p-24">
-        <div className="relative inline-flex group">
-          <div className="absolute transition-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt"></div>
-          <a
-            onClick={handleBackToScan}
-            title="Get quote now"
-            className="relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-gray-900 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
-            role="button"
-          >
-            แสกนบาร์โค้ดอีกครั้ง
-          </a>
+      <div>
+        <div className="flex items-center justify-center h-screen">
+          <span className="loading loading-dots loading-lg text-blue-950"></span>
         </div>
-        <br />
-        {showResult}
-        <div className="thumbnail"></div>
-
-        <div className="flex items-center justify-center w-full">
-    <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-            <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-            </svg>
-            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-        </div>
-        <input id="dropzone-file" type="file" className="hidden" />
-    </label>
-</div> 
-      </main>
+      </div>
     );
   }
 
@@ -273,3 +297,19 @@ const BarcodeScanner = () => {
 };
 
 export default BarcodeScanner;
+
+// ParentComponent.tsx
+
+// import React from 'react'
+
+// export default function page() {
+//   return (
+//     <div>
+//       <a
+//       className='btn'
+//       href='/home/CheckThePackage?asset=123456789'>
+//         button
+//       </a>
+//     </div>
+//   )
+// }
