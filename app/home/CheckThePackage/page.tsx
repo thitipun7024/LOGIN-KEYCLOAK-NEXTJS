@@ -1,12 +1,17 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useSession } from "next-auth/react";
-import { jwtDecode } from "jwt-decode";
-import { Token } from "next-auth/jwt";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
-export default function page() {
-  const { data: session, status } = useSession();
+function PageContent() {
+  const { status } = useSession();
+  const searchParams = useSearchParams();
+  const searchs = searchParams.get("asset") || "";
+  const [search, setSearch] = useState(searchs);
+
+  const handleChange = (event) => {
+    setSearch(event.target.value);
+  };
 
   if (status === "loading") {
     return (
@@ -16,20 +21,11 @@ export default function page() {
     );
   }
 
-  if (!session || !session.accessToken) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <p>Logout...</p>
-      </div>
-    );
-  }
-
-  const decoded = jwtDecode<Token>(session.accessToken);
   return (
     <div className="background2">
-      <div className="flex flex-col justi-fycenter items-center min-h-screen">
+      <div className="flex flex-col justify-center items-center min-h-screen">
         <div className="absolute top-0 left-0 right-0 h-44 bg-blue-950 transform rounded-b-3xl">
-          <a className="btn btn-ghost mt-8 ml-3 text-white" href="/home">
+          <a className="btn btn-ghost mt-5 ml-3 text-white" href="/home">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="30"
@@ -42,15 +38,17 @@ export default function page() {
               <path d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
             </svg>
           </a>
-          <div className="flex flex-col justify-center items-center -mt-5">
-            <h2 className="text-white lg:text-4xl text-2xl  font-bold mb-4">
+          <div className="flex flex-col justify-center items-center -mt-2">
+            <h2 className="text-white lg:text-4xl text-2xl font-bold mb-4">
               ระบบตรวจนับพัสดุ
             </h2>
-            <label className="input input-bordered flex items-center gap-2 lg:w-1/3 md:w-2/3 w-4/5">
+            <label className="input input-bordered flex items-center gap-2 lg:w-1/3 md:w-2/3 sm:w-4/5">
               <input
                 type="text"
                 className="grow"
                 placeholder="ค้นหาข้อมูลพัสดุ....."
+                value={search}
+                onChange={handleChange}
               />
               <div className="flex justify-end -mr-5">
                 <a className="btn btn-md btn-ghost" href="/home/ScanBarcode">
@@ -68,7 +66,10 @@ export default function page() {
               </div>
             </label>
 
-            <div className="mt-20"></div>
+            <div className="mt-12"></div>
+            <h1 className="mb-8 lg:text-3xl md:text-2xl text-3xl font-bold">
+              รายการ
+            </h1>
             <div className="container contents">
               <div className="container flex items-center justify-center mb-5">
                 <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
@@ -95,13 +96,12 @@ export default function page() {
                         className="bi bi-chevron-right"
                         viewBox="0 0 16 16"
                       >
-                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                       </svg>
                     </button>
                   </div>
                 </div>
               </div>
-
               <div className="container flex items-center justify-center mb-5">
                 <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
                   <img
@@ -127,13 +127,12 @@ export default function page() {
                         className="bi bi-chevron-right"
                         viewBox="0 0 16 16"
                       >
-                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                       </svg>
                     </button>
                   </div>
                 </div>
               </div>
-
               <div className="container flex items-center justify-center mb-5">
                 <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
                   <img
@@ -159,13 +158,12 @@ export default function page() {
                         className="bi bi-chevron-right"
                         viewBox="0 0 16 16"
                       >
-                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                       </svg>
                     </button>
                   </div>
                 </div>
               </div>
-
               <div className="container flex items-center justify-center mb-5">
                 <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
                   <img
@@ -191,13 +189,12 @@ export default function page() {
                         className="bi bi-chevron-right"
                         viewBox="0 0 16 16"
                       >
-                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                       </svg>
                     </button>
                   </div>
                 </div>
               </div>
-
               <div className="container flex items-center justify-center mb-5">
                 <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
                   <img
@@ -223,150 +220,37 @@ export default function page() {
                         className="bi bi-chevron-right"
                         viewBox="0 0 16 16"
                       >
-                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="container flex items-center justify-center mb-5">
-                <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
-                  <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/12345.png"
-                    className="lg:h-28 h-20 lg:w-28 w-20 m-4 lg:ml-5 ml-2"
-                  />
-                  <div className="flex flex-col lg:ml-5 ml-0">
-                    <h1 className="lg:text-3xl md:text-1xl text-xl font-bold">
-                      โปรเเกรม Microsoft Offic 365
-                    </h1>
-                    <h2 className="lg:text-lg md:text-lg text-sm mb-1">
-                      32000000004125
-                    </h2>
-                  </div>
-                  <div className="flex-grow"></div>
-                  <div className="flex lg:mr-10 md:mr-5 mr-4">
-                    <button className="btn ">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="30"
-                        height="30"
-                        fill="currentColor"
-                        className="bi bi-chevron-right"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="container flex items-center justify-center mb-5">
-                <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
-                  <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/12345.png"
-                    className="lg:h-28 h-20 lg:w-28 w-20 m-4 lg:ml-5 ml-2"
-                  />
-                  <div className="flex flex-col lg:ml-5 ml-0">
-                    <h1 className="lg:text-3xl md:text-1xl text-xl font-bold">
-                      โปรเเกรม Microsoft Offic 365
-                    </h1>
-                    <h2 className="lg:text-lg md:text-lg text-sm mb-1">
-                      32000000004125
-                    </h2>
-                  </div>
-                  <div className="flex-grow"></div>
-                  <div className="flex lg:mr-10 md:mr-5 mr-4">
-                    <button className="btn ">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="30"
-                        height="30"
-                        fill="currentColor"
-                        className="bi bi-chevron-right"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="container flex items-center justify-center mb-5">
-                <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
-                  <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/12345.png"
-                    className="lg:h-28 h-20 lg:w-28 w-20 m-4 lg:ml-5 ml-2"
-                  />
-                  <div className="flex flex-col lg:ml-5 ml-0">
-                    <h1 className="lg:text-3xl md:text-1xl text-xl font-bold">
-                      โปรเเกรม Microsoft Offic 365
-                    </h1>
-                    <h2 className="lg:text-lg md:text-lg text-sm mb-1">
-                      32000000004125
-                    </h2>
-                  </div>
-                  <div className="flex-grow"></div>
-                  <div className="flex lg:mr-10 md:mr-5 mr-4">
-                    <button className="btn ">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="30"
-                        height="30"
-                        fill="currentColor"
-                        className="bi bi-chevron-right"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="container flex items-center justify-center mb-5">
-                <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
-                  <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/12345.png"
-                    className="lg:h-28 h-20 lg:w-28 w-20 m-4 lg:ml-5 ml-2"
-                  />
-                  <div className="flex flex-col lg:ml-5 ml-0">
-                    <h1 className="lg:text-3xl md:text-1xl text-xl font-bold">
-                      โปรเเกรม Microsoft Offic 365
-                    </h1>
-                    <h2 className="lg:text-lg md:text-lg text-sm mb-1">
-                      32000000004125
-                    </h2>
-                  </div>
-                  <div className="flex-grow"></div>
-                  <div className="flex lg:mr-10 md:mr-5 mr-4">
-                    <button className="btn ">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="30"
-                        height="30"
-                        fill="currentColor"
-                        className="bi bi-chevron-right"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                       </svg>
                     </button>
                   </div>
                 </div>
               </div>
             </div>
-
-            <footer className="footer footer-center p-4 text-base-content mt-80">
-              <aside>
-                <p>Copyright © 2024</p>
-              </aside>
-            </footer>
+            <div className="h-28"></div>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Page() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-screen">
+          <span className="loading loading-dots loading-lg text-blue-950"></span>
+        </div>
+      }
+    >
+      {isClient && <PageContent />}
+    </Suspense>
   );
 }

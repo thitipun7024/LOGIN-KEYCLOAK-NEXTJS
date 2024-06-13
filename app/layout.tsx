@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
       <Providers>
           <SessionGuard>
-            {children}
+              {children}
           </SessionGuard>
         </Providers>
       </body>
