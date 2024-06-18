@@ -2,12 +2,16 @@
 import React, { useEffect, useState, Suspense } from "react";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
+import { Token } from "next-auth/jwt";
+
 
 function PageContent() {
-  const { status } = useSession();
+  const {data: session, status } = useSession();
   const searchParams = useSearchParams();
   const searchs = searchParams.get("asset") || "";
   const [search, setSearch] = useState(searchs);
+  const [rows, setRows] = useState([])
 
   const handleChange = (event) => {
     setSearch(event.target.value);
@@ -20,6 +24,51 @@ function PageContent() {
       </div>
     );
   }
+
+  if (!session || !session.accessToken) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p>Logout...</p>
+      </div>
+    );
+  }
+
+  const decoded = jwtDecode<Token>(session.accessToken);
+  //console.log(decoded);
+
+  //ดึงข้อมูลที่เป็น ข้อมูลฝ่าย หรือ ข้อมูล Branch
+  const findGroupBranch = decoded.groups.find((group) => {
+    return (
+      group.includes("/group/SAK BRANCH/") || group.includes("/group/SAK HQ/")
+    );
+  });
+  const resultGroupBranch = findGroupBranch ? (
+    findGroupBranch.split("/").pop()
+  ) : (
+    <div className="badge badge-primary badge-outline">primary</div>
+  );
+  //ดึงข้อมูลที่เป็น ข้อมูลฝ่าย หรือ ข้อมูล Branch
+
+    if (session) {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(
+            `/api/asset/GetDataAsset?resultGroupBranch=${resultGroupBranch}`,
+            {
+              method: "GET",
+            }
+          );
+          const data = await response.json();
+          console.log(data);
+          setRows(data)
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchData();
+    } else {
+      alert("Please select both start and end dates.");
+    }
 
   return (
     <div className="background2">
@@ -71,161 +120,39 @@ function PageContent() {
               รายการ
             </h1>
             <div className="container contents">
-              <div className="container flex items-center justify-center mb-5">
-                <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
-                  <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/12345.png"
-                    className="lg:h-28 h-20 lg:w-28 w-20 m-4 lg:ml-5 ml-2"
-                  />
-                  <div className="flex flex-col lg:ml-5 ml-0">
-                    <h1 className="lg:text-3xl md:text-1xl text-xl font-bold">
-                      โปรเเกรม Microsoft Offic 365
-                    </h1>
-                    <h2 className="lg:text-lg md:text-lg text-sm mb-1">
-                      32000000004125
-                    </h2>
-                  </div>
-                  <div className="flex-grow"></div>
-                  <div className="flex lg:mr-10 md:mr-5 mr-4">
-                    <button className="btn ">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="30"
-                        height="30"
-                        fill="currentColor"
-                        className="bi bi-chevron-right"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="container flex items-center justify-center mb-5">
-                <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
-                  <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/12345.png"
-                    className="lg:h-28 h-20 lg:w-28 w-20 m-4 lg:ml-5 ml-2"
-                  />
-                  <div className="flex flex-col lg:ml-5 ml-0">
-                    <h1 className="lg:text-3xl md:text-1xl text-xl font-bold">
-                      โปรเเกรม Microsoft Offic 365
-                    </h1>
-                    <h2 className="lg:text-lg md:text-lg text-sm mb-1">
-                      32000000004125
-                    </h2>
-                  </div>
-                  <div className="flex-grow"></div>
-                  <div className="flex lg:mr-10 md:mr-5 mr-4">
-                    <button className="btn ">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="30"
-                        height="30"
-                        fill="currentColor"
-                        className="bi bi-chevron-right"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
-                      </svg>
-                    </button>
+              {rows.map((row) => (
+                  <div className="container flex items-center justify-center mb-5">
+                  <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
+                    <img
+                      src="https://minio.saksiam.co.th/public/saktech/logo/12345.png"
+                      className="lg:h-28 h-20 lg:w-28 w-20 m-4 lg:ml-5 ml-2"
+                    />
+                    <div className="flex flex-col lg:ml-5 ml-0">
+                      <h1 className="lg:text-3xl md:text-1xl text-xl font-bold">
+                        {row.ModelName}
+                      </h1>
+                      <h2 className="lg:text-lg md:text-lg text-sm mb-1">
+                        {row.AssetCode}
+                      </h2>
+                    </div>
+                    <div className="flex-grow"></div>
+                    <div className="flex lg:mr-10 md:mr-5 mr-4">
+                      <button className="btn ">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="30"
+                          height="30"
+                          fill="currentColor"
+                          className="bi bi-chevron-right"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="container flex items-center justify-center mb-5">
-                <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
-                  <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/12345.png"
-                    className="lg:h-28 h-20 lg:w-28 w-20 m-4 lg:ml-5 ml-2"
-                  />
-                  <div className="flex flex-col lg:ml-5 ml-0">
-                    <h1 className="lg:text-3xl md:text-1xl text-xl font-bold">
-                      โปรเเกรม Microsoft Offic 365
-                    </h1>
-                    <h2 className="lg:text-lg md:text-lg text-sm mb-1">
-                      32000000004125
-                    </h2>
-                  </div>
-                  <div className="flex-grow"></div>
-                  <div className="flex lg:mr-10 md:mr-5 mr-4">
-                    <button className="btn ">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="30"
-                        height="30"
-                        fill="currentColor"
-                        className="bi bi-chevron-right"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="container flex items-center justify-center mb-5">
-                <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
-                  <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/12345.png"
-                    className="lg:h-28 h-20 lg:w-28 w-20 m-4 lg:ml-5 ml-2"
-                  />
-                  <div className="flex flex-col lg:ml-5 ml-0">
-                    <h1 className="lg:text-3xl md:text-1xl text-xl font-bold">
-                      โปรเเกรม Microsoft Offic 365
-                    </h1>
-                    <h2 className="lg:text-lg md:text-lg text-sm mb-1">
-                      32000000004125
-                    </h2>
-                  </div>
-                  <div className="flex-grow"></div>
-                  <div className="flex lg:mr-10 md:mr-5 mr-4">
-                    <button className="btn ">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="30"
-                        height="30"
-                        fill="currentColor"
-                        className="bi bi-chevron-right"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="container flex items-center justify-center mb-5">
-                <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
-                  <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/12345.png"
-                    className="lg:h-28 h-20 lg:w-28 w-20 m-4 lg:ml-5 ml-2"
-                  />
-                  <div className="flex flex-col lg:ml-5 ml-0">
-                    <h1 className="lg:text-3xl md:text-1xl text-xl font-bold">
-                      โปรเเกรม Microsoft Offic 365
-                    </h1>
-                    <h2 className="lg:text-lg md:text-lg text-sm mb-1">
-                      32000000004125
-                    </h2>
-                  </div>
-                  <div className="flex-grow"></div>
-                  <div className="flex lg:mr-10 md:mr-5 mr-4">
-                    <button className="btn ">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="30"
-                        height="30"
-                        fill="currentColor"
-                        className="bi bi-chevron-right"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
             <div className="h-28"></div>
           </div>
