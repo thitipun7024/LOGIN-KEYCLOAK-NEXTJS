@@ -5,16 +5,60 @@ import { useSearchParams } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
 
-
 function PageContent() {
-  const {data: session, status } = useSession();
+  const { data: session, status } = useSession();
   const searchParams = useSearchParams();
   const searchs = searchParams.get("asset") || "";
   const [search, setSearch] = useState(searchs);
-  const [rows, setRows] = useState([])
+  const [rows, setRows] = useState([]);
 
   const handleChange = (event) => {
     setSearch(event.target.value);
+  };
+
+  useEffect(() => {
+    if (session) {
+      const decoded = jwtDecode<Token>(session.accessToken);
+
+      const findGroupBranch = decoded.groups.find((group) => {
+        return (
+          group.includes("/group/SAK BRANCH/") || group.includes("/group/SAK HQ/")
+        );
+      });
+      const resultGroupBranch = findGroupBranch
+        ? findGroupBranch.split("/").pop()
+        : "primary";
+
+      const fetchData = async () => {
+        try {
+          const response = await fetch(
+            `/api/asset/GetDataAsset?resultGroupBranch=${resultGroupBranch}`,
+            {
+              method: "GET",
+              redirect: "follow",
+              headers: {
+                "Cache-Control": "no-cache",
+                Pragma: "no-cache",
+              },
+            }
+          );
+          const data = await response.json();
+          //console.log(data);
+          setRows(data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [session]);
+
+  const filterData = () => {
+    return rows.filter(row => 
+      row.ModelName.toLowerCase().includes(search.toLowerCase()) || 
+      row.AssetCode.toLowerCase().includes(search.toLowerCase())
+    );
   };
 
   if (status === "loading") {
@@ -33,43 +77,6 @@ function PageContent() {
     );
   }
 
-  const decoded = jwtDecode<Token>(session.accessToken);
-  //console.log(decoded);
-
-  //ดึงข้อมูลที่เป็น ข้อมูลฝ่าย หรือ ข้อมูล Branch
-  const findGroupBranch = decoded.groups.find((group) => {
-    return (
-      group.includes("/group/SAK BRANCH/") || group.includes("/group/SAK HQ/")
-    );
-  });
-  const resultGroupBranch = findGroupBranch ? (
-    findGroupBranch.split("/").pop()
-  ) : (
-    <div className="badge badge-primary badge-outline">primary</div>
-  );
-  //ดึงข้อมูลที่เป็น ข้อมูลฝ่าย หรือ ข้อมูล Branch
-
-    if (session) {
-      const fetchData = async () => {
-        try {
-          const response = await fetch(
-            `/api/asset/GetDataAsset?resultGroupBranch=${resultGroupBranch}`,
-            {
-              method: "GET",
-            }
-          );
-          const data = await response.json();
-          console.log(data);
-          setRows(data)
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      fetchData();
-    } else {
-      alert("Please select both start and end dates.");
-    }
-
   return (
     <div className="background2">
       <div className="flex flex-col justify-center items-center min-h-screen">
@@ -84,7 +91,7 @@ function PageContent() {
               viewBox="0 0 16 16"
             >
               <path d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
-              <path d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+              <path d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708z" />
             </svg>
           </a>
           <div className="flex flex-col justify-center items-center -mt-2">
@@ -120,8 +127,8 @@ function PageContent() {
               รายการ
             </h1>
             <div className="container contents">
-              {rows.map((row) => (
-                  <div className="container flex items-center justify-center mb-5">
+              {filterData().map((row) => (
+                <div className="container flex items-center justify-center mb-5" key={row.AssetCode}>
                   <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
                     <img
                       src="https://minio.saksiam.co.th/public/saktech/logo/12345.png"
