@@ -51,33 +51,33 @@ export default function Page() {
   );
   //ดึงข้อมูลที่เป็นข้อมูลตำเเหน่งของพนักงาน
 
-  // const ClickParamGroup = () => {
-  //   if (session) {
-  //     const fetchData = async () => {
-  //       try {
-  //         const response = await fetch(
-  //           `/api/asset/GetDataAsset?resultGroupBranch=${resultGroupBranch}`,
-  //           {
-  //             method: "GET",
-  //             redirect: "follow",
-  //             headers: {
-  //               "Cache-Control": "no-cache",
-  //               Pragma: "no-cache",
-  //             },
-  //           }
-  //         );
-  //         const data = await response.json();
-  //         //console.log(data);
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     };
+  const ClickParamGroup = () => {
+    if (session) {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(
+            `/api/asset/GetDataAsset?resultGroupBranch=${resultGroupBranch}`,
+            {
+              method: "GET",
+              redirect: "follow",
+              headers: {
+                "Cache-Control": "no-cache",
+                Pragma: "no-cache",
+              },
+            }
+          );
+          const data = await response.json();
+          //console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
-  //     fetchData();
-  //   } else {
-  //     alert("Please select both start and end dates.");
-  //   }
-  // };
+      fetchData();
+    } else {
+      alert("Please select both start and end dates.");
+    }
+  };
 
 
   return (
@@ -132,6 +132,7 @@ export default function Page() {
                 <div className="flex flex-col items-center">
                   <a 
                     href="/home/CheckThePackage"
+                    onClick={ClickParamGroup}
                     >
                     <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
                       <img
