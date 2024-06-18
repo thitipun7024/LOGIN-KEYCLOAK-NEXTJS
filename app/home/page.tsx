@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Logout from "@/components/Logout";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
@@ -50,6 +50,34 @@ export default function Page() {
     <div className="badge badge-primary badge-outline">primary</div>
   );
   //ดึงข้อมูลที่เป็นข้อมูลตำเเหน่งของพนักงาน
+
+  // const ClickParamGroup = () => {
+  //   if (session) {
+  //     const fetchData = async () => {
+  //       try {
+  //         const response = await fetch(
+  //           `/api/asset/GetDataAsset?resultGroupBranch=${resultGroupBranch}`,
+  //           {
+  //             method: "GET",
+  //             redirect: "follow",
+  //             headers: {
+  //               "Cache-Control": "no-cache",
+  //               Pragma: "no-cache",
+  //             },
+  //           }
+  //         );
+  //         const data = await response.json();
+  //         //console.log(data);
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     };
+
+  //     fetchData();
+  //   } else {
+  //     alert("Please select both start and end dates.");
+  //   }
+  // };
 
 
   return (
@@ -102,7 +130,9 @@ export default function Page() {
             <div className="container contents">
               <div className="grid lg:gap-x-20 md:gap-x-20 gap-x-3 gap-y-4 lg:grid-cols-5 md:grid-cols-4 grid-cols-3 mt-10 justify-center">
                 <div className="flex flex-col items-center">
-                  <a href="/home/CheckThePackage">
+                  <a 
+                    href="/home/CheckThePackage"
+                    >
                     <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
                       <img
                         src="https://minio.saksiam.co.th/public/saktech/logo/12345.png"
