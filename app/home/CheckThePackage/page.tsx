@@ -135,7 +135,7 @@ function PageContent() {
                       className="lg:h-28 h-20 lg:w-28 w-20 m-4 lg:ml-5 ml-2"
                     />
                     <div className="flex flex-col lg:ml-5 ml-0">
-                      <h1 className="lg:text-3xl md:text-1xl text-xl font-bold">
+                      <h1 className="lg:text-3xl md:text-1xl sm:text-xl font-bold">
                         {row.ModelName}
                       </h1>
                       <h2 className="lg:text-lg md:text-lg text-sm mb-1">
