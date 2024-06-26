@@ -3,7 +3,8 @@ import { type NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
-    const BranchCodeSearch = searchParams.get("resultGroupBranch")
+    const BranchCodeSearch: string = searchParams.get("resultGroupBranch")
+    const Status: string = "16";
 
     if (!BranchCodeSearch) {
         return NextResponse.json({ error: 'BranchCode is required' }, { status: 400 });
@@ -13,6 +14,7 @@ export async function GET(req: NextRequest) {
         const getBranchCode = await prisma.assetMaster.findMany({
             where: {
                 BranchCode: BranchCodeSearch,
+                Status: Status,
             },
         });
         return NextResponse.json(getBranchCode);
