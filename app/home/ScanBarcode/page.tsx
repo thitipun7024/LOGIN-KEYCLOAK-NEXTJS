@@ -271,7 +271,7 @@ const BarcodeScanner = () => {
                   <div id="interactive" className="viewport w-full"></div>
                 </div>
               </div>
-              <footer className="footer footer-center p-4 text-base-content mt-80">
+              <footer className="footer footer-center p-4 text-base-content">
                 <aside>
                   <p>Copyright © 2024</p>
                 </aside>
@@ -297,19 +297,3 @@ const BarcodeScanner = () => {
 };
 
 export default BarcodeScanner;
-
-// ParentComponent.tsx
-
-// import React from 'react'
-
-// export default function page() {
-//   return (
-//     <div>
-//       <a
-//       className='btn'
-//       href='/home/CheckThePackage?asset=123456789'>
-//         button
-//       </a>
-//     </div>
-//   )
-// }
