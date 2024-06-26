@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Logout from "@/components/Logout";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
@@ -7,7 +7,7 @@ import { Token } from "next-auth/jwt";
 
 export default function Page() {
   const { data: session, status } = useSession();
-  const [rows, setRows] = useState([]);
+  const [count, setCount] = useState([]);
 
   if (status === "loading") {
     return (
@@ -61,7 +61,7 @@ export default function Page() {
   const resultGroupBaD_TH = findGroupBaD_TH ? (
     findGroupBaD_TH.split("/").pop()
   ) : (
-    <div className="badge badge-primary badge-outline">primary</div>
+    <div className="badge badge-sm badge-error badge-outline">ไม่มีข้อมุลชื่อสาขา/หน่วย</div>
   );
   //ดึงข้อมูลที่เป็นข้อมูลชื่อสาขา/หน่วย เเละ ฝ่ายภาษาไทย
 
@@ -86,16 +86,15 @@ export default function Page() {
           console.log(error);
         }
       };
-
       fetchData();
     } else {
       alert("Please select both start and end dates.");
     }
   };
 
-  const fetchData = async () => {
+  const fetchDataCount = async () => {
     try {
-      const response = await fetch(`/api/asset/CountDataAsset`, {
+      const response = await fetch(`/api/asset/CountDataAsset?resultGroupBranch=${resultGroupBranch}`, {
         method: "GET",
         redirect: "follow",
         headers: {
@@ -105,11 +104,14 @@ export default function Page() {
       });
       const { count } = await response.json(); // ดึงค่า count เฉพาะ
       //console.log(count);
-      setRows(count); // ใช้ค่า count เพื่อตั้งค่าข้อมูลให้กับ rows
+      setCount(count); // ใช้ค่า count เพื่อตั้งค่าข้อมูลให้กับ rows
     } catch (error) {
       console.log(error);
     }
   };
+  fetchDataCount();
+  
+
     
 
 
@@ -167,7 +169,7 @@ export default function Page() {
                   <div className="card lg:w-48 md:w-40 sm:w-32 w-32 h-20 text-white bg-blue-950">
                     <div className="card-body items-center text-center ">
                       <h2 className="lg:text-lg md:text-md sm:text-sx text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3">พัสดุทั้งหมด</h2>
-                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">1000</a>
+                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">{count}</a>
                     </div>
                   </div>
                 </div>
