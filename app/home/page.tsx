@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logout from "@/components/Logout";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
@@ -8,6 +8,7 @@ import { Token } from "next-auth/jwt";
 export default function Page() {
   const { data: session, status } = useSession();
   const [count, setCount] = useState([]);
+  const [sakHQ, setSakHQ] = useState(null);
 
   if (status === "loading") {
     return (
@@ -26,7 +27,7 @@ export default function Page() {
   }
 
   const decoded = jwtDecode<Token>(session.accessToken);
-  console.log(decoded);
+  //console.log(decoded);
 
   //ดึงข้อมูลที่เป็น ข้อมูลฝ่าย หรือ ข้อมูล Branch
   const findGroupBranch = decoded.groups.find((group) => {
@@ -65,12 +66,13 @@ export default function Page() {
   );
   //ดึงข้อมูลที่เป็นข้อมูลชื่อสาขา/หน่วย เเละ ฝ่ายภาษาไทย
 
+  //Function 
   const ClickParamGroup = () => {
     if (session) {
       const fetchData = async () => {
         try {
           const response = await fetch(
-            `/api/asset/GetDataAsset?resultGroupBranch=${resultGroupBranch}`,
+            `/api/asset/GetDataAsset?resultGroupBranch=${resultGroupBranch}&SakHQ=${sakHQ}`,
             {
               method: "GET",
               redirect: "follow",
@@ -88,9 +90,10 @@ export default function Page() {
       };
       fetchData();
     } else {
-      alert("Please select both start and end dates.");
+      alert("ไม่มีการเข้าสู่ระบบ");
     }
   };
+  //Function
 
   const fetchDataCount = async () => {
     try {
@@ -112,7 +115,30 @@ export default function Page() {
   fetchDataCount();
   
 
-    
+  const fetchDataSakHQ = async () => {
+    try {
+      const responseSakHQ = await fetch(`/api/asset/GetNoSakHQ?SakHQ=${resultGroupBaD_TH}`, {
+        method: "GET",
+        redirect: "follow",
+        headers: {
+          "Cache-Control": "no-cache",
+          Pragma: "no-cache",
+        },
+      });
+      const SakHQJson = await responseSakHQ.json();
+      //console.log(SakHQJson);
+      const costCenter = SakHQJson.CostCenter;
+      console.log(costCenter);
+      setSakHQ(costCenter);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  // เรียก fetchDataSakHQ ครั้งเดียวเพื่อดึงข้อมูล
+  fetchDataSakHQ();
+
+  //console.log(sakHQ)
 
 
   return (
@@ -178,7 +204,7 @@ export default function Page() {
                   <div className="card lg:w-48 md:w-40 sm:w-32 w-32 h-20 text-white bg-blue-950">
                     <div className="card-body items-center text-center ">
                       <h2 className="lg:text-lg md:text-md sm:text-sx text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3">พัสดุทั้งหมด</h2>
-                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">1000</a>
+                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">{sakHQ}</a>
                     </div>
                   </div>
                 </div>
