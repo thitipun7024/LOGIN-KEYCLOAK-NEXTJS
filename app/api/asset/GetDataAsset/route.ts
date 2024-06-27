@@ -3,8 +3,8 @@ import { type NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
-    const BranchCodeSearch: string = searchParams.get("resultGroupBranch")
-    const Status: string = "16";
+    const BranchCodeSearch = searchParams.get("resultGroupBranch")
+    const Status = "16";
 
     if (!BranchCodeSearch) {
         return NextResponse.json({ error: 'BranchCode is required' }, { status: 400 });
