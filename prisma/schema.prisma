@@ -21,7 +21,15 @@ model AssetMaster {
   AssetTypeCode String?   @map("AssetTypeCode")
   AssetTypeName String?   @map("AssetTypeName")
   BranchCode    String?   @map("BranchCode")
-  Status        String    @map("String")
+  Status        String?    @map("Status")
   
   @@map("tblAssetMaster")
+}
+
+model CostCTR {
+  code          Int       @id @default(autoincrement()) @map("code")
+  Name          String?    @map("Name")
+  CostCenter    Int       @map("CostCenter")  
+
+  @@map("tblCostCTR") 
 }
