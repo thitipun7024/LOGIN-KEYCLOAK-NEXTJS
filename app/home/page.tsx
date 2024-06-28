@@ -83,7 +83,7 @@ export default function Page() {
             }
           );
           const data = await response.json();
-          //console.log(data);
+          console.log(data);
         } catch (error) {
           console.log(error);
         }
@@ -97,7 +97,7 @@ export default function Page() {
 
   const fetchDataCount = async () => {
     try {
-      const response = await fetch(`/api/asset/CountDataAsset?resultGroupBranch=${resultGroupBranch}`, {
+      const response = await fetch(`/api/asset/CountDataAsset?resultGroupBranch=${resultGroupBranch}&SakHQ=${sakHQ}`, {
         method: "GET",
         redirect: "follow",
         headers: {
@@ -128,7 +128,7 @@ export default function Page() {
       const SakHQJson = await responseSakHQ.json();
       //console.log(SakHQJson);
       const costCenter = SakHQJson.CostCenter;
-      console.log(costCenter);
+      //console.log(costCenter);
       setSakHQ(costCenter);
     } catch (error) {
       console.log(error);
@@ -190,11 +190,11 @@ export default function Page() {
             </div>
 
             <div className="container contents">
-              <div className="grid lg:gap-x-20 md:gap-x-10 sm:gap-x-3 gap-x-3 gap-y-4 lg:grid-cols-3 md:grid-cols-3 grid-cols-3 mt-5 justify-center">
+              <div className="grid lg:gap-x-20 md:gap-x-10 sm:gap-x-1 gap-x-2 gap-y-4 lg:grid-cols-3 md:grid-cols-3 grid-cols-3 mt-5 justify-center">
                 <div className="flex flex-col items-center">
                   <div className="card lg:w-48 md:w-40 sm:w-32 w-32 h-20 text-white bg-blue-950">
                     <div className="card-body items-center text-center ">
-                      <h2 className="lg:text-lg md:text-md sm:text-sx text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3">พัสดุทั้งหมด</h2>
+                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3">พัสดุทั้งหมด</h2>
                       <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">{count}</a>
                     </div>
                   </div>
@@ -203,7 +203,7 @@ export default function Page() {
                 <div className="flex flex-col items-center">
                   <div className="card lg:w-48 md:w-40 sm:w-32 w-32 h-20 text-white bg-blue-950">
                     <div className="card-body items-center text-center ">
-                      <h2 className="lg:text-lg md:text-md sm:text-sx text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3">พัสดุทั้งหมด</h2>
+                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3">พัสดุทั้งหมด</h2>
                       <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">{sakHQ}</a>
                     </div>
                   </div>
@@ -212,7 +212,7 @@ export default function Page() {
                 <div className="flex flex-col items-center">
                   <div className="card lg:w-48 md:w-40 sm:w-32 w-32 h-20 text-white bg-blue-950">
                     <div className="card-body items-center text-center ">
-                      <h2 className="lg:text-lg md:text-md sm:text-sx text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3">พัสดุทั้งหมด</h2>
+                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3">พัสดุทั้งหมด</h2>
                       <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">1000</a>
                     </div>
                   </div>
@@ -261,38 +261,6 @@ export default function Page() {
                   <span className="mt-2 text-center">ข้อความที่ต้องการ</span>
                 </div>
 
-                <div className="flex flex-col items-center">
-                  <button className="flex items-center justify-center btn h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
-                    <img
-                      src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </button>
-                  <span className="mt-2 text-center">ข้อความที่ต้องการ</span>
-                </div>
-
-                <div className="flex flex-col items-center">
-                  <button className="flex items-center justify-center btn h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
-                    <img
-                      src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </button>
-                  <span className="mt-2 text-center">ข้อความที่ต้องการ</span>
-                </div>
-
-                <div className="flex flex-col items-center">
-                  <button className="flex items-center justify-center btn h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
-                    <img
-                      src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </button>
-                  <span className="mt-2 text-center">ข้อความที่ต้องการ</span>
-                </div>
               </div>
             </div>
 
