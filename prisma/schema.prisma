@@ -14,22 +14,56 @@ datasource db {
 }
 
 model AssetMaster {
-  id            Int       @id @default(autoincrement()) @map("id")
-  AssetCode     String    @map("AssetCode")
-  Serial        String?   @map("Serial")
-  ModelName     String    @map("ModelName")
-  AssetTypeCode String?   @map("AssetTypeCode")
-  AssetTypeName String?   @map("AssetTypeName")
-  BranchCode    String?   @map("BranchCode")
-  Status        String?    @map("Status")
-  
+  id            Int     @id @default(autoincrement()) @map("id")
+  AssetCode     String  @map("AssetCode")
+  Serial        String? @map("Serial")
+  ModelName     String  @map("ModelName")
+  AssetTypeCode String? @map("AssetTypeCode")
+  AssetTypeName String? @map("AssetTypeName")
+  BranchCode    String? @map("BranchCode")
+  Status        String? @map("Status")
+
   @@map("tblAssetMaster")
 }
 
 model CostCTR {
-  code          Int       @id @default(autoincrement()) @map("code")
-  Name          String?    @map("Name")
-  CostCenter    Int       @map("CostCenter")  
+  code       Int     @id @default(autoincrement()) @map("code")
+  Name       String? @map("Name")
+  CostCenter Int     @map("CostCenter")
 
-  @@map("tblCostCTR") 
+  @@map("tblCostCTR")
+}
+
+model No_Asset {
+  ID                      Int       @id @default(autoincrement()) @map("ID")
+  Cocd                    String?    @map("Cocd")
+  Class                   String?    @map("Class")
+  Asset_class_description String?    @map("Asset_class_description")
+  Asset                   String?    @map("Asset")
+  SNo                     String?    @map("SNo")
+  Asset_description       String?    @map("Asset_description")
+  Asset_description2      String?    @map("Asset_description2")
+  Quantity                String?    @map("Quantity")
+  BUn                     String?    @map("BUn")
+  Age                     String?    @map("Age")
+  Create_date             String?    @map("Create_date")
+  Start_date              String?    @map("Start_date")
+  End_date                String?    @map("End_date")
+  ODep_start              String?    @map("ODep_start")
+  Cost_Ctr                String?    @map("Cost_Ctr")
+  Plnt                    String?    @map("Plnt")
+  Asset_Status            String?    @map("Asset_Status")
+  Original_value          String?    @map("Original_value")
+  Serial_no               String?    @map("Serial_no")
+  Status                  String?    @map("Status")
+  Description             String?    @map("Description")
+  Note01                  String?    @map("Note01")
+  Note02                  String?    @map("Note02")
+  Note03                  String?    @map("Note03")
+  Note04                  String?    @map("Note04")
+  Note05                  String?    @map("Note05")
+  CreatedBy               String?    @map("CreatedBy")
+  Createtime              String?    @map("Createtime")
+
+  @@map("no_asset")
 }
