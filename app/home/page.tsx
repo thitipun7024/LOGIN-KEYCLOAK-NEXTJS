@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Logout from "@/components/Logout";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
@@ -7,6 +7,8 @@ import { Token } from "next-auth/jwt";
 
 export default function Page() {
   const { data: session, status } = useSession();
+  const [count, setCount] = useState([]);
+  const [sakHQ, setSakHQ] = useState(null);
 
   if (status === "loading") {
     return (
@@ -40,6 +42,7 @@ export default function Page() {
   );
   //ดึงข้อมูลที่เป็น ข้อมูลฝ่าย หรือ ข้อมูล Branch
 
+
   //ดึงข้อมูลที่เป็นข้อมูลตำเเหน่งของพนักงาน
   const findGroupPosition = decoded.groups.find((group) => {
     return group.includes("/group/SAK POSITION_TH/");
@@ -50,6 +53,92 @@ export default function Page() {
     <div className="badge badge-primary badge-outline">primary</div>
   );
   //ดึงข้อมูลที่เป็นข้อมูลตำเเหน่งของพนักงาน
+
+
+  //ดึงข้อมูลที่เป็นข้อมูลชื่อสาขา/หน่วย เเละ ฝ่ายภาษาไทย
+  const findGroupBaD_TH = decoded.groups.find((group) => {
+    return group.includes("/group/SAK BRANCH_TH/") || group.includes("/group/SAK DEPARTMENT-TH/");
+  });
+  const resultGroupBaD_TH = findGroupBaD_TH ? (
+    findGroupBaD_TH.split("/").pop()
+  ) : (
+    <div className="badge badge-sm badge-error badge-outline">ไม่มีข้อมุลชื่อสาขา/หน่วย</div>
+  );
+  //ดึงข้อมูลที่เป็นข้อมูลชื่อสาขา/หน่วย เเละ ฝ่ายภาษาไทย
+
+  //Function 
+  const ClickParamGroup = () => {
+    if (session) {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(
+            `/api/asset/GetDataAsset?resultGroupBranch=${resultGroupBranch}&SakHQ=${sakHQ}`,
+            {
+              method: "GET",
+              redirect: "follow",
+              headers: {
+                "Cache-Control": "no-cache",
+                Pragma: "no-cache",
+              },
+            }
+          );
+          const data = await response.json();
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchData();
+    } else {
+      alert("ไม่มีการเข้าสู่ระบบ");
+    }
+  };
+  //Function
+
+  const fetchDataCount = async () => {
+    try {
+      const response = await fetch(`/api/asset/CountDataAsset?resultGroupBranch=${resultGroupBranch}&SakHQ=${sakHQ}`, {
+        method: "GET",
+        redirect: "follow",
+        headers: {
+          "Cache-Control": "no-cache",
+          Pragma: "no-cache",
+        },
+      });
+      const { count } = await response.json(); // ดึงค่า count เฉพาะ
+      //console.log(count);
+      setCount(count); // ใช้ค่า count เพื่อตั้งค่าข้อมูลให้กับ rows
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  fetchDataCount();
+  
+
+  const fetchDataSakHQ = async () => {
+    try {
+      const responseSakHQ = await fetch(`/api/asset/GetNoSakHQ?SakHQ=${resultGroupBaD_TH}`, {
+        method: "GET",
+        redirect: "follow",
+        headers: {
+          "Cache-Control": "no-cache",
+          Pragma: "no-cache",
+        },
+      });
+      const SakHQJson = await responseSakHQ.json();
+      //console.log(SakHQJson);
+      const costCenter = SakHQJson.CostCenter;
+      //console.log(costCenter);
+      setSakHQ(costCenter);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  // เรียก fetchDataSakHQ ครั้งเดียวเพื่อดึงข้อมูล
+  fetchDataSakHQ();
+
+  //console.log(sakHQ)
 
 
   return (
@@ -73,7 +162,7 @@ export default function Page() {
                   {resultGroupPosition}
                 </h2>
                 <h2 className="lg:text-lg md:text-lg text-sm">
-                  {resultGroupBranch}
+                  {resultGroupBaD_TH}
                 </h2>
               </div>
               <div className="lg:ml-7 ml-3 lg:pr-0 pr-1">
@@ -99,10 +188,46 @@ export default function Page() {
                 </button>
               </div>
             </div>
+
+            <div className="container contents">
+              <div className="grid lg:gap-x-20 md:gap-x-10 sm:gap-x-1 gap-x-2 gap-y-4 lg:grid-cols-3 md:grid-cols-3 grid-cols-3 mt-5 justify-center">
+                <div className="flex flex-col items-center">
+                  <div className="card lg:w-48 md:w-40 sm:w-32 w-32 h-20 text-white bg-blue-950">
+                    <div className="card-body items-center text-center ">
+                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3">พัสดุทั้งหมด</h2>
+                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">{count}</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-center">
+                  <div className="card lg:w-48 md:w-40 sm:w-32 w-32 h-20 text-white bg-blue-950">
+                    <div className="card-body items-center text-center ">
+                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3">พัสดุทั้งหมด</h2>
+                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">{sakHQ}</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-center">
+                  <div className="card lg:w-48 md:w-40 sm:w-32 w-32 h-20 text-white bg-blue-950">
+                    <div className="card-body items-center text-center ">
+                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3">พัสดุทั้งหมด</h2>
+                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">1000</a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
             <div className="container contents">
               <div className="grid lg:gap-x-20 md:gap-x-20 gap-x-3 gap-y-4 lg:grid-cols-5 md:grid-cols-4 grid-cols-3 mt-10 justify-center">
                 <div className="flex flex-col items-center">
-                  <a href="/home/CheckThePackage">
+                  <a 
+                    href="/home/CheckThePackage"
+                    onClick={ClickParamGroup}
+                    >
                     <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
                       <img
                         src="https://minio.saksiam.co.th/public/saktech/logo/12345.png"
@@ -136,38 +261,6 @@ export default function Page() {
                   <span className="mt-2 text-center">ข้อความที่ต้องการ</span>
                 </div>
 
-                <div className="flex flex-col items-center">
-                  <button className="flex items-center justify-center btn h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
-                    <img
-                      src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </button>
-                  <span className="mt-2 text-center">ข้อความที่ต้องการ</span>
-                </div>
-
-                <div className="flex flex-col items-center">
-                  <button className="flex items-center justify-center btn h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
-                    <img
-                      src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </button>
-                  <span className="mt-2 text-center">ข้อความที่ต้องการ</span>
-                </div>
-
-                <div className="flex flex-col items-center">
-                  <button className="flex items-center justify-center btn h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
-                    <img
-                      src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </button>
-                  <span className="mt-2 text-center">ข้อความที่ต้องการ</span>
-                </div>
               </div>
             </div>
 
