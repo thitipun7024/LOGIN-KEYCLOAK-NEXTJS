@@ -9,6 +9,8 @@ export default function Page() {
   const { data: session, status } = useSession();
   const [count, setCount] = useState([]);
   const [sakHQ, setSakHQ] = useState(null);
+  const [countNochecked, setCountNoChecked] = useState(null);
+  const [countChecked, setCountChecked] = useState(null);
 
   if (status === "loading") {
     return (
@@ -95,6 +97,7 @@ export default function Page() {
   };
   //Function
 
+  //Function
   const fetchDataCount = async () => {
     try {
       const response = await fetch(`/api/asset/CountDataAsset?resultGroupBranch=${resultGroupBranch}&SakHQ=${sakHQ}`, {
@@ -105,16 +108,59 @@ export default function Page() {
           Pragma: "no-cache",
         },
       });
-      const { count } = await response.json(); // ดึงค่า count เฉพาะ
+      const { count } = await response.json();
       //console.log(count);
-      setCount(count); // ใช้ค่า count เพื่อตั้งค่าข้อมูลให้กับ rows
+      setCount(count);
     } catch (error) {
       console.log(error);
     }
   };
   fetchDataCount();
-  
+  //Function
 
+  //Function
+  const fetchDataCountNochecked = async () => {
+    try {
+      const responseNoasset = await fetch(`/api/asset/CountDataStatusNoCheck?resultGroupBranch=${resultGroupBranch}&SakHQ=${sakHQ}`, {
+        method: "GET",
+        redirect: "follow",
+        headers: {
+          "Cache-Control": "no-cache",
+          Pragma: "no-cache",
+        },
+      });
+      const { countAssetNoChecked } = await responseNoasset.json();
+      //console.log(countAssetNoChecked);
+      setCountNoChecked(countAssetNoChecked);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  fetchDataCountNochecked();
+  //Function
+
+  //Function
+  const fetchDataCountChecked = async () => {
+    try {
+      const responseChecked = await fetch(`/api/asset/CountDataAssetChecked?resultGroupBranch=${resultGroupBranch}&SakHQ=${sakHQ}`, {
+        method: "GET",
+        redirect: "follow",
+        headers: {
+          "Cache-Control": "no-cache",
+          Pragma: "no-cache",
+        },
+      });
+      const { countAssetChecked } = await responseChecked.json();
+      //console.log(countAssetChecked);
+      setCountChecked(countAssetChecked);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  fetchDataCountChecked();
+  //Function
+
+  //Function
   const fetchDataSakHQ = async () => {
     try {
       const responseSakHQ = await fetch(`/api/asset/GetNoSakHQ?SakHQ=${resultGroupBaD_TH}`, {
@@ -125,34 +171,40 @@ export default function Page() {
           Pragma: "no-cache",
         },
       });
+  
+      if (!responseSakHQ.ok) {
+        throw new Error(`HTTP error! Status: ${responseSakHQ.status}`);
+      }
+  
       const SakHQJson = await responseSakHQ.json();
-      //console.log(SakHQJson);
-      const costCenter = SakHQJson.CostCenter;
-      //console.log(costCenter);
-      setSakHQ(costCenter);
+  
+      if (SakHQJson && SakHQJson.CostCenter) {
+        const costCenter = SakHQJson.CostCenter;
+        setSakHQ(costCenter);
+      } else {
+        //console.log("No CostCenter data available.");
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching SakHQ data:", error);
     }
   };
-  
-  // เรียก fetchDataSakHQ ครั้งเดียวเพื่อดึงข้อมูล
   fetchDataSakHQ();
-
-  //console.log(sakHQ)
+  //Function
 
 
   return (
     <div className="background2">
       <div className="flex flex-col justify-center items-center min-h-screen">
-        <div className="absolute top-0 left-0 right-0 h-44 bg-blue-950 transform rounded-b-3xl">
+        <div className="absolute top-0 left-0 right-0 lg:h-64 md:h-48 sm:h-48 h-48 bg-blue-950 transform rounded-b-3xl">
           <div className="flex flex-col justify-center items-center mt-16">
-            <h2 className="text-white lg:text-4xl text-2xl  font-bold mb-4">
-              ระบบตรวจนับพัสดุ
-            </h2>
+            <img
+                src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
+                className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 lg:-mt-20 md:-mt-16 sm:-mt-16 -mt-16"
+            />
             <div className="card bg-clip-border lg:w-2/5 md:w-3/5 w-11/12 p-1 bg-base-100  shadow-xl flex flex-row items-center justify-center">
               <img
                 src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
-                className="lg:h-28 h-20 lg:w-28 w-20 m-4 lg:-ml-1 ml-2"
+                className="lg:h-32 h-20 lg:w-32 w-20 m-4 lg:-ml-1 ml-2"
               />
               <div className="flex flex-col lg:ml-5 ml-0">
                 <h2 className="lg:text-2xl md:text-1xl text-xl font-bold ">
@@ -192,28 +244,28 @@ export default function Page() {
             <div className="container contents">
               <div className="grid lg:gap-x-20 md:gap-x-10 sm:gap-x-1 gap-x-2 gap-y-4 lg:grid-cols-3 md:grid-cols-3 grid-cols-3 mt-5 justify-center">
                 <div className="flex flex-col items-center">
-                  <div className="card lg:w-48 md:w-40 sm:w-32 w-32 h-20 text-white bg-blue-950">
+                  <div className="card lg:w-48 md:w-40 sm:w-28 w-28 h-20 text-white bg-blue-950">
                     <div className="card-body items-center text-center ">
-                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3">พัสดุทั้งหมด</h2>
+                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-28 md:w-20 sm:w-20 w-20">พัสดุทั้งหมด</h2>
                       <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">{count}</a>
                     </div>
                   </div>
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <div className="card lg:w-48 md:w-40 sm:w-32 w-32 h-20 text-white bg-blue-950">
+                  <div className="card lg:w-48 md:w-40 sm:w-32 w-28 h-20 text-white bg-blue-950">
                     <div className="card-body items-center text-center ">
-                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3">พัสดุทั้งหมด</h2>
-                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">{sakHQ}</a>
+                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-28 md:w-20 sm:w-20 w-20">ตรวจเเล้ว</h2>
+                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">{countChecked}</a>
                     </div>
                   </div>
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <div className="card lg:w-48 md:w-40 sm:w-32 w-32 h-20 text-white bg-blue-950">
+                  <div className="card lg:w-48 md:w-40 sm:w-32 w-28 h-20 text-white bg-blue-950">
                     <div className="card-body items-center text-center ">
-                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3">พัสดุทั้งหมด</h2>
-                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">1000</a>
+                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-28 md:w-20 sm:w-20 w-20">รอการตรวจ</h2>
+                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">{countNochecked}</a>
                     </div>
                   </div>
                 </div>
@@ -230,7 +282,7 @@ export default function Page() {
                     >
                     <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
                       <img
-                        src="https://minio.saksiam.co.th/public/saktech/logo/12345.png"
+                        src="https://minio.saksiam.co.th/public/saktech/logo/Iconasset2.png"
                         alt=""
                         className="h-full w-full object-cover"
                       />
