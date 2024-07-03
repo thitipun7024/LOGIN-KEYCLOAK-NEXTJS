@@ -128,8 +128,8 @@ function PageContent() {
 
   return (
     <div className="background2">
-    <div className="flex flex-col justify-center items-center min-h-screen">
-      <div className="absolute top-0 left-0 right-0 h-44 bg-blue-950 transform rounded-b-3xl">
+      <div className="flex flex-col justify-center items-center min-h-screen">
+        <div className="absolute top-0 left-0 right-0 lg:h-64 md:h-48 sm:h-48 h-52 bg-blue-950 transform rounded-b-3xl">
         <a className="btn btn-ghost mt-5 ml-3 text-white" href="/home">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -143,10 +143,11 @@ function PageContent() {
             <path d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708z" />
           </svg>
         </a>
-        <div className="flex flex-col justify-center items-center -mt-2">
-          <h2 className="text-white lg:text-4xl text-2xl font-bold mb-4">
-            ระบบตรวจนับพัสดุ
-          </h2>
+        <div className="flex flex-col justify-center items-center mt-1">
+            <img
+                src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
+                className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 lg:-mt-20 md:-mt-16 sm:-mt-16 -mt-16"
+            />
           <label className="input input-bordered flex items-center gap-2 lg:w-1/3 md:w-2/3 sm:w-4/5">
             <input
               type="text"
@@ -171,17 +172,17 @@ function PageContent() {
             </div>
           </label>
 
-          <div className="mt-12"></div>
+          <div className="mt-8"></div>
           <h1 className="mb-8 lg:text-3xl md:text-2xl text-3xl font-bold">
             รายการ
           </h1>
           <div className="container contents">
             {selectedData.map((row) => (
-              <div className="container flex items-center justify-center mb-5" key={row.Asset}>
+              <div className="container flex items-center justify-center mb-2" key={row.Asset}>
                 <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
                   <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/12345.png"
-                    className="lg:h-28 h-20 lg:w-28 w-20 m-4 lg:ml-5 ml-2"
+                    src="https://minio.saksiam.co.th/public/saktech/logo/Iconasset2.png"
+                    className="lg:h-24 h-16 lg:w-24 w-16 m-4 lg:ml-5 ml-2"
                   />
                   <div className="flex flex-col lg:ml-5 ml-0">
                     <h1 className="lg:text-3xl md:text-1xl sm:text-xl font-bold">
@@ -193,24 +194,28 @@ function PageContent() {
                   </div>
                   <div className="flex-grow"></div>
                   <div className="flex lg:mr-10 md:mr-5 mr-4">
-                    <button className="btn ">
+                    
+                    <a 
+                    className="btn"
+                    href="/home/CheckThePackage/DetailAsset"
+                    >
                       <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="30"
-                        height="30"
-                        fill="currentColor"
-                        className="bi bi-chevron-right"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
-                      </svg>
-                    </button>
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="30"
+                          height="30"
+                          fill="currentColor"
+                          className="bi bi-chevron-right"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                        </svg>
+                    </a>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-          <div className="flex justify-center my-4">
+          {/* <div className="flex justify-center my-4">
             <button
               className="btn btn-primary mr-2"
               onClick={handlePreviousPage}
@@ -224,6 +229,23 @@ function PageContent() {
               disabled={startIndex + itemsPerPage >= filterData().length}
             >
               Next
+            </button>
+          </div> */}
+          <div className="join mt-5">
+            <button 
+              className="join-item btn lg:btn-lg md:btn-lg sm:btn-md btn-lg bg-blue-950 text-white"
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1}
+            >
+              «
+            </button>
+            <button className="join-item btn lg:btn-lg md:btn-lg sm:btn-md btn-lg text-blue-950">หน้า {currentPage}</button>
+            <button 
+              className="join-item btn lg:btn-lg md:btn-lg sm:btn-md btn-lg bg-blue-950 text-white"
+              onClick={handleNextPage}
+              disabled={startIndex + itemsPerPage >= filterData().length}
+            >
+              »
             </button>
           </div>
           <div className="h-28"></div>
