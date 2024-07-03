@@ -24,6 +24,7 @@ interface QuaggaState {
   };
   locate: boolean;
   multiple: boolean;
+  frequency?: number; // เพิ่มการตั้งค่านี้
 }
 
 interface BarcodeContextType {
@@ -46,12 +47,13 @@ const BarcodeScanner = () => {
       patchSize: "large",
       halfSample: true,
     },
-    numOfWorkers: 4,
+    numOfWorkers: navigator.hardwareConcurrency || 4,
     decoder: {
       readers: ["codabar_reader"],
     },
     locate: true,
     multiple: true,
+    frequency: 10, // เพิ่มการตั้งค่านี้
   });
 
   const [showResult, setShowResult] = useState<string>("");
@@ -160,70 +162,13 @@ const BarcodeScanner = () => {
       Quagga.start();
     });
 
-    // Quagga.onProcessed((result: any) => {
-    //   const drawingCanvas = Quagga.canvas.dom.overlay;
-    //   const drawingCtx = drawingCanvas.getContext("2d", {
-    //     willReadFrequently: true,
-    //   });
-
-    //   if (result && drawingCtx) {
-    //     if (result.boxes) {
-    //       drawingCtx.clearRect(
-    //         0,
-    //         0,
-    //         parseInt(drawingCanvas.getAttribute("width")!),
-    //         parseInt(drawingCanvas.getAttribute("height")!)
-    //       );
-    //       result.boxes
-    //         .filter((box: any) => box !== result.box)
-    //         .forEach((box: any) => {
-    //           Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, {
-    //             color: "green",
-    //             lineWidth: 2,
-    //           });
-    //         });
-    //     }
-
-    //     if (result.box) {
-    //       Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, {
-    //         color: "#00F",
-    //         lineWidth: 2,
-    //       });
-    //     }
-
-    //     if (result.codeResult && result.codeResult.code) {
-    //       Quagga.ImageDebug.drawPath(
-    //         result.line,
-    //         { x: "x", y: "y" },
-    //         drawingCtx,
-    //         { color: "red", lineWidth: 3 }
-    //       );
-    //     }
-    //   }
-    // });
-
     let lastResult = "";
     Quagga.onDetected((result: any) => {
       const code: string = result.codeResult.code;
       const code2 = code.replace(/A/g, "");
       if (lastResult !== code2 && /^\d{12}$/.test(code2)) {
         setShowResult(code2);
-
         lastResult = code2;
-        // const node = document.createElement("li");
-        // node.innerHTML = `
-        //     <div class="thumbnail">
-        //       <div class="imgWrapper"><img src="${Quagga.canvas.dom.image.toDataURL()}" /></div>
-        //       <div class="caption"><h4 class="code">${code}</h4></div>
-        //     </div>
-        //   `;
-        // const resultStrip = document.getElementById("result_strip");
-        // if (resultStrip) {
-        //   const thumbnails = resultStrip.querySelector("ul.thumbnails");
-        //   if (thumbnails) {
-        //     thumbnails.prepend(node);
-        //   }
-        // }
         Quagga.offProcessed(() => {});
         Quagga.offDetected(() => {});
         Quagga.stop();
@@ -238,32 +183,28 @@ const BarcodeScanner = () => {
 
   if (showResult === "") {
     return (
-      // <div className="container flex flex-col items-center justify-center min-h-screen mx-auto p-4">
-      //   <div className="card w-11/12 max-w-lg items-center">
-      //     <div id="interactive" className="viewport w-full"></div>
-      //   </div>
-      // </div>
       <div className="background2">
         <div className="flex flex-col justify-center items-center min-h-screen">
-          <div className="absolute top-0 left-0 right-0 h-44 bg-blue-950 transform rounded-b-3xl">
-          <a className="btn btn-ghost mt-4 ml-3 text-white" href="/home/CheckThePackage">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30"
-              height="30"
-              fill="currentColor"
-              className="bi bi-chevron-double-left"
-              viewBox="0 0 16 16"
-            >
-              <path d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
-              <path d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
-            </svg>
-          </a>
-            <div className="flex flex-col justify-center items-center -mt-2">
-              <h2 className="text-white lg:text-4xl text-2xl  font-bold mb-4">
-                ระบบตรวจนับพัสดุ
-              </h2>
-              <div className="card bg-clip-border lg:w-2/5 md:w-3/5 w-11/12 p-1 bg-base-100  shadow-xl flex flex-row items-center justify-center h-32">
+          <div className="absolute top-0 left-0 right-0 lg:h-56 md:h-48 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
+            <a className="btn btn-ghost mt-5 ml-3 text-white" href="/home">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="30"
+                height="30"
+                fill="currentColor"
+                className="bi bi-chevron-double-left"
+                viewBox="0 0 16 16"
+              >
+                <path d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+                <path d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708z" />
+              </svg>
+            </a>
+            <div className="flex flex-col justify-center items-center mt-1">
+              <img
+                src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
+                className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 lg:-mt-20 md:-mt-16 sm:-mt-16 -mt-16"
+              />
+              <div className="card bg-clip-border lg:w-2/5 md:w-3/5 w-11/12 p-1 bg-base-100 shadow-xl flex flex-row items-center justify-center h-20">
                 <h2 className="text-4xl font-bold">SCAN BARCODE</h2>
               </div>
               <div className="container flex flex-col items-center justify-center min-h-screen mx-auto p-4">
