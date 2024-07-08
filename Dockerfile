@@ -15,8 +15,8 @@ RUN yarn --frozen-lockfile
 # RUN yarn global add prisma
 
 # Generate Prisma Client
-# COPY prisma ./prisma
-# RUN yarn prisma generate
+COPY prisma ./prisma
+RUN yarn prisma generate
 # 2. Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
