@@ -316,7 +316,7 @@ export default function Page() {
               </div>
             </div>
 
-            <footer className="footer footer-center p-4 text-base-content mt-80">
+            <footer className="footer footer-center p-4 text-base-content mt-32">
               <aside>
                 <p>Copyright © 2024</p>
               </aside>
