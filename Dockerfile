@@ -12,7 +12,7 @@ COPY package.json yarn.lock* ./
 RUN yarn --frozen-lockfile
 
 # Install Prisma CLI globally
-# RUN yarn global add prisma
+RUN yarn global add prisma
 
 # Generate Prisma Client
 COPY prisma ./prisma
