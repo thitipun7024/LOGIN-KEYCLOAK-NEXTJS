@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
+import { Asset } from "next/font/google";
 
 function PageContent() {
   const { data: session, status } = useSession();
@@ -15,8 +16,11 @@ function PageContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [countNochecked, setCountNoChecked] = useState(null);
+  const [resultGroupBranchNo, setResultGroupBranch] = useState(null)
   const [count, setCount] = useState([]);
   const itemsPerPage = 10;
+
+  //console.log(resultGroupBranchNo)
 
   const handlePreviousPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
@@ -42,6 +46,7 @@ function PageContent() {
       const resultGroupBranch = findGroupBranch
         ? findGroupBranch.split("/").pop()
         : "primary";
+        setResultGroupBranch(resultGroupBranch);
 
       const findGroupBaD_TH = decoded.groups.find((group) => {
         return group.includes("/group/SAK BRANCH_TH/") || group.includes("/group/SAK DEPARTMENT-TH/");
@@ -139,7 +144,14 @@ function PageContent() {
           fetchDataCount();
           //Function
     }
-  }, [session, sakHQ]);
+  }, [session, sakHQ, resultGroupBranchNo]);
+
+    //Function 
+    const ClickDetailAsset = async (row) => { 
+      sessionStorage.setItem('NoAsset', row.Asset);
+      window.location.href = `/home/CheckThePackage/DetailAsset`;
+    };
+    //Function
 
   useEffect(() => {
     setCurrentPage(1); // Reset to first page on search change
@@ -250,7 +262,8 @@ function PageContent() {
                   <div className="flex lg:mr-10 md:mr-5 mr-4">
                     <a 
                       className="btn"
-                      href="/home/CheckThePackage/DetailAsset"
+                      // href="/home/CheckThePackage/DetailAsset&NoAsset"
+                      onClick={() => ClickDetailAsset(row)}
                     >
                       <svg
                           xmlns="http://www.w3.org/2000/svg"
