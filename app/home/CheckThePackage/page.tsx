@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
-import { Asset } from "next/font/google";
 
 function PageContent() {
   const { data: session, status } = useSession();
