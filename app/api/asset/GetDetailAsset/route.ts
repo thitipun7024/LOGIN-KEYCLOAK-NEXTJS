@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
         });
 
         if (getBranchCode.length === 0) { 
-            return NextResponse.json({ message: "ไม่มีข้อมูล" }, { status: 200 });
+            return NextResponse.json({ message: "ไม่มีข้อมูลAsset" }, { status: 200 });
         } else {
             return NextResponse.json(getBranchCode);
         }
