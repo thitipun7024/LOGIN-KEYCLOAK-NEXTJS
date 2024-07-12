@@ -242,7 +242,7 @@ function PageContent() {
             </h1>
           </div>
           <div className="container contents">
-            {selectedData.map((row) => (
+            {selectedData ? selectedData.map((row) => (
               <div className="container flex items-center justify-center mb-2" key={row.Asset}>
                 <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
                   <img
@@ -278,7 +278,10 @@ function PageContent() {
                   </div>
                 </div>
               </div>
-            ))}
+            )) : <div className="flex items-center justify-center h-screen">
+                    <span className="loading loading-dots loading-lg text-blue-950"></span>
+                  </div>
+            }
           </div>
           <div className="join mt-5">
             <button 
