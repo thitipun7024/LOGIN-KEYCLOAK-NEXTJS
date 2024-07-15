@@ -150,7 +150,6 @@ export default function Page() {
   };
 
   fetchDataCountNochecked();
-
   //Function
 
   //Function
