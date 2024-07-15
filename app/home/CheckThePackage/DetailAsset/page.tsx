@@ -17,7 +17,7 @@ export default function Page() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [statusselect, setStatusSlect] = useState("รอตรวจนับ");
   const [textareaValue, setTextareaValue] = useState('');
-
+  const [dataBranchCode, setDataBranchCode] = useState([]);
   useEffect(() => {
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
     if (dataDetailAsset) {
@@ -116,6 +116,8 @@ export default function Page() {
           // Ensure dataDetailAsset is an array
           if (Array.isArray(dataDetailAsset)) {
             setDataAsset(dataDetailAsset);
+            fetchDataDetailBranchCode(dataDetailAsset);
+
           } else {
             setDataAsset([]);
             //console.warn("Fetched data is not an array:", dataDetailAsset);
@@ -124,7 +126,33 @@ export default function Page() {
           console.error("Error fetching detail asset:", error);
         }
       };
-
+      const fetchDataDetailBranchCode = async (dataDetailAsset) => {
+        try {
+          const responseDetailAsset = await fetch(
+            `/api/asset/GetBranchCode?BranchCode=${dataDetailAsset.map((data) => (data.Cost_Ctr))}`,
+            {
+              method: "GET",
+              headers: {
+                "Cache-Control": "no-cache",
+                Pragma: "no-cache",
+              },
+            }
+          );
+    
+          const dataBranchCode = await responseDetailAsset.json();
+          console.log(dataBranchCode)
+    
+          // Ensure dataDetailAsset is an array
+          if (Array.isArray(dataBranchCode)) {
+            setDataBranchCode(dataBranchCode);
+          } else {
+            setDataBranchCode([]);
+            //console.warn("Fetched data is not an array:", dataDetailAsset);
+          }
+        } catch (error) {
+          console.error("Error fetching detail asset:", error);
+        }
+      };
       fetchDataDetailAsset();
     }
   }, [session, noAsset, resultGroupBranch]);
@@ -238,7 +266,8 @@ export default function Page() {
                             <h2 className="font-bold text-white mb-1">
                               สังกัด
                             </h2>
-                            {data ? data.Cost_Ctr : "Loading..."}
+                            {dataBranchCode.map((item,index)=> item ? item.Name : "Loading..." )}
+                            {/* {data ? data.Cost_Ctr : "Loading..."} */}
                           </div>
 
                           <div className="flex flex-col items-center">
