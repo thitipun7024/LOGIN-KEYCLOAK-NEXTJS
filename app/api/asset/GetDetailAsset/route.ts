@@ -3,25 +3,13 @@ import { type NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
-    const BranchCodeSearch = searchParams.get("resultGroupBranch")
-    const SakHQCodeSearch = searchParams.get("SakHQ")
     const NoAsset = searchParams.get("NoAsset")
     const Status = "16";
-
-    if (!BranchCodeSearch && !SakHQCodeSearch) {
-        return NextResponse.json({ message: "ไม่มีข้อมูล" }, { status: 200 });
-    }
 
     try {
         const getBranchCode = await prisma.no_Asset.findMany({
             where: {
                 AND: [
-                    {
-                        OR: [
-                            BranchCodeSearch ? { Cost_Ctr: BranchCodeSearch } : undefined,
-                            SakHQCodeSearch ? { Cost_Ctr: SakHQCodeSearch } : undefined,
-                        ].filter(Boolean)
-                    },
                     { Status: Status },
                     { Asset: NoAsset }
                 ]
