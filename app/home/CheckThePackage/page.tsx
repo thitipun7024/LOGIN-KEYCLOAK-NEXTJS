@@ -204,7 +204,7 @@ function PageContent() {
         <div className="flex flex-col justify-center items-center mt-1">
           <img
             src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
-            className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 lg:-mt-20 md:-mt-16 sm:-mt-16 -mt-16"
+            className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 lg:-mt-20 md:-mt-10 sm:-mt-16 -mt-16"
           />
           <label className="input input-bordered flex items-center gap-2 lg:w-1/3 md:w-2/3 sm:w-4/5 w-4/5">
             <input
@@ -232,18 +232,18 @@ function PageContent() {
 
   
           <div className="mt-8"></div>
-          <h1 className="mb-5 lg:text-3xl md:text-2xl sm:text-2xl text-3xl font-bold">
+          <h1 className="mb-5 mt-5 lg:text-4xl md:text-3xl sm:text-2xl text-3xl font-bold">
             รายการ
           </h1>
   
-          <div className="justify-end items-end text-right lg:w-7/12 md:w-10/12 sm:w-10/12 w-10/12">
-            <h1 className=" mb-1 lg:text-xl md:text-2xl sm:text-2xl text-lg">
-              {countNochecked} / {count}
+          <div className="justify-end items-end text-right lg:w-7/12 md:w-8/12 sm:w-10/12 w-10/12">
+            <h1 className=" mb-2 lg:text-xl md:text-xl sm:text-2xl text-lg">
+              {countNochecked ? countNochecked : <span className="loading loading-dots loading-md"></span>} / {count ? count : <span className="loading loading-dots loading-md"></span>}
             </h1>
           </div>
           <div className="container contents">
             {selectedData ? selectedData.map((row) => (
-              <div className="container flex items-center justify-center mb-2" key={row.Asset}>
+              <div className="container flex items-center justify-center mb-3" key={row.Asset}>
                 <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
                   <img
                     src="https://minio.saksiam.co.th/public/saktech/logo/Iconasset2.png"
