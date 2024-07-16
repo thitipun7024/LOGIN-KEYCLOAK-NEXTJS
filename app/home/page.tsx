@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Logout from "@/components/Logout";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
@@ -44,7 +44,6 @@ export default function Page() {
   );
   //ดึงข้อมูลที่เป็น ข้อมูลฝ่าย หรือ ข้อมูล Branch
 
-
   //ดึงข้อมูลที่เป็นข้อมูลตำเเหน่งของพนักงาน
   const findGroupPosition = decoded.groups.find((group) => {
     return group.includes("/group/SAK POSITION_TH/");
@@ -56,19 +55,21 @@ export default function Page() {
   );
   //ดึงข้อมูลที่เป็นข้อมูลตำเเหน่งของพนักงาน
 
-
   //ดึงข้อมูลที่เป็นข้อมูลชื่อสาขา/หน่วย เเละ ฝ่ายภาษาไทย
   const findGroupBaD_TH = decoded.groups.find((group) => {
-    return group.includes("/group/SAK BRANCH_TH/") || group.includes("/group/SAK DEPARTMENT-TH/");
+    return (
+      group.includes("/group/SAK BRANCH_TH/") ||
+      group.includes("/group/SAK DEPARTMENT-TH/")
+    );
   });
   const resultGroupBaD_TH = findGroupBaD_TH ? (
     findGroupBaD_TH.split("/").pop()
   ) : (
-    <div className="badge badge-sm badge-error badge-outline">ไม่มีข้อมุลชื่อสาขา/หน่วย</div>
+    <div className="badge badge-error badge-outline">พี่เคนไม่เพิ่มให้</div>
   );
   //ดึงข้อมูลที่เป็นข้อมูลชื่อสาขา/หน่วย เเละ ฝ่ายภาษาไทย
 
-  //Function 
+  //Function
   const ClickParamGroup = () => {
     if (session) {
       const fetchData = async () => {
@@ -100,14 +101,17 @@ export default function Page() {
   //Function
   const fetchDataCount = async () => {
     try {
-      const response = await fetch(`/api/asset/CountDataAsset?resultGroupBranch=${resultGroupBranch}&SakHQ=${sakHQ}`, {
-        method: "GET",
-        redirect: "follow",
-        headers: {
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-        },
-      });
+      const response = await fetch(
+        `/api/asset/CountDataAsset?resultGroupBranch=${resultGroupBranch}&SakHQ=${sakHQ}`,
+        {
+          method: "GET",
+          redirect: "follow",
+          headers: {
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+          },
+        }
+      );
       const { count } = await response.json();
       //console.log(count);
       setCount(count);
@@ -121,38 +125,55 @@ export default function Page() {
   //Function
   const fetchDataCountNochecked = async () => {
     try {
-      const responseNoasset = await fetch(`/api/asset/CountDataStatusNoCheck?resultGroupBranch=${resultGroupBranch}&SakHQ=${sakHQ}`, {
-        method: "GET",
-        redirect: "follow",
-        headers: {
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-        },
-      });
+      const responseNoasset = await fetch(
+        `/api/asset/CountDataStatusNoCheck?resultGroupBranch=${resultGroupBranch}&SakHQ=${sakHQ}`,
+        {
+          method: "GET",
+          redirect: "follow",
+          headers: {
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+          },
+        }
+      );
+
       const { countAssetNoChecked } = await responseNoasset.json();
-      //console.log(countAssetNoChecked);
-      setCountNoChecked(countAssetNoChecked);
+
+      if (countAssetNoChecked === undefined || countAssetNoChecked === null) {
+        setCountNoChecked(0);
+      } else {
+        setCountNoChecked(countAssetNoChecked);
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
   fetchDataCountNochecked();
   //Function
 
   //Function
   const fetchDataCountChecked = async () => {
     try {
-      const responseChecked = await fetch(`/api/asset/CountDataAssetChecked?resultGroupBranch=${resultGroupBranch}&SakHQ=${sakHQ}`, {
-        method: "GET",
-        redirect: "follow",
-        headers: {
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-        },
-      });
+      const responseChecked = await fetch(
+        `/api/asset/CountDataAssetChecked?resultGroupBranch=${resultGroupBranch}&SakHQ=${sakHQ}`,
+        {
+          method: "GET",
+          redirect: "follow",
+          headers: {
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+          },
+        }
+      );
       const { countAssetChecked } = await responseChecked.json();
       //console.log(countAssetChecked);
-      setCountChecked(countAssetChecked);
+
+      if (countAssetChecked === undefined || countAssetChecked === null) {
+        setCountChecked(0);
+      } else {
+        setCountChecked(countAssetChecked);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -163,21 +184,24 @@ export default function Page() {
   //Function
   const fetchDataSakHQ = async () => {
     try {
-      const responseSakHQ = await fetch(`/api/asset/GetNoSakHQ?SakHQ=${resultGroupBaD_TH}`, {
-        method: "GET",
-        redirect: "follow",
-        headers: {
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-        },
-      });
-  
+      const responseSakHQ = await fetch(
+        `/api/asset/GetNoSakHQ?SakHQ=${resultGroupBaD_TH}`,
+        {
+          method: "GET",
+          redirect: "follow",
+          headers: {
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+          },
+        }
+      );
+
       if (!responseSakHQ.ok) {
         throw new Error(`HTTP error! Status: ${responseSakHQ.status}`);
       }
-  
+
       const SakHQJson = await responseSakHQ.json();
-  
+
       if (SakHQJson && SakHQJson.CostCenter) {
         const costCenter = SakHQJson.CostCenter;
         setSakHQ(costCenter);
@@ -191,15 +215,14 @@ export default function Page() {
   fetchDataSakHQ();
   //Function
 
-
   return (
     <div className="background2">
       <div className="flex flex-col justify-center items-center min-h-screen">
         <div className="absolute top-0 left-0 right-0 lg:h-64 md:h-48 sm:h-48 h-48 bg-blue-950 transform rounded-b-3xl">
           <div className="flex flex-col justify-center items-center mt-16">
             <img
-                src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
-                className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 lg:-mt-20 md:-mt-16 sm:-mt-16 -mt-16"
+              src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
+              className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 lg:-mt-20 md:-mt-16 sm:-mt-16 -mt-16"
             />
             <div className="card bg-clip-border lg:w-2/5 md:w-3/5 w-11/12 p-1 bg-base-100  shadow-xl flex flex-row items-center justify-center">
               <img
@@ -246,8 +269,13 @@ export default function Page() {
                 <div className="flex flex-col items-center">
                   <div className="card lg:w-48 md:w-40 sm:w-28 w-28 h-20 text-white bg-blue-950">
                     <div className="card-body items-center text-center ">
-                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-28 md:w-20 sm:w-20 w-20">พัสดุทั้งหมด</h2>
-                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">{count}</a>
+                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-28 md:w-20 sm:w-20 w-20">
+                        พัสดุทั้งหมด
+                      </h2>
+                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">
+                        {/* {count ? count : <span className="loading loading-dots loading-md"></span>} */}
+                        {count}
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -255,8 +283,13 @@ export default function Page() {
                 <div className="flex flex-col items-center">
                   <div className="card lg:w-48 md:w-40 sm:w-32 w-28 h-20 text-white bg-blue-950">
                     <div className="card-body items-center text-center ">
-                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-28 md:w-20 sm:w-20 w-20">ตรวจเเล้ว</h2>
-                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">{countChecked}</a>
+                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-28 md:w-20 sm:w-20 w-20">
+                        ตรวจเเล้ว
+                      </h2>
+                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">
+                        {/* {countChecked ? countChecked : <span className="loading loading-dots loading-md"></span>} */}
+                        {countChecked}
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -264,22 +297,23 @@ export default function Page() {
                 <div className="flex flex-col items-center">
                   <div className="card lg:w-48 md:w-40 sm:w-32 w-28 h-20 text-white bg-blue-950">
                     <div className="card-body items-center text-center ">
-                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-28 md:w-20 sm:w-20 w-20">รอการตรวจ</h2>
-                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">{countNochecked}</a>
+                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-28 md:w-20 sm:w-20 w-20">
+                        รอการตรวจ
+                      </h2>
+                      <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">
+                        {/* {countNochecked ? countNochecked : <span className="loading loading-dots loading-md"></span>} */}
+                        {countNochecked}
+                      </a>
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
 
             <div className="container contents">
               <div className="grid lg:gap-x-20 md:gap-x-20 gap-x-3 gap-y-4 lg:grid-cols-5 md:grid-cols-4 grid-cols-3 mt-10 justify-center">
                 <div className="flex flex-col items-center">
-                  <a 
-                    href="/home/CheckThePackage"
-                    onClick={ClickParamGroup}
-                    >
+                  <a href="/home/CheckThePackage" onClick={ClickParamGroup}>
                     <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
                       <img
                         src="https://minio.saksiam.co.th/public/saktech/logo/Iconasset2.png"
@@ -312,7 +346,6 @@ export default function Page() {
                   </button>
                   <span className="mt-2 text-center">ข้อความที่ต้องการ</span>
                 </div>
-
               </div>
             </div>
 

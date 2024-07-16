@@ -3,21 +3,20 @@ import { type NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
-    const NoAsset = searchParams.get("NoAsset")
-    const Status = "16";
+    const BranchCode = searchParams.get("BranchCode")
+
+    if (!BranchCode) {
+        return NextResponse.json({ message: "ไม่มีเลขสาขา" }, { status: 200 });
+    }
 
     try {
-        const getBranchCode = await prisma.no_Asset.findMany({
+        const getBranchCode = await prisma.asset_Branch_Code.findMany({
             where: {
-                AND: [
-                    { Status: Status },
-                    { Asset: NoAsset }
-                ]
+                CostCenter: BranchCode
             }
         });
-
         if (getBranchCode.length === 0) { 
-            return NextResponse.json({ message: "ไม่มีข้อมูลAsset" }, { status: 200 });
+            return NextResponse.json({ message: "ไม่มีข้อมูล" }, { status: 200 });
         } else {
             return NextResponse.json(getBranchCode);
         }

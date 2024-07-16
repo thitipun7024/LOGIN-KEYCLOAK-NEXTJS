@@ -61,7 +61,8 @@ const BarcodeScanner = () => {
 
   useEffect(() => {
     if (showResult !== "") {
-      window.location.href = `/home/CheckThePackage?asset=${showResult}`;
+      sessionStorage.setItem('NoAsset', showResult);
+      window.location.href = `/home/CheckThePackage/DetailAsset`;
     }
   }, [showResult]);
 
@@ -159,47 +160,26 @@ const BarcodeScanner = () => {
       Quagga.start();
     });
 
-    // Quagga.onProcessed((result: any) => {
-    //   const drawingCanvas = Quagga.canvas.dom.overlay;
-    //   const drawingCtx = drawingCanvas.getContext("2d", {
-    //     willReadFrequently: true,
-    //   });
-
-    //   if (result && drawingCtx) {
-    //     if (result.boxes) {
-    //       drawingCtx.clearRect(
-    //         0,
-    //         0,
-    //         parseInt(drawingCanvas.getAttribute("width")!),
-    //         parseInt(drawingCanvas.getAttribute("height")!)
-    //       );
-    //       result.boxes
-    //         .filter((box: any) => box !== result.box)
-    //         .forEach((box: any) => {
-    //           Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, {
-    //             color: "green",
-    //             lineWidth: 2,
-    //           });
-    //         });
-    //     }
-
-    //     if (result.box) {
-    //       Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, {
-    //         color: "#00F",
-    //         lineWidth: 2,
-    //       });
-    //     }
-
-    //     if (result.codeResult && result.codeResult.code) {
-    //       Quagga.ImageDebug.drawPath(
-    //         result.line,
-    //         { x: "x", y: "y" },
-    //         drawingCtx,
-    //         { color: "red", lineWidth: 3 }
-    //       );
-    //     }
-    //   }
-    // });
+    Quagga.onProcessed((result: any) => {
+      const drawingCanvas = Quagga.canvas.dom.overlay;
+      const drawingCtx = drawingCanvas.getContext("2d", {
+        willReadFrequently: true,
+      });
+      const canvasWidth = parseInt(drawingCanvas.getAttribute("width")!);
+      const canvasHeight = parseInt(drawingCanvas.getAttribute("height")!);
+      drawingCtx.clearRect(0, 0, canvasWidth, canvasHeight);
+      // Calculate middle of the canvas
+      const middleX = canvasWidth / 2.2;
+      const middleY = canvasHeight / 2.2;
+      // Draw horizontal line in the middle
+      drawingCtx.beginPath();
+      drawingCtx.moveTo(0, middleY);
+      drawingCtx.lineTo(canvasWidth, middleY);
+      drawingCtx.strokeStyle = "red";
+      drawingCtx.lineWidth =3;
+      drawingCtx.stroke();
+      drawingCtx.closePath();
+    });
 
     let lastResult = "";
     Quagga.onDetected((result: any) => {
@@ -209,20 +189,6 @@ const BarcodeScanner = () => {
         setShowResult(code2);
 
         lastResult = code2;
-        // const node = document.createElement("li");
-        // node.innerHTML = `
-        //     <div class="thumbnail">
-        //       <div class="imgWrapper"><img src="${Quagga.canvas.dom.image.toDataURL()}" /></div>
-        //       <div class="caption"><h4 class="code">${code}</h4></div>
-        //     </div>
-        //   `;
-        // const resultStrip = document.getElementById("result_strip");
-        // if (resultStrip) {
-        //   const thumbnails = resultStrip.querySelector("ul.thumbnails");
-        //   if (thumbnails) {
-        //     thumbnails.prepend(node);
-        //   }
-        // }
         Quagga.offProcessed(() => {});
         Quagga.offDetected(() => {});
         Quagga.stop();
@@ -237,11 +203,6 @@ const BarcodeScanner = () => {
 
   if (showResult === "") {
     return (
-      // <div className="container flex flex-col items-center justify-center min-h-screen mx-auto p-4">
-      //   <div className="card w-11/12 max-w-lg items-center">
-      //     <div id="interactive" className="viewport w-full"></div>
-      //   </div>
-      // </div>
       <div className="background2">
         <div className="flex flex-col justify-center items-center min-h-screen">
           <div className="absolute top-0 left-0 right-0 h-44 bg-blue-950 transform rounded-b-3xl">
@@ -265,11 +226,9 @@ const BarcodeScanner = () => {
               <div className="card bg-clip-border lg:w-2/5 md:w-3/5 w-11/12 p-1 bg-base-100  shadow-xl flex flex-row items-center justify-center h-32">
                 <h2 className="text-4xl font-bold">SCAN BARCODE</h2>
               </div>
-              <div className="container flex flex-col items-center justify-center min-h-screen mx-auto p-4">
-                <div className="card w-11/12 max-w-lg items-center">
+                <div className="card w-10/12 max-w-lg items-center mt-5">
                   <div id="interactive" className="viewport w-full"></div>
                 </div>
-              </div>
               <footer className="footer footer-center p-4 text-base-content">
                 <aside>
                   <p>Copyright © 2024</p>

@@ -15,8 +15,11 @@ function PageContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [countNochecked, setCountNoChecked] = useState(null);
+  const [resultGroupBranchNo, setResultGroupBranch] = useState(null)
   const [count, setCount] = useState([]);
   const itemsPerPage = 10;
+
+  //console.log(resultGroupBranchNo)
 
   const handlePreviousPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
@@ -42,6 +45,7 @@ function PageContent() {
       const resultGroupBranch = findGroupBranch
         ? findGroupBranch.split("/").pop()
         : "primary";
+        setResultGroupBranch(resultGroupBranch);
 
       const findGroupBaD_TH = decoded.groups.find((group) => {
         return group.includes("/group/SAK BRANCH_TH/") || group.includes("/group/SAK DEPARTMENT-TH/");
@@ -139,7 +143,14 @@ function PageContent() {
           fetchDataCount();
           //Function
     }
-  }, [session, sakHQ]);
+  }, [session, sakHQ, resultGroupBranchNo]);
+
+    //Function 
+    const ClickDetailAsset = async (row) => { 
+      sessionStorage.setItem('NoAsset', row.Asset);
+      window.location.href = `/home/CheckThePackage/DetailAsset`;
+    };
+    //Function
 
   useEffect(() => {
     setCurrentPage(1); // Reset to first page on search change
@@ -193,7 +204,7 @@ function PageContent() {
         <div className="flex flex-col justify-center items-center mt-1">
           <img
             src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
-            className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 lg:-mt-20 md:-mt-16 sm:-mt-16 -mt-16"
+            className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 lg:-mt-20 md:-mt-10 sm:-mt-16 -mt-16"
           />
           <label className="input input-bordered flex items-center gap-2 lg:w-1/3 md:w-2/3 sm:w-4/5 w-4/5">
             <input
@@ -221,18 +232,18 @@ function PageContent() {
 
   
           <div className="mt-8"></div>
-          <h1 className="mb-5 lg:text-3xl md:text-2xl sm:text-2xl text-3xl font-bold">
+          <h1 className="mb-5 mt-5 lg:text-4xl md:text-3xl sm:text-2xl text-3xl font-bold">
             รายการ
           </h1>
   
-          <div className="justify-end items-end text-right lg:w-7/12 md:w-10/12 sm:w-10/12 w-10/12">
-            <h1 className=" mb-1 lg:text-xl md:text-2xl sm:text-2xl text-lg">
-              {countNochecked} / {count}
+          <div className="justify-end items-end text-right lg:w-7/12 md:w-8/12 sm:w-10/12 w-10/12">
+            <h1 className=" mb-2 lg:text-xl md:text-xl sm:text-2xl text-lg">
+              {countNochecked ? countNochecked : <span className="loading loading-dots loading-md"></span>} / {count ? count : <span className="loading loading-dots loading-md"></span>}
             </h1>
           </div>
           <div className="container contents">
-            {selectedData.map((row) => (
-              <div className="container flex items-center justify-center mb-2" key={row.Asset}>
+            {selectedData ? selectedData.map((row) => (
+              <div className="container flex items-center justify-center mb-3" key={row.Asset}>
                 <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
                   <img
                     src="https://minio.saksiam.co.th/public/saktech/logo/Iconasset2.png"
@@ -250,7 +261,8 @@ function PageContent() {
                   <div className="flex lg:mr-10 md:mr-5 mr-4">
                     <a 
                       className="btn"
-                      href="/home/CheckThePackage/DetailAsset"
+                      // href="/home/CheckThePackage/DetailAsset&NoAsset"
+                      onClick={() => ClickDetailAsset(row)}
                     >
                       <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -266,7 +278,10 @@ function PageContent() {
                   </div>
                 </div>
               </div>
-            ))}
+            )) : <div className="flex items-center justify-center h-screen">
+                    <span className="loading loading-dots loading-lg text-blue-950"></span>
+                  </div>
+            }
           </div>
           <div className="join mt-5">
             <button 

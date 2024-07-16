@@ -11,6 +11,9 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "@mui/material": "^5.15.19",
     "@prisma/client": "^5.15.0",
     "jwt-decode": "^4.0.0",
