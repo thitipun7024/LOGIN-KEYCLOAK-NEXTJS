@@ -67,3 +67,11 @@ model No_Asset {
 
   @@map("no_asset")
 }
+
+model Asset_Branch_Code {
+  CostCenter String @id @unique
+  Name       String? 
+
+  @@map("Asset_Branch_Code")
+}
+
