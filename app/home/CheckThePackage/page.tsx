@@ -247,7 +247,7 @@ function PageContent() {
                 <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
                   <img
                     src="https://minio.saksiam.co.th/public/saktech/logo/Iconasset2.png"
-                    className="lg:h-24 h-16 lg:w-24 w-16 m-4 lg:ml-5 ml-2"
+                    className="lg:h-24 h-16 lg:w-24 w-16 m-4 lg:ml-5 ml-4"
                   />
                   <div className="flex flex-col lg:ml-5 ml-0">
                     <h1 className="lg:text-3xl md:text-1xl sm:text-xl font-bold">
