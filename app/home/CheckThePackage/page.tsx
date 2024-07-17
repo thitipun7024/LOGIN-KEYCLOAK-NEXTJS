@@ -187,7 +187,7 @@ function PageContent() {
   return (
     <div className="background2">
     <div className="flex flex-col justify-center items-center min-h-screen">
-      <div className="absolute top-0 left-0 right-0 lg:h-64 md:h-48 sm:h-48 h-48 bg-blue-950 transform rounded-b-3xl">
+      <div className="absolute top-0 left-0 right-0 lg:h-64 md:h-56 sm:h-48 h-52 bg-blue-950 transform rounded-b-3xl">
         <a className="btn btn-ghost mt-5 ml-1 text-white" href="/home">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -202,10 +202,12 @@ function PageContent() {
           </svg>
         </a>
         <div className="flex flex-col justify-center items-center mt-1">
-          <img
-            src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
-            className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 lg:-mt-20 md:-mt-10 sm:-mt-16 -mt-16"
-          />
+        <a href="/home">
+                  <img
+                    src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
+                    className="lg:h-48 md:h-36 sm:h-24 h-32 lg:w-48 md:w-36 sm:w-24 w-32 lg:-mt-20 md:-mt-16 sm:-mt-16 -mt-16"
+                  />
+                </a>
           <label className="input input-bordered flex items-center gap-2 lg:w-1/3 md:w-2/3 sm:w-4/5 w-4/5">
             <input
               type="text"
@@ -232,12 +234,12 @@ function PageContent() {
 
   
           <div className="mt-8"></div>
-          <h1 className="mb-5 mt-5 lg:text-4xl md:text-3xl sm:text-2xl text-3xl font-bold">
+          <h1 className="mb-5 mt-2 lg:text-4xl md:text-3xl sm:text-2xl text-3xl font-bold">
             รายการ
           </h1>
   
           <div className="justify-end items-end text-right lg:w-7/12 md:w-8/12 sm:w-10/12 w-10/12">
-            <h1 className=" mb-2 lg:text-xl md:text-xl sm:text-2xl text-lg">
+            <h1 className=" mb-2 lg:text-xl md:text-base sm:text-2xl text-sm font-bold">
               {countNochecked ? countNochecked : <span className="loading loading-dots loading-md"></span>} / {count ? count : <span className="loading loading-dots loading-md"></span>}
             </h1>
           </div>
@@ -247,13 +249,13 @@ function PageContent() {
                 <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
                   <img
                     src="https://minio.saksiam.co.th/public/saktech/logo/Iconasset2.png"
-                    className="lg:h-24 h-16 lg:w-24 w-16 m-4 lg:ml-5 ml-2"
+                    className="lg:h-24 h-16 lg:w-24 w-16 m-4 lg:ml-5 ml-4"
                   />
                   <div className="flex flex-col lg:ml-5 ml-0">
-                    <h1 className="lg:text-3xl md:text-1xl sm:text-xl font-bold">
+                    <h1 className="lg:text-3xl md:text-1xl sm:text-xl text-xl font-bold text-white">
                       {row.Asset_description}
                     </h1>
-                    <h2 className="lg:text-lg md:text-lg text-sm mb-1">
+                    <h2 className="lg:text-lg md:text-lg sm:text-xl text-sm mb-1 text-white">
                       {row.Asset}
                     </h2>
                   </div>

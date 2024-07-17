@@ -45,6 +45,28 @@ body {
   }
 }
 
+.pulse {
+  animation: pulse 3s infinite;
+}
+
+@keyframes pulse {
+  0% {
+      transform: scale(1);
+  }
+  50% {
+      transform: scale(1.05);
+  }
+  100% {
+      transform: scale(1);
+  }
+}
+
+.client-success-page html, .client-success-page body {
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+}
+
 .background::before {
   content: "";
   background-image: url('https://minio.saksiam.co.th/public/saktech/logo/260439-P4TBBB-678-ai.png');

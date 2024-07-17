@@ -218,13 +218,13 @@ export default function Page() {
   return (
     <div className="background2">
       <div className="flex flex-col justify-center items-center min-h-screen">
-        <div className="absolute top-0 left-0 right-0 lg:h-64 md:h-48 sm:h-48 h-48 bg-blue-950 transform rounded-b-3xl">
+        <div className="absolute top-0 left-0 right-0 lg:h-64 md:h-56 sm:h-48 h-48 bg-blue-950 transform rounded-b-3xl">
           <div className="flex flex-col justify-center items-center mt-16">
             <img
               src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
-              className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 lg:-mt-20 md:-mt-16 sm:-mt-16 -mt-16"
+              className="lg:h-48 md:h-36 sm:h-24 h-32 lg:w-48 md:w-36 sm:w-24 w-32 lg:-mt-20 md:-mt-16 sm:-mt-16 -mt-16"
             />
-            <div className="card bg-clip-border lg:w-2/5 md:w-3/5 w-11/12 p-1 bg-base-100  shadow-xl flex flex-row items-center justify-center">
+            <div className="card bg-clip-border w-auto lg:pl-10 md:pl-4 sm:pl-0 pl-2 lg:pr-10 md:pr-4 sm:pr-0 pr-2 lg:pt-2 md:pt-4 sm:pt-0 pt-1 lg:pb-2 md:pb-4 sm:pb-0 pb-1 bg-base-100 shadow-xl flex flex-row items-center justify-center">
               <img
                 src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
                 className="lg:h-32 h-20 lg:w-32 w-20 m-4 lg:-ml-1 ml-2"
@@ -233,7 +233,7 @@ export default function Page() {
                 <h2 className="lg:text-2xl md:text-1xl text-xl font-bold ">
                   {decoded.displayName}
                 </h2>
-                <h2 className="lg:text-lg md:text-lg text-sm mb-1">
+                <h2 className="lg:text-lg md:text-lg lg:w-60 md:w-60 sm:w-full w-full text-sm break-words whitespace-normal">
                   {resultGroupPosition}
                 </h2>
                 <h2 className="lg:text-lg md:text-lg text-sm">
@@ -265,11 +265,11 @@ export default function Page() {
             </div>
 
             <div className="container contents">
-              <div className="grid lg:gap-x-20 md:gap-x-10 sm:gap-x-1 gap-x-2 gap-y-4 lg:grid-cols-3 md:grid-cols-3 grid-cols-3 mt-5 justify-center">
+              <div className="grid lg:gap-x-20 md:gap-x-10 sm:gap-x-1 gap-x-2 gap-y-4 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-3 grid-cols-3  mt-5 justify-center">
                 <div className="flex flex-col items-center">
                   <div className="card lg:w-48 md:w-40 sm:w-28 w-28 h-20 text-white bg-blue-950">
                     <div className="card-body items-center text-center ">
-                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-28 md:w-20 sm:w-20 w-20">
+                      <h2 className="lg:text-lg md:text-lg sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-28 md:w-24 sm:w-20 w-20">
                         พัสดุทั้งหมด
                       </h2>
                       <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">
@@ -283,7 +283,7 @@ export default function Page() {
                 <div className="flex flex-col items-center">
                   <div className="card lg:w-48 md:w-40 sm:w-32 w-28 h-20 text-white bg-blue-950">
                     <div className="card-body items-center text-center ">
-                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-28 md:w-20 sm:w-20 w-20">
+                    <h2 className="lg:text-lg md:text-lg sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-28 md:w-24 sm:w-20 w-20">
                         ตรวจเเล้ว
                       </h2>
                       <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">
@@ -297,7 +297,7 @@ export default function Page() {
                 <div className="flex flex-col items-center">
                   <div className="card lg:w-48 md:w-40 sm:w-32 w-28 h-20 text-white bg-blue-950">
                     <div className="card-body items-center text-center ">
-                      <h2 className="lg:text-lg md:text-md sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-28 md:w-20 sm:w-20 w-20">
+                    <h2 className="lg:text-lg md:text-lg sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-28 md:w-24 sm:w-20 w-20">
                         รอการตรวจ
                       </h2>
                       <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">
@@ -311,7 +311,7 @@ export default function Page() {
             </div>
 
             <div className="container contents">
-              <div className="grid lg:gap-x-20 md:gap-x-20 gap-x-3 gap-y-4 lg:grid-cols-5 md:grid-cols-4 grid-cols-3 mt-10 justify-center">
+              <div className="grid lg:gap-x-32 md:gap-x-20 gap-x-3 gap-y-4 lg:grid-cols-3 md:grid-cols-3 grid-cols-3 mt-10 justify-center">
                 <div className="flex flex-col items-center">
                   <a href="/home/CheckThePackage" onClick={ClickParamGroup}>
                     <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
