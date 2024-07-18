@@ -5,4 +5,7 @@ module.exports = {
         fullUrl: true,
       },
     },
+    images: {
+      domains: ['minio.saksiam.co.th'],
+    },
   };
