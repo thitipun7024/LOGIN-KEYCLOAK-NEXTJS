@@ -8,11 +8,9 @@ import { Token } from "next-auth/jwt";
 
 export default function Page() {
   const { data: session, status } = useSession();
-  const [sakHQ, setSakHQ] = useState<string | null>(null);
   const [noAsset, setNoAsset] = useState<string[]>([]);
   const [dataAsset, setDataAsset] = useState([]);
   const [resultGroupBranch, setResultGroupBranch] = useState(null);
-  const [resultGroupBaD_TH2, setResultGroupBaD_TH2] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [statusselect, setStatusSlect] = useState("รอตรวจนับ");
   const [textareaValue, setTextareaValue] = useState("");
@@ -43,19 +41,6 @@ export default function Page() {
         ? findGroupBranch.split("/").pop()
         : "primary";
       setResultGroupBranch(resultGroupBranch);
-
-      const findGroupBaD_TH = decoded.groups.find((group) => {
-        return (
-          group.includes("/group/SAK BRANCH_TH/") ||
-          group.includes("/group/SAK DEPARTMENT-TH/")
-        );
-      });
-      const resultGroupBaD_TH = findGroupBaD_TH ? (
-        findGroupBaD_TH.split("/").pop()
-      ) : (
-        <div className="badge badge-error badge-outline">พี่เคนไม่เพิ่มให้</div>
-      );
-      setResultGroupBaD_TH2(resultGroupBaD_TH);
     }
   }, [session]);
 
@@ -81,7 +66,7 @@ export default function Page() {
             setDataAsset(dataDetailAsset);
             fetchDataDetailBranchCode(dataDetailAsset);
           } else {
-            // setDataAsset([]);
+            setDataAsset([]);
             window.location.href = "/home";
           }
         } catch (error) {
@@ -106,12 +91,10 @@ export default function Page() {
           const dataBranchCode = await responseDetailAsset.json();
           console.log(dataBranchCode);
 
-          // Ensure dataDetailAsset is an array
           if (Array.isArray(dataBranchCode)) {
             setDataBranchCode(dataBranchCode);
           } else {
             setDataBranchCode([]);
-            //console.warn("Fetched data is not an array:", dataDetailAsset);
           }
         } catch (error) {
           console.error("Error fetching detail asset:", error);
@@ -262,7 +245,8 @@ export default function Page() {
                                 item ? (
                                   item.Name
                                 ) : (
-                                  <span className="loading loading-dots loading-md"></span>
+                                  <span className="loading loading-dots loading-md" key={item
+                                  .CostCenter}></span>
                                 )
                               )}
                             </p>
@@ -469,3 +453,4 @@ export default function Page() {
     </div>
   );
 }
+
