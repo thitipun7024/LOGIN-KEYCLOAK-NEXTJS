@@ -97,48 +97,48 @@ jobs:
 
 
 # # patch docker image ใน gitops repository เพื่อให้ CD ทำงาน
-#   deploy:
-#     # ทำหลังจาก job build ทำงานเสร็จแล้ว
-#     needs: build
+  deploy:
+    # ทำหลังจาก job build ทำงานเสร็จแล้ว
+    needs: build
 
-#     runs-on: ubuntu-20.04
+    runs-on: ubuntu-20.04
 
-#     steps:
-#       #Deploying database changes using Prisma by yai kong
-#       # - name: Checkout repo
-#       #   uses: actions/checkout@v3
-#       # - name: Setup Node
-#       #   uses: actions/setup-node@v3
-#       # - name: Install dependencies
-#       #   run: npm install
-#       # - run: npm run build
-#       # - name: Apply all pending migrations to the database
-#       #   run: npx prisma generate
-#       #   env:
-#       #     DATABASE_URL: sqlserver://10.5.15.239:1433;database=SAK_SMS;user=sa;password=Saksiam#2566;integratedSecurity=true;trustServerCertificate=true;
+    steps:
+      #Deploying database changes using Prisma by yai kong
+      # - name: Checkout repo
+      #   uses: actions/checkout@v3
+      # - name: Setup Node
+      #   uses: actions/setup-node@v3
+      # - name: Install dependencies
+      #   run: npm install
+      # - run: npm run build
+      # - name: Apply all pending migrations to the database
+      #   run: npx prisma generate
+      #   env:
+      #     DATABASE_URL: sqlserver://10.5.15.239:1433;database=SAK_SMS;user=sa;password=Saksiam#2566;integratedSecurity=true;trustServerCertificate=true;
 
-#       - name: Setup
-#         run: |
-#           git config --global user.name "Github Actions"
-#           git config --global user.email "actions@github.com"
-#       # checkout gitops repository ที่จะทำการ patch
-#       - name: Checkout repository
-#         uses: actions/checkout@v2
-#         with:
-#           repository: SAKSIAM-TECH/sak-gitops
-#           ref: main
-#           # เพิ่ม GH_PAT secrets ที่ใช้ในการ clone ไว้ใน settings ของ repository
-#           token: ${{ secrets.GH_PAT }}
+      - name: Setup
+        run: |
+          git config --global user.name "Github Actions"
+          git config --global user.email "actions@github.com"
+      # checkout gitops repository ที่จะทำการ patch
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          repository: SAKSIAM-TECH/sak-gitops
+          ref: main
+          # เพิ่ม GH_PAT secrets ที่ใช้ในการ clone ไว้ใน settings ของ repository
+          token: ${{ secrets.GH_PAT }}
 
-#       - uses: imranismail/setup-kustomize@v1
+      - uses: imranismail/setup-kustomize@v1
 
-#       # หาก push มาที่ branch develop 
-#       # ให้ deploy ไปที่ develop environment
-#       - name: Deploy DEV
-#         run: |
-#           cd apps/overlays/develop/sak-tech-asset
-#           kustomize edit set image ${{ needs.build.outputs.image_tags }}
-#           git add .
-#           git commit -m "Set 'web' image tag to '${{ needs.build.outputs.image_tags }}'"
-#       - run: git push
+      # หาก push มาที่ branch develop 
+      # ให้ deploy ไปที่ develop environment
+      - name: Deploy DEV
+        run: |
+          cd apps/overlays/develop/sak-tech-asset
+          kustomize edit set image ${{ needs.build.outputs.image_tags }}
+          git add .
+          git commit -m "Set 'web' image tag to '${{ needs.build.outputs.image_tags }}'"
+      - run: git push
 
