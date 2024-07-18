@@ -33,7 +33,6 @@ WORKDIR /app
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
-# คัดลอกไฟล์ที่สร้างจาก builder stage มายัง runner stage
 COPY --from=builder /app ./
 
 USER nextjs
