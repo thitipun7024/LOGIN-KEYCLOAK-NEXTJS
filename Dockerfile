@@ -46,4 +46,5 @@ EXPOSE 3000
 
 ENV PORT=3000
 
-CMD ["node", "server.js"]
+# Start the Next.js application
+CMD ["yarn", "start"]
