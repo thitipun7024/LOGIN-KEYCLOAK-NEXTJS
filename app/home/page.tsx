@@ -326,14 +326,16 @@ export default function Page() {
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <button className="flex items-center justify-center btn h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
-                    <img
-                      src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </button>
-                  <span className="mt-2 text-center">ข้อความที่ต้องการ</span>
+                  <a href="/home/Checked">
+                    <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
+                      <img
+                        src="https://minio.saksiam.co.th/public/saktech/logo/checklist.png"
+                        alt=""
+                        className="h-full w-full object-cover ml-2"
+                      />
+                    </button>
+                  </a>
+                  <span className="mt-2 text-center font-bold">ตรวจพัสดุ</span>
                 </div>
 
                 <div className="flex flex-col items-center">
