@@ -5,7 +5,9 @@ export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
     const BranchCodeSearch = searchParams.get("resultGroupBranch")
     const SakHQCodeSearch = searchParams.get("SakHQ")
-    const Status = "13";
+    const StatusWFA = "13";
+    const StatusN = "1";
+
 
     try {
         const countChecked = await prisma.no_Asset.count({
@@ -17,7 +19,13 @@ export async function GET(req: NextRequest) {
                         SakHQCodeSearch ? { Cost_Ctr: SakHQCodeSearch } : {},
                     ].filter(Boolean)
                 },
-                    { Status: Status },
+                { 
+                    OR: [
+                        {Status: StatusWFA},
+                        {Status: StatusN}
+                    ]
+                     
+                },
                 ]
             }
         });
