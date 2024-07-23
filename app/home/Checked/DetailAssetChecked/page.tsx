@@ -49,7 +49,7 @@ export default function Page() {
       const fetchDataDetailAsset = async () => {
         try {
           const responseDetailAsset = await fetch(
-            `/api/asset/GetDetailAsset?NoAsset=${noAsset}`,
+            `/api/asset/GetDetailAssetChecked?NoAsset=${noAsset}`,
             {
               method: "GET",
               headers: {
@@ -89,7 +89,7 @@ export default function Page() {
           );
 
           const dataBranchCode = await responseDetailAsset.json();
-          console.log(dataBranchCode);
+          //console.log(dataBranchCode);
 
           if (Array.isArray(dataBranchCode)) {
             setDataBranchCode(dataBranchCode);
@@ -127,16 +127,6 @@ export default function Page() {
     }
   };
 
-  const handleStatusChange = (e) => {
-    const newStatus = e.target.value;
-    setStatusSlect(newStatus);
-    if (newStatus !== "13") {
-      setSelectedImage(null);
-    }
-    if (newStatus !== "10") {
-      setTextareaValue("");
-    }
-  };
 
   const handleTextareaChange = (event) => {
     setTextareaValue(event.target.value);
@@ -148,7 +138,7 @@ export default function Page() {
         <div className="absolute top-0 left-0 right-0 lg:h-56 md:h-48 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
           <a
             className="btn btn-ghost mt-5 ml-3 text-white"
-            href="/home/CheckThePackage"
+            href="/home/Checked"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -256,24 +246,16 @@ export default function Page() {
                             <h2 className=" font-bold text-white mb-1 lg:text-xl md:text-2xl sm:text-md text-lg">
                               สถานะ
                             </h2>
-                            <select
-                              className="select select-bordered lg:select-sm md:select-md sm:select-sm select-sm lg:w-28 md:w-32 sm:w-28 w-28 max-w-xs text-black"
-                              defaultValue="รอตรวจนับ"
-                              onChange={handleStatusChange}
-                            >
-                              <option value="รอตรวจนับ">รอตรวจนับ</option>
-                              <option value="13">ปกติ</option>
-                              <option value="10">โยกย้าย</option>
-                              <option value="9">อื่นๆ</option>
-                            </select>
+                            
+                            {data.Status === "1" && (<div className="lg:text-xl md:text-lg sm:text-md text-md badge badge-lg w-20">ปกติ</div>)}
+                            {data.Status === "13" && (<div className="lg:text-xl md:text-lg sm:text-md text-md badge badge-lg w-20">โยกย้าย</div>)}
                           </div>
                         </div>
 
-                        {statusselect === "13" && (
-                          <div className="flex flex-col items-center justify-center mt-5">
-                            {selectedImage && (
+                        {data.Status === "1" && (
+                          <div className="flex flex-col items-center justify-center mt-10">
                               <img
-                                src={selectedImage}
+                                src="https://minio.saksiam.co.th/public/saktech/logo/Iconasset2.png"
                                 className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
                                 alt="Uploaded"
                                 onClick={() =>
@@ -284,27 +266,12 @@ export default function Page() {
                                   ).showModal()
                                 }
                               />
-                            )}
-
-                            <label className="cursor-pointer flex flex-col items-center justify-center mt-5">
-                              <img
-                                src="https://minio.saksiam.co.th/public/saktech/logo/camera.png"
-                                className="lg:h-36 md:h-24 sm:h-24 h-16 lg:w-36 md:w-24 sm:w-24 w-16"
-                              />
-                              <input
-                                type="file"
-                                onChange={handleImageUpload}
-                                className="hidden"
-                                accept="image/*"
-                                capture="environment"
-                              />
-                            </label>
 
                             <div>
                               <dialog id="pic" className="modal">
                                 <div className="modal-box bg-black bg-opacity-10">
                                   <img
-                                    src={selectedImage}
+                                    src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
                                     className="max-h-screen max-w-screen"
                                     alt="Full Size"
                                   />
@@ -320,13 +287,14 @@ export default function Page() {
                           </div>
                         )}
 
-                        {statusselect === "10" && (
-                          <div className="flex flex-col items-center justify-center mt-5">
+                        {data.Status === "13" && (
+                          <div className="flex flex-col items-center justify-center mt-10">
                             <textarea
                               className="textarea textarea-bordered lg:w-4/6 md:w-4/5 sm:w-4/5 w-full text-black lg:text-base md:text-base sm:text-baseb"
                               placeholder="กรอกรายละเอียด"
-                              value={textareaValue}
-                              onChange={handleTextareaChange}
+                              defaultValue={data.Description}
+                              style={{ color: 'black' }}
+                              disabled
                             ></textarea>
                           </div>
                         )}
