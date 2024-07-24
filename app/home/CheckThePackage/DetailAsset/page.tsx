@@ -262,14 +262,14 @@ export default function Page() {
                               onChange={handleStatusChange}
                             >
                               <option value="รอตรวจนับ">รอตรวจนับ</option>
-                              <option value="13">ปกติ</option>
-                              <option value="10">โยกย้าย</option>
-                              <option value="9">อื่นๆ</option>
+                              <option value="1">ปกติ</option>
+                              <option value="7">โยกย้าย</option>
+                              <option value="14">อื่นๆ</option>
                             </select>
                           </div>
                         </div>
 
-                        {statusselect === "13" && (
+                        {statusselect === "1" && (
                           <div className="flex flex-col items-center justify-center mt-5">
                             {selectedImage && (
                               <img
@@ -320,7 +320,7 @@ export default function Page() {
                           </div>
                         )}
 
-                        {statusselect === "10" && (
+                        {statusselect === "7" && (
                           <div className="flex flex-col items-center justify-center mt-5">
                             <textarea
                               className="textarea textarea-bordered lg:w-4/6 md:w-4/5 sm:w-4/5 w-full text-black lg:text-base md:text-base sm:text-baseb"
@@ -331,7 +331,7 @@ export default function Page() {
                           </div>
                         )}
 
-                        {statusselect === "9" && (
+                        {statusselect === "14" && (
                           <div>
                             <div className="flex flex-col items-center justify-center mt-5">
                               {selectedImage && (
