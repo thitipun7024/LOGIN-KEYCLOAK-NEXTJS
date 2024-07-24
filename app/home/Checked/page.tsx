@@ -17,7 +17,9 @@ function PageContent() {
   const [resultGroupBranchNo, setResultGroupBranch] = useState(null)
   const itemsPerPage = 10;
 
-  //console.log(resultGroupBranchNo)
+  const statusMap: { [key: number]: string } = {
+    17: 'รออนุมัติ'
+  };
 
   const handlePreviousPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
@@ -115,10 +117,14 @@ function PageContent() {
 
   const filterData = () => {
     if (!Array.isArray(rows)) return [];
-    return rows.filter(row =>
-      row.Asset_description.toLowerCase().includes(search.toLowerCase()) ||
-      row.Asset.toLowerCase().includes(search.toLowerCase())
-    );
+    return rows.filter(row => {
+      const mappedStatus = statusMap[row.Asset_Status];
+      const statusToCheck = mappedStatus ? mappedStatus.toLowerCase() : row.Asset_Status.toLowerCase();
+      
+      return row.Asset_description.toLowerCase().includes(search.toLowerCase()) ||
+             row.Asset.toLowerCase().includes(search.toLowerCase()) ||
+             statusToCheck.includes(search.toLowerCase());
+    });
   };
 
   if (status === "loading") {
@@ -210,8 +216,8 @@ function PageContent() {
                     )}
 
                     {row.Status === "13" && row.Asset_Status === "2" && (
-                        <div className="badge border-0 badge-md bg-green-600 text-white">
-                            ปกติ
+                        <div className="badge border-0 badge-md bg-blue-500 text-white">
+                            โยกย้าย
                         </div>
                     )}
 

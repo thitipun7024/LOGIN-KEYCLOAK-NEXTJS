@@ -39,7 +39,7 @@ model No_Asset {
   Cocd                    String?    @map("Cocd")
   Class                   String?    @map("Class")
   Asset_class_description String?    @map("Asset_class_description")
-  Asset                   String?    @map("Asset")
+  Asset                   String?    @unique @map("Asset")
   SNo                     String?    @map("SNo")
   Asset_description       String?    @map("Asset_description")
   Asset_description2      String?    @map("Asset_description2")

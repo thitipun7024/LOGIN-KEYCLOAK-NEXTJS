@@ -248,7 +248,7 @@ export default function Page() {
                             </h2>
                             
                             {data.Status === "1" && (<div className="lg:text-xl md:text-lg sm:text-md text-md badge badge-lg w-20">ปกติ</div>)}
-                            {data.Status === "13" && (<div className="lg:text-xl md:text-lg sm:text-md text-md badge badge-lg w-20">โยกย้าย</div>)}
+                            {data.Status === "13" && (<div className="lg:text-lg md:text-md sm:text-md text-md badge badge-lg lg:w-28 md:w-20 sm:w-20 w-20">โยกย้าย</div>)}
                           </div>
                         </div>
 
