@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     const Status = "16";
 
     try {
-        const countNoChecked = await prisma.no_Asset.count({
+        const countNoChecked = await prisma.assetMaster.count({
             where: {
                 AND:[
                     {
