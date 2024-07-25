@@ -323,7 +323,7 @@ export default function Page() {
                       />
                     </button>
                   </a>
-                  <span className="mt-2 text-center font-bold">ตรวจพัสดุ</span>
+                  <span className="mt-2 text-center font-bold">ตรวจสินทรัพย์</span>
                 </div>
 
                 <div className="flex flex-col items-center">
