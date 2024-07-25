@@ -15,6 +15,7 @@ export default function Page() {
   const [statusselect, setStatusSlect] = useState("รอตรวจนับ");
   const [textareaValue, setTextareaValue] = useState("");
   const [dataBranchCode, setDataBranchCode] = useState([]);
+  
   useEffect(() => {
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
     if (dataDetailAsset) {
@@ -73,6 +74,7 @@ export default function Page() {
           console.error("Error fetching detail asset:", error);
         }
       };
+      
       const fetchDataDetailBranchCode = async (dataDetailAsset) => {
         try {
           const responseDetailAsset = await fetch(

@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
 
 
     try {
-        const countChecked = await prisma.no_Asset.count({
+        const countChecked = await prisma.assetMaster.count({
             where: {
                 AND:[
                     {

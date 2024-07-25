@@ -1,29 +1,26 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../../../lib/prisma'
+import { NextRequest, NextResponse } from 'next/server';
+import prisma from '../../../../lib/prisma';
 
-export async function PUT(req: NextApiRequest, res: NextApiResponse) {
-    // const searchParams = reqs.nextUrl.searchParams
-    // const NoAsset = searchParams.get("NoAsset")
+export async function PUT(req: NextRequest) {
+    if (req.method !== 'PUT') {
+        return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+    }
 
-    if(req.method === 'PUT'){
-        const {Asset, Detail, Status, Asset_status } = req.body;
+    const { Detail, Status, Asset_status } = await req.json();
 
-        try{
-            const updateAsset = await prisma.no_Asset.update({
-                where: { Asset: Asset, },
-                data: {
-                    Description: Detail,
-                    Status: Status,
-                    Asset_Status: Asset_status
-                }
-            })
+    try {
+        const updateAsset = await prisma.assetMaster.update({
+            where: { Asset: "300000000797" },
+            data: {
+                Description: Detail,
+                Status: Status,
+                Asset_Status: Asset_status
+            }
+        });
 
-            return res.status(200).json(updateAsset);
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json({ error: 'Failed to update asset' });
-        }
-    } else {
-        return res.status(405).json({ error: 'Method not allowed' });
+        return NextResponse.json(updateAsset, { status: 200 });
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({ error: 'Failed to update asset' }, { status: 500 });
     }
 }

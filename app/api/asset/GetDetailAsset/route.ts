@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
     const Status = "16";
 
     try {
-        const getBranchCode = await prisma.no_Asset.findMany({
+        const getBranchCode = await prisma.assetMaster.findMany({
             where: {
                 AND: [
                     { Status: Status },

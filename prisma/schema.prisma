@@ -13,19 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model AssetMaster {
-  id            Int     @id @default(autoincrement()) @map("id")
-  AssetCode     String  @map("AssetCode")
-  Serial        String? @map("Serial")
-  ModelName     String  @map("ModelName")
-  AssetTypeCode String? @map("AssetTypeCode")
-  AssetTypeName String? @map("AssetTypeName")
-  BranchCode    String? @map("BranchCode")
-  Status        String? @map("Status")
-
-  @@map("tblAssetMaster")
-}
-
 model CostCTR {
   code       Int     @id @default(autoincrement()) @map("code")
   Name       String? @map("Name")
@@ -34,7 +21,7 @@ model CostCTR {
   @@map("tblCostCTR")
 }
 
-model No_Asset {
+model AssetMaster {
   ID                      Int       @id @default(autoincrement()) @map("ID")
   Cocd                    String?    @map("Cocd")
   Class                   String?    @map("Class")
@@ -57,15 +44,10 @@ model No_Asset {
   Serial_no               String?    @map("Serial_no")
   Status                  String?    @map("Status")
   Description             String?    @map("Description")
-  Note01                  String?    @map("Note01")
-  Note02                  String?    @map("Note02")
-  Note03                  String?    @map("Note03")
-  Note04                  String?    @map("Note04")
-  Note05                  String?    @map("Note05")
   CreatedBy               String?    @map("CreatedBy")
   Createtime              String?    @map("Createtime")
 
-  @@map("no_asset")
+  @@map("AssetMaster")
 }
 
 model Asset_Branch_Code {

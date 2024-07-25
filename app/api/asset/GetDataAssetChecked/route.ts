@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-        const getBranchCode = await prisma.no_Asset.findMany({
+        const getBranchCode = await prisma.assetMaster.findMany({
             where: {
                 AND: [
                     {

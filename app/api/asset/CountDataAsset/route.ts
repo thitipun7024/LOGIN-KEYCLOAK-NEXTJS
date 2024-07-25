@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
     const SakHQCodeSearch = searchParams.get("SakHQ")
 
     try {
-        const count = await prisma.no_Asset.count({
+        const count = await prisma.assetMaster.count({
             where: {
                 OR: [
                     BranchCodeSearch ? { Cost_Ctr: BranchCodeSearch } : {},
