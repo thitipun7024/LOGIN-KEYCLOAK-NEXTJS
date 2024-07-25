@@ -4,6 +4,7 @@ import Logout from "@/components/Logout";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
+import "../globals.css";
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -311,7 +312,7 @@ export default function Page() {
             </div>
 
             <div className="container contents">
-              <div className="grid lg:gap-x-32 md:gap-x-20 gap-x-3 gap-y-4 lg:grid-cols-3 md:grid-cols-3 grid-cols-3 mt-10 justify-center">
+              <div className="grid lg:gap-x-32 md:gap-x-20 sm:gap-x-5 gap-x-2 gap-y-4 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-3 grid-cols-3 mt-10 justify-center">
                 <div className="flex flex-col items-center">
                   <a href="/home/CheckThePackage" onClick={ClickParamGroup}>
                     <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
@@ -335,18 +336,21 @@ export default function Page() {
                       />
                     </button>
                   </a>
-                  <span className="mt-2 text-center font-bold">ตรวจพัสดุ</span>
+                  <span className="mt-2 text-center font-bold custom-font">สินทรัพย์ที่ถูกตรวจนับเเล้ว</span>
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <button className="flex items-center justify-center btn h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
-                    <img
-                      src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </button>
-                  <span className="mt-2 text-center">ข้อความที่ต้องการ</span>
+                  <a href="/home/Checked">
+                    <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
+                      <img
+                        src="https://minio.saksiam.co.th/public/saktech/logo/add.png
+                        "
+                        alt=""
+                        className="h-full w-full object-cover ml-2"
+                      />
+                    </button>
+                  </a>
+                  <span className="mt-2 text-center font-bold custom-font">สินทรัพยที่ไม่มีเลข Asset</span>
                 </div>
               </div>
             </div>
