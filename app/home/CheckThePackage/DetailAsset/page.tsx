@@ -18,6 +18,7 @@ export default function Page() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalShown, setModalShown] = useState(false);
   const [selectedValue, setSelectedValue] = useState("รอตรวจนับ");
+  const [showWarningModal, setShowWarningModal] = useState(false);
 
   useEffect(() => {
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
@@ -78,7 +79,7 @@ export default function Page() {
             fetchDataDetailBranchCode(dataDetailAsset);
           } else {
             setDataAsset([]);
-            window.location.href = "/home";
+            setShowWarningModal(true);
           }
         } catch (error) {
           console.error("Error fetching detail asset:", error);
@@ -188,6 +189,11 @@ export default function Page() {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const closeWarningModal = () => {
+    setShowWarningModal(false);
+    window.location.href = "/home/CheckThePackage";
   };
 
   if (status === "loading") {
@@ -540,6 +546,27 @@ export default function Page() {
             </div>
           </dialog>
         )}
+
+{showWarningModal && (
+        <dialog open className="modal">
+          <div className="modal-box">
+            <div className="flex justify-center items-center">
+              <img
+                src="https://minio.saksiam.co.th/public/saktech/logo/close.png"
+                className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20"
+              />
+            </div>
+            <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
+              ไม่มีสินทรัพย์นี้อยู่ในระบบ
+            </p>
+            <div className="modal-action">
+              <button className="btn" onClick={closeWarningModal}>
+                ปิด
+              </button>
+            </div>
+          </div>
+        </dialog>
+      )}
         
       </div>
     </div>
