@@ -34,9 +34,7 @@ export default function Page() {
       const decoded = jwtDecode<Token>(session.accessToken);
 
       const findGroupBranch = decoded.groups.find((group) => {
-        return (
-          group.includes("/group/SAK BRANCH/")
-        );
+        return group.includes("/group/SAK BRANCH/");
       });
       const resultGroupBranch = findGroupBranch
         ? findGroupBranch.split("/").pop()
@@ -56,7 +54,7 @@ export default function Page() {
       );
       setGroupBaD_TH(resultGroupBaD_TH);
     }
-  }, [session, resultGroupBranch]);
+  }, [session]);
 
   useEffect(() => {
     if (session) {
@@ -157,10 +155,10 @@ export default function Page() {
         setIsModalOpen(true);
         setModalShown(true);
         setSelectedValue("14");
+        setStatusSlect("14");
       }
     }
-  }, [dataBranchCode, resultGroupBranch, sakHQ]);
-
+  }, [dataBranchCode, resultGroupBranch, sakHQ, modalShown]);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -328,6 +326,7 @@ export default function Page() {
                             <select
                               className="select select-bordered lg:select-sm md:select-md sm:select-sm select-sm lg:w-28 md:w-32 sm:w-28 w-28 max-w-xs text-black"
                               defaultValue="รอตรวจนับ"
+                              value={selectedValue}
                               onChange={(e) => {
                                 setSelectedValue(e.target.value);
                                 handleStatusChange(e);
