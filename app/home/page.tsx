@@ -312,7 +312,7 @@ export default function Page() {
             </div>
 
             <div className="container contents">
-              <div className="grid lg:gap-x-32 md:gap-x-20 sm:gap-x-5 gap-x-2 gap-y-4 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-3 grid-cols-3 mt-10 justify-center">
+              <div className="grid lg:gap-x-28 md:gap-x-20 sm:gap-x-5 gap-x-2 gap-y-4 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-3 grid-cols-3 mt-10 justify-center">
                 <div className="flex flex-col items-center">
                   <a href="/home/CheckThePackage" onClick={ClickParamGroup}>
                     <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
@@ -340,13 +340,13 @@ export default function Page() {
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <a href="/home/Checked">
+                  <a href="#">
                     <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
                       <img
                         src="https://minio.saksiam.co.th/public/saktech/logo/add.png
                         "
                         alt=""
-                        className="h-full w-full object-cover ml-2"
+                        className="h-ful w-full object-cover ml-2"
                       />
                     </button>
                   </a>
