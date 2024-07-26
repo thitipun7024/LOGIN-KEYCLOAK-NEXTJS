@@ -34,8 +34,7 @@ export default function Page() {
 
       const findGroupBranch = decoded.groups.find((group) => {
         return (
-          group.includes("/group/SAK BRANCH/") ||
-          group.includes("/group/SAK HQ/")
+          group.includes("/group/SAK BRANCH/")
         );
       });
       const resultGroupBranch = findGroupBranch
@@ -56,7 +55,7 @@ export default function Page() {
       );
       setGroupBaD_TH(resultGroupBaD_TH);
     }
-  }, [session]);
+  }, [session, resultGroupBranch]);
 
   useEffect(() => {
     if (session) {
@@ -147,24 +146,18 @@ export default function Page() {
   }, [session, noAsset, resultGroupBranch, groupBaD_TH]);
 
   useEffect(() => {
-    if (
-      sakHQ &&
-      resultGroupBranch &&
-      dataBranchCode.length > 0 &&
-      !modalShown
-    ) {
-      const isSakHQMatching = dataBranchCode.some(
-        (item) => item.CostCenter === sakHQ
-      );
-      const isSakBranchMatching = dataBranchCode.some(
-        (item) => item.CostCenter === resultGroupBranch
-      );
-      if (!isSakBranchMatching) {
+    if (dataBranchCode.length > 0 && !modalShown) {
+      const branchCode = dataBranchCode.map(item => item.CostCenter);
+      const groupBranch = sakHQ ? sakHQ : resultGroupBranch;
+  
+      const match = branchCode.includes(groupBranch);
+  
+      if (!match) {
         setIsModalOpen(true);
         setModalShown(true); 
       }
     }
-  }, [sakHQ, dataBranchCode, modalShown, resultGroupBranch]); 
+  }, [dataBranchCode, resultGroupBranch, sakHQ]);
 
 
   const handleImageUpload = (e) => {
@@ -478,7 +471,7 @@ export default function Page() {
 
                 <footer className="footer footer-center p-4 text-base-content mt-10">
                   <aside>
-                    <p>Copyright © 2024</p>
+                    <p> © 2024 COPYRIGHT BY SAKTECH VERSION {process.env.NEXT_PUBLIC_VERSION}</p>
                   </aside>
                 </footer>
               </div>
