@@ -3,19 +3,22 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
 export default function Page() {
   const { data: session, status } = useSession();
   const [noAsset, setNoAsset] = useState<string[]>([]);
+  const [sakHQ, setSakHQ] = useState(null);
+  const [groupBaD_TH, setGroupBaD_TH] = useState(null);
   const [dataAsset, setDataAsset] = useState([]);
   const [resultGroupBranch, setResultGroupBranch] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [statusselect, setStatusSlect] = useState("รอตรวจนับ");
   const [textareaValue, setTextareaValue] = useState("");
   const [dataBranchCode, setDataBranchCode] = useState([]);
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalShown, setModalShown] = useState(false);
+  const [selectedValue, setSelectedValue] = useState("รอตรวจนับ");
+
   useEffect(() => {
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
     if (dataDetailAsset) {
@@ -29,21 +32,31 @@ export default function Page() {
   useEffect(() => {
     if (session) {
       const decoded = jwtDecode<Token>(session.accessToken);
-      //console.log(decoded);
 
-      // ดึงข้อมูลที่เป็นข้อมูลฝ่ายหรือข้อมูล Branch
       const findGroupBranch = decoded.groups.find((group) => {
         return (
-          group.includes("/group/SAK BRANCH/") ||
-          group.includes("/group/SAK HQ/")
+          group.includes("/group/SAK BRANCH/")
         );
       });
       const resultGroupBranch = findGroupBranch
         ? findGroupBranch.split("/").pop()
         : "primary";
       setResultGroupBranch(resultGroupBranch);
+
+      const findGroupBaD_TH = decoded.groups.find((group) => {
+        return (
+          group.includes("/group/SAK BRANCH_TH/") ||
+          group.includes("/group/SAK DEPARTMENT-TH/")
+        );
+      });
+      const resultGroupBaD_TH = findGroupBaD_TH ? (
+        findGroupBaD_TH.split("/").pop()
+      ) : (
+        <div className="badge badge-error badge-outline">พี่เคนไม่เพิ่มให้</div>
+      );
+      setGroupBaD_TH(resultGroupBaD_TH);
     }
-  }, [session]);
+  }, [session, resultGroupBranch]);
 
   useEffect(() => {
     if (session) {
@@ -62,7 +75,6 @@ export default function Page() {
 
           const dataDetailAsset = await responseDetailAsset.json();
 
-          // Ensure dataDetailAsset is an array
           if (Array.isArray(dataDetailAsset)) {
             setDataAsset(dataDetailAsset);
             fetchDataDetailBranchCode(dataDetailAsset);
@@ -74,7 +86,7 @@ export default function Page() {
           console.error("Error fetching detail asset:", error);
         }
       };
-      
+
       const fetchDataDetailBranchCode = async (dataDetailAsset) => {
         try {
           const responseDetailAsset = await fetch(
@@ -91,8 +103,6 @@ export default function Page() {
           );
 
           const dataBranchCode = await responseDetailAsset.json();
-          console.log(dataBranchCode);
-
           if (Array.isArray(dataBranchCode)) {
             setDataBranchCode(dataBranchCode);
           } else {
@@ -104,23 +114,53 @@ export default function Page() {
       };
       fetchDataDetailAsset();
     }
-  }, [session, noAsset, resultGroupBranch]);
 
-  if (status === "loading") {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <span className="loading loading-dots loading-lg text-blue-950"></span>
-      </div>
-    );
-  }
+    const fetchDataSakHQ = async () => {
+      try {
+        const responseSakHQ = await fetch(
+          `/api/asset/GetNoSakHQ?SakHQ=${groupBaD_TH}`,
+          {
+            method: "GET",
+            redirect: "follow",
+            headers: {
+              "Cache-Control": "no-cache",
+              Pragma: "no-cache",
+            },
+          }
+        );
 
-  if (!session || !session.accessToken) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <p>Logout...</p>
-      </div>
-    );
-  }
+        if (!responseSakHQ.ok) {
+          throw new Error(`HTTP error! Status: ${responseSakHQ.status}`);
+        }
+
+        const SakHQJson = await responseSakHQ.json();
+
+        if (SakHQJson && SakHQJson.CostCenter) {
+          const costCenter = SakHQJson.CostCenter;
+          setSakHQ(costCenter);
+        }
+      } catch (error) {
+        console.error("Error fetching SakHQ data:", error);
+      }
+    };
+    fetchDataSakHQ();
+  }, [session, noAsset, resultGroupBranch, groupBaD_TH]);
+
+  useEffect(() => {
+    if (dataBranchCode.length > 0 && !modalShown) {
+      const branchCode = dataBranchCode.map((item) => item.CostCenter);
+      const groupBranch = sakHQ ? sakHQ : resultGroupBranch;
+
+      const match = branchCode.includes(groupBranch);
+
+      if (!match) {
+        setIsModalOpen(true);
+        setModalShown(true);
+        setSelectedValue("14");
+      }
+    }
+  }, [dataBranchCode, resultGroupBranch, sakHQ]);
+
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -143,6 +183,33 @@ export default function Page() {
   const handleTextareaChange = (event) => {
     setTextareaValue(event.target.value);
   };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  if (status === "loading") {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <span className="loading loading-dots loading-lg text-blue-950"></span>
+      </div>
+    );
+  }
+
+  if (!session || !session.accessToken) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p>Logout...</p>
+      </div>
+    );
+  }
+
+  // console.log(resultGroupBranch)
+
 
   return (
     <div className="background2">
@@ -261,7 +328,10 @@ export default function Page() {
                             <select
                               className="select select-bordered lg:select-sm md:select-md sm:select-sm select-sm lg:w-28 md:w-32 sm:w-28 w-28 max-w-xs text-black"
                               defaultValue="รอตรวจนับ"
-                              onChange={handleStatusChange}
+                              onChange={(e) => {
+                                setSelectedValue(e.target.value);
+                                handleStatusChange(e);
+                              }}
                             >
                               <option value="รอตรวจนับ">รอตรวจนับ</option>
                               <option value="1">ปกติ</option>
@@ -406,7 +476,7 @@ export default function Page() {
 
                 <footer className="footer footer-center p-4 text-base-content mt-10">
                   <aside>
-                    <p>Copyright © 2024</p>
+                    <p> © 2024 COPYRIGHT BY SAKTECH VERSION {process.env.NEXT_PUBLIC_VERSION}</p>
                   </aside>
                 </footer>
               </div>
@@ -450,6 +520,27 @@ export default function Page() {
             <button>close</button>
           </form>
         </dialog>
+
+        {isModalOpen && (
+          <dialog open className="modal">
+            <div className="modal-box">
+              <div className="flex justify-center items-center">
+                <img
+                    src="https://minio.saksiam.co.th/public/saktech/logo/warning.png"
+                    className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20"
+                  />
+              </div>
+              <p className="py-4 flex text-center font-bold">
+                สินทรัพย์นี้ไม่ใช่สินทรัพย์ที่อยู่ในสาขาของท่านกรุณาตวจสอบสินทรัพย์นี้
+              </p>
+              <div className="modal-action">
+                <button className="btn" onClick={closeModal}>
+                  ปิด
+                </button>
+              </div>
+            </div>
+          </dialog>
+        )}
         
       </div>
     </div>

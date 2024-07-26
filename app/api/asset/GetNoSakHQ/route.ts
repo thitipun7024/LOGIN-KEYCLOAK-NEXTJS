@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
     const decodedSakHQSearch = decodeURL(SakHQSearch);
   
     try {
-      const GetSakHQ = await prisma.costCTR.findFirst({
+      const GetSakHQ = await prisma.asset_Branch_Code.findFirst({
         where: {
           Name: decodedSakHQSearch
         }
