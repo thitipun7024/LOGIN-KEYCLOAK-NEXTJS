@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
+import { redirect } from "next/dist/server/api-utils";
+
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
@@ -15,7 +17,77 @@ export default function Page() {
   const [statusselect, setStatusSlect] = useState("รอตรวจนับ");
   const [textareaValue, setTextareaValue] = useState("");
   const [dataBranchCode, setDataBranchCode] = useState([]);
-  
+
+  const [username, setusername] = useState<string>(null);
+
+
+  useEffect(() => {
+    if (session) {
+  const decoded = jwtDecode<Token>(session.accessToken);
+  const findDisplayname: any =decoded.username
+  setusername(findDisplayname)
+    // const myHeaders = new Headers();
+    // myHeaders.append("Content-Type", "multipart/form-data");
+    // const formdata = new FormData();
+    // formdata.append("file", selectedImage);
+    // formdata.append("username", a);
+    }
+  })
+
+
+  const InsertTrackingData = async () => {
+    const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+    const files = fileInput.files?.[0];
+    if (!files) {
+      console.error("ไม่พบไฟล์");
+      return;
+    }
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "multipart/form-data");
+    const formdata = new FormData();
+    formdata.append("file", files);
+    formdata.append("username", username);
+    fetch(
+      `/api/asset/InsertFileMinio`,
+      {
+        method: "POST",
+        // headers: myHeaders,
+        body: formdata
+      }
+    )
+      .then((response) => {
+        response.json().then((json) => {
+          const result = json;
+          console.log(result)
+          fetch(
+            `/api/asset/InsertTrackingData?AssetCode=210000000820&Status=14&Branch=0100&Comment=รายละเอียดอื่นๆ test-api-by-kong&CreateBy=${username}&fileupload=${result}&Description=รายละเอียดโยกย้าย ทดสอบapi ของโปรแกรม sak asset`,
+            {
+              method: "POST",
+            }
+          )
+            .then((response) => {
+              response.json().then((json) => {
+                console.log(json);
+                setTimeout(() => { window.location.href = "../../../Success" }, 100);
+              });
+              if (response.status !== 200) {
+                console.log(response);
+                alert(response)
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+              alert(error)
+            });
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+
+      });
+    // setTimeout(() => { window.location.href ="../../../Success"}, 5000);
+
+  }
   useEffect(() => {
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
     if (dataDetailAsset) {
@@ -74,7 +146,7 @@ export default function Page() {
           console.error("Error fetching detail asset:", error);
         }
       };
-      
+
       const fetchDataDetailBranchCode = async (dataDetailAsset) => {
         try {
           const responseDetailAsset = await fetch(
@@ -248,7 +320,7 @@ export default function Page() {
                                   item.Name
                                 ) : (
                                   <span className="loading loading-dots loading-md" key={item
-                                  .CostCenter}></span>
+                                    .CostCenter}></span>
                                 )
                               )}
                             </p>
@@ -295,6 +367,7 @@ export default function Page() {
                               />
                               <input
                                 type="file"
+                                id="fileInput"
                                 onChange={handleImageUpload}
                                 className="hidden"
                                 accept="image/*"
@@ -358,6 +431,7 @@ export default function Page() {
                                 />
                                 <input
                                   type="file"
+                                  id="fileInput"
                                   onChange={handleImageUpload}
                                   className="hidden"
                                   accept="image/*"
@@ -428,7 +502,7 @@ export default function Page() {
               <form method="dialog" className="flex items-center">
                 <a
                   className="btn mr-2 bg-blue-950 text-white"
-                  href="../../../Success"
+                  onClick={() => (InsertTrackingData())}
                 >
                   ยืนยัน
                 </a>
@@ -450,7 +524,7 @@ export default function Page() {
             <button>close</button>
           </form>
         </dialog>
-        
+
       </div>
     </div>
   );

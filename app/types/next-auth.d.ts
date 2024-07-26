@@ -13,6 +13,7 @@ declare module "next-auth/jwt" {
   interface Token {
     groups: string[];
     displayName: string;
+    username: string;
   }
 }
 
