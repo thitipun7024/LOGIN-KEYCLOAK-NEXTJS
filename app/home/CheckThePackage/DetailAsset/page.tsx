@@ -17,6 +17,7 @@ export default function Page() {
   const [dataBranchCode, setDataBranchCode] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalShown, setModalShown] = useState(false);
+  const [selectedValue, setSelectedValue] = useState("รอตรวจนับ");
 
   useEffect(() => {
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
@@ -147,14 +148,15 @@ export default function Page() {
 
   useEffect(() => {
     if (dataBranchCode.length > 0 && !modalShown) {
-      const branchCode = dataBranchCode.map(item => item.CostCenter);
+      const branchCode = dataBranchCode.map((item) => item.CostCenter);
       const groupBranch = sakHQ ? sakHQ : resultGroupBranch;
-  
+
       const match = branchCode.includes(groupBranch);
-  
+
       if (!match) {
         setIsModalOpen(true);
-        setModalShown(true); 
+        setModalShown(true);
+        setSelectedValue("14");
       }
     }
   }, [dataBranchCode, resultGroupBranch, sakHQ]);
@@ -326,7 +328,10 @@ export default function Page() {
                             <select
                               className="select select-bordered lg:select-sm md:select-md sm:select-sm select-sm lg:w-28 md:w-32 sm:w-28 w-28 max-w-xs text-black"
                               defaultValue="รอตรวจนับ"
-                              onChange={handleStatusChange}
+                              onChange={(e) => {
+                                setSelectedValue(e.target.value);
+                                handleStatusChange(e);
+                              }}
                             >
                               <option value="รอตรวจนับ">รอตรวจนับ</option>
                               <option value="1">ปกติ</option>
