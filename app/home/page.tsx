@@ -230,7 +230,7 @@ export default function Page() {
                 src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
                 className="lg:h-32 h-20 lg:w-32 w-20 m-4 lg:-ml-1 ml-2"
               />
-              <div className="flex flex-col lg:ml-5 ml-0">
+              <div className="flex flex-col lg:ml-5 md:ml-5 sm:ml-5 ml-0">
                 <h2 className="lg:text-2xl md:text-1xl text-xl font-bold ">
                   {decoded.displayName}
                 </h2>
@@ -241,7 +241,7 @@ export default function Page() {
                   {resultGroupBaD_TH}
                 </h2>
               </div>
-              <div className="lg:ml-7 ml-3 lg:pr-0 pr-1">
+              <div className="lg:ml-2 md:ml-5 sm:ml-3 ml-3 pr-1">
                 <button
                   className=""
                   onClick={() =>
@@ -312,7 +312,7 @@ export default function Page() {
             </div>
 
             <div className="container contents">
-              <div className="grid lg:gap-x-28 md:gap-x-20 sm:gap-x-5 gap-x-2 gap-y-4 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-3 grid-cols-3 mt-10 justify-center">
+              <div className="grid lg:gap-x-28 md:gap-x-10 sm:gap-x-5 gap-x-2 gap-y-4 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-3 grid-cols-3 mt-10 justify-center">
                 <div className="flex flex-col items-center">
                   <a href="/home/CheckThePackage" onClick={ClickParamGroup}>
                     <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
@@ -340,7 +340,7 @@ export default function Page() {
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <a href="#">
+                  <a href="/home/FormNoAsset">
                     <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
                       <img
                         src="https://minio.saksiam.co.th/public/saktech/logo/add.png
@@ -357,7 +357,7 @@ export default function Page() {
 
             <footer className="footer footer-center p-4 text-base-content mt-32">
               <aside>
-                <p>Copyright © 2024</p>
+              <p> © 2024 COPYRIGHT BY SAKTECH VERSION {process.env.NEXT_PUBLIC_VERSION}</p>
               </aside>
             </footer>
           </div>
