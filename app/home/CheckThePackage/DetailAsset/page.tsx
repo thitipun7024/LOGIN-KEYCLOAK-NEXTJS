@@ -3,6 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
+import { redirect } from "next/dist/server/api-utils";
+
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -20,8 +24,13 @@ export default function Page() {
   useEffect(() => {
     if (session) {
   const decoded = jwtDecode<Token>(session.accessToken);
-  const findDisplayname: any = decoded.username
+  const findDisplayname: any =decoded.username
   setusername(findDisplayname)
+    // const myHeaders = new Headers();
+    // myHeaders.append("Content-Type", "multipart/form-data");
+    // const formdata = new FormData();
+    // formdata.append("file", selectedImage);
+    // formdata.append("username", a);
     }
   })
 
@@ -51,7 +60,7 @@ export default function Page() {
           const result = json;
           console.log(result)
           fetch(
-            `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${result}&Description=${textareaValue}`,
+            `/api/asset/InsertTrackingData?AssetCode=210000000820&Status=14&Branch=0100&Comment=รายละเอียดอื่นๆ test-api-by-kong&CreateBy=${username}&fileupload=${result}&Description=รายละเอียดโยกย้าย ทดสอบapi ของโปรแกรม sak asset`,
             {
               method: "POST",
             }
@@ -154,7 +163,7 @@ export default function Page() {
           );
 
           const dataBranchCode = await responseDetailAsset.json();
-          //console.log(dataBranchCode);
+          console.log(dataBranchCode);
 
           if (Array.isArray(dataBranchCode)) {
             setDataBranchCode(dataBranchCode);
