@@ -532,7 +532,7 @@ export default function Page() {
               <div className="flex justify-center items-center">
                 <img
                     src="https://minio.saksiam.co.th/public/saktech/logo/warning.png"
-                    className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20"
+                    className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-36 sm:w-24 w-20"
                   />
               </div>
               <p className="py-4 flex text-center font-bold">
