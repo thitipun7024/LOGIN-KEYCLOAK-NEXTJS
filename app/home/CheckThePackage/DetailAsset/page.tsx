@@ -7,19 +7,78 @@ import { Token } from "next-auth/jwt";
 export default function Page() {
   const { data: session, status } = useSession();
   const [noAsset, setNoAsset] = useState<string[]>([]);
-  const [sakHQ, setSakHQ] = useState(null);
-  const [groupBaD_TH, setGroupBaD_TH] = useState(null);
   const [dataAsset, setDataAsset] = useState([]);
   const [resultGroupBranch, setResultGroupBranch] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [statusselect, setStatusSlect] = useState("รอตรวจนับ");
   const [textareaValue, setTextareaValue] = useState("");
   const [dataBranchCode, setDataBranchCode] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalShown, setModalShown] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("รอตรวจนับ");
-  const [showWarningModal, setShowWarningModal] = useState(false);
 
+  const [username, setusername] = useState<string>(null);
+
+
+  useEffect(() => {
+    if (session) {
+  const decoded = jwtDecode<Token>(session.accessToken);
+  const findDisplayname: any = decoded.username
+  setusername(findDisplayname)
+    }
+  })
+
+
+  const InsertTrackingData = async () => {
+    const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+    const files = fileInput.files?.[0];
+    if (!files) {
+      console.error("ไม่พบไฟล์");
+      return;
+    }
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "multipart/form-data");
+    const formdata = new FormData();
+    formdata.append("file", files);
+    formdata.append("username", username);
+    fetch(
+      `/api/asset/InsertFileMinio`,
+      {
+        method: "POST",
+        // headers: myHeaders,
+        body: formdata
+      }
+    )
+      .then((response) => {
+        response.json().then((json) => {
+          const result = json;
+          console.log(result)
+          fetch(
+            `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${result}&Description=${textareaValue}`,
+            {
+              method: "POST",
+            }
+          )
+            .then((response) => {
+              response.json().then((json) => {
+                console.log(json);
+                setTimeout(() => { window.location.href = "../../../Success" }, 100);
+              });
+              if (response.status !== 200) {
+                console.log(response);
+                alert(response)
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+              alert(error)
+            });
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+
+      });
+    // setTimeout(() => { window.location.href ="../../../Success"}, 5000);
+
+  }
   useEffect(() => {
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
     if (dataDetailAsset) {
@@ -33,27 +92,19 @@ export default function Page() {
   useEffect(() => {
     if (session) {
       const decoded = jwtDecode<Token>(session.accessToken);
+      //console.log(decoded);
 
+      // ดึงข้อมูลที่เป็นข้อมูลฝ่ายหรือข้อมูล Branch
       const findGroupBranch = decoded.groups.find((group) => {
-        return group.includes("/group/SAK BRANCH/");
+        return (
+          group.includes("/group/SAK BRANCH/") ||
+          group.includes("/group/SAK HQ/")
+        );
       });
       const resultGroupBranch = findGroupBranch
         ? findGroupBranch.split("/").pop()
         : "primary";
       setResultGroupBranch(resultGroupBranch);
-
-      const findGroupBaD_TH = decoded.groups.find((group) => {
-        return (
-          group.includes("/group/SAK BRANCH_TH/") ||
-          group.includes("/group/SAK DEPARTMENT-TH/")
-        );
-      });
-      const resultGroupBaD_TH = findGroupBaD_TH ? (
-        findGroupBaD_TH.split("/").pop()
-      ) : (
-        <div className="badge badge-error badge-outline">พี่เคนไม่เพิ่มให้</div>
-      );
-      setGroupBaD_TH(resultGroupBaD_TH);
     }
   }, [session]);
 
@@ -74,12 +125,13 @@ export default function Page() {
 
           const dataDetailAsset = await responseDetailAsset.json();
 
+          // Ensure dataDetailAsset is an array
           if (Array.isArray(dataDetailAsset)) {
             setDataAsset(dataDetailAsset);
             fetchDataDetailBranchCode(dataDetailAsset);
           } else {
             setDataAsset([]);
-            setShowWarningModal(true);
+            window.location.href = "/home";
           }
         } catch (error) {
           console.error("Error fetching detail asset:", error);
@@ -102,6 +154,8 @@ export default function Page() {
           );
 
           const dataBranchCode = await responseDetailAsset.json();
+          //console.log(dataBranchCode);
+
           if (Array.isArray(dataBranchCode)) {
             setDataBranchCode(dataBranchCode);
           } else {
@@ -113,53 +167,23 @@ export default function Page() {
       };
       fetchDataDetailAsset();
     }
+  }, [session, noAsset, resultGroupBranch]);
 
-    const fetchDataSakHQ = async () => {
-      try {
-        const responseSakHQ = await fetch(
-          `/api/asset/GetNoSakHQ?SakHQ=${groupBaD_TH}`,
-          {
-            method: "GET",
-            redirect: "follow",
-            headers: {
-              "Cache-Control": "no-cache",
-              Pragma: "no-cache",
-            },
-          }
-        );
+  if (status === "loading") {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <span className="loading loading-dots loading-lg text-blue-950"></span>
+      </div>
+    );
+  }
 
-        if (!responseSakHQ.ok) {
-          throw new Error(`HTTP error! Status: ${responseSakHQ.status}`);
-        }
-
-        const SakHQJson = await responseSakHQ.json();
-
-        if (SakHQJson && SakHQJson.CostCenter) {
-          const costCenter = SakHQJson.CostCenter;
-          setSakHQ(costCenter);
-        }
-      } catch (error) {
-        console.error("Error fetching SakHQ data:", error);
-      }
-    };
-    fetchDataSakHQ();
-  }, [session, noAsset, resultGroupBranch, groupBaD_TH]);
-
-  useEffect(() => {
-    if (dataBranchCode.length > 0 && !modalShown) {
-      const branchCode = dataBranchCode.map((item) => item.CostCenter);
-      const groupBranch = sakHQ ? sakHQ : resultGroupBranch;
-
-      const match = branchCode.includes(groupBranch);
-
-      if (!match) {
-        setIsModalOpen(true);
-        setModalShown(true);
-        setSelectedValue("14");
-        setStatusSlect("14");
-      }
-    }
-  }, [dataBranchCode, resultGroupBranch, sakHQ, modalShown]);
+  if (!session || !session.accessToken) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p>Logout...</p>
+      </div>
+    );
+  }
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -182,38 +206,6 @@ export default function Page() {
   const handleTextareaChange = (event) => {
     setTextareaValue(event.target.value);
   };
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const closeWarningModal = () => {
-    setShowWarningModal(false);
-    window.location.href = "/home/CheckThePackage";
-  };
-
-  if (status === "loading") {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <span className="loading loading-dots loading-lg text-blue-950"></span>
-      </div>
-    );
-  }
-
-  if (!session || !session.accessToken) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <p>Logout...</p>
-      </div>
-    );
-  }
-
-  // console.log(resultGroupBranch)
-
 
   return (
     <div className="background2">
@@ -319,7 +311,7 @@ export default function Page() {
                                   item.Name
                                 ) : (
                                   <span className="loading loading-dots loading-md" key={item
-                                  .CostCenter}></span>
+                                    .CostCenter}></span>
                                 )
                               )}
                             </p>
@@ -332,11 +324,7 @@ export default function Page() {
                             <select
                               className="select select-bordered lg:select-sm md:select-md sm:select-sm select-sm lg:w-28 md:w-32 sm:w-28 w-28 max-w-xs text-black"
                               defaultValue="รอตรวจนับ"
-                              value={selectedValue}
-                              onChange={(e) => {
-                                setSelectedValue(e.target.value);
-                                handleStatusChange(e);
-                              }}
+                              onChange={handleStatusChange}
                             >
                               <option value="รอตรวจนับ">รอตรวจนับ</option>
                               <option value="1">ปกติ</option>
@@ -370,6 +358,7 @@ export default function Page() {
                               />
                               <input
                                 type="file"
+                                id="fileInput"
                                 onChange={handleImageUpload}
                                 className="hidden"
                                 accept="image/*"
@@ -433,6 +422,7 @@ export default function Page() {
                                 />
                                 <input
                                   type="file"
+                                  id="fileInput"
                                   onChange={handleImageUpload}
                                   className="hidden"
                                   accept="image/*"
@@ -481,7 +471,7 @@ export default function Page() {
 
                 <footer className="footer footer-center p-4 text-base-content mt-10">
                   <aside>
-                    <p> © 2024 COPYRIGHT BY SAKTECH VERSION {process.env.NEXT_PUBLIC_VERSION}</p>
+                    <p>Copyright © 2024</p>
                   </aside>
                 </footer>
               </div>
@@ -503,7 +493,7 @@ export default function Page() {
               <form method="dialog" className="flex items-center">
                 <a
                   className="btn mr-2 bg-blue-950 text-white"
-                  href="../../../Success"
+                  onClick={() => (InsertTrackingData())}
                 >
                   ยืนยัน
                 </a>
@@ -526,50 +516,7 @@ export default function Page() {
           </form>
         </dialog>
 
-        {isModalOpen && (
-          <dialog open className="modal">
-            <div className="modal-box">
-              <div className="flex justify-center items-center">
-                <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/warning.png"
-                    className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-36 sm:w-24 w-20"
-                  />
-              </div>
-              <p className="py-4 flex text-center font-bold">
-                สินทรัพย์นี้ไม่ใช่สินทรัพย์ที่อยู่ในสาขาของท่านกรุณาตวจสอบสินทรัพย์นี้
-              </p>
-              <div className="modal-action">
-                <button className="btn" onClick={closeModal}>
-                  ปิด
-                </button>
-              </div>
-            </div>
-          </dialog>
-        )}
-
-{showWarningModal && (
-        <dialog open className="modal">
-          <div className="modal-box">
-            <div className="flex justify-center items-center">
-              <img
-                src="https://minio.saksiam.co.th/public/saktech/logo/close.png"
-                className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20"
-              />
-            </div>
-            <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
-              ไม่มีสินทรัพย์นี้อยู่ในระบบ
-            </p>
-            <div className="modal-action">
-              <button className="btn" onClick={closeWarningModal}>
-                ปิด
-              </button>
-            </div>
-          </div>
-        </dialog>
-      )}
-        
       </div>
     </div>
   );
 }
-
