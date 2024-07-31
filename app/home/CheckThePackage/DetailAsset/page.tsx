@@ -24,7 +24,7 @@ export default function Page() {
   useEffect(() => {
     if (session) {
   const decoded = jwtDecode<Token>(session.accessToken);
-  const findDisplayname: any =decoded.username
+  const findDisplayname: any = decoded.username
   setusername(findDisplayname)
     // const myHeaders = new Headers();
     // myHeaders.append("Content-Type", "multipart/form-data");
@@ -60,7 +60,7 @@ export default function Page() {
           const result = json;
           console.log(result)
           fetch(
-            `/api/asset/InsertTrackingData?AssetCode=210000000820&Status=14&Branch=0100&Comment=รายละเอียดอื่นๆ test-api-by-kong&CreateBy=${username}&fileupload=${result}&Description=รายละเอียดโยกย้าย ทดสอบapi ของโปรแกรม sak asset`,
+            `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${result}&Description=${textareaValue}`,
             {
               method: "POST",
             }
