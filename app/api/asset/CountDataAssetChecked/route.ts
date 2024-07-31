@@ -5,7 +5,7 @@ export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
     const BranchCodeSearch = searchParams.get("resultGroupBranch")
     const SakHQCodeSearch = searchParams.get("SakHQ")
-    const StatusWFA = "13";
+    const StatusWFA = "7";
     const StatusN = "1";
 
 

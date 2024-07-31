@@ -13,95 +13,90 @@ export default function Page() {
   const [statusselect, setStatusSlect] = useState("รอตรวจนับ");
   const [textareaValue, setTextareaValue] = useState("");
   const [dataBranchCode, setDataBranchCode] = useState([]);
+  const [branchCostCTR, setBranchCostCTR] = useState([]);
+
 
   const [username, setusername] = useState<string>(null);
 
 
   useEffect(() => {
     if (session) {
-  const decoded = jwtDecode<Token>(session.accessToken);
-  const findDisplayname: any = decoded.username
-  setusername(findDisplayname)
-    }
-  })
-
+    const decoded = jwtDecode<Token>(session.accessToken);
+    const findDisplayname: any = decoded.username
+  
+    setusername(findDisplayname)
+      }
+  }, [])
 
   const InsertTrackingData = async () => {
-    if(statusselect == "1" || statusselect == "14"){
+    if (statusselect === "1" || statusselect === "14") {
       const fileInput = document.getElementById("fileInput") as HTMLInputElement;
-    const files = fileInput.files?.[0];
-    if (!files) {
-      console.error("ไม่พบไฟล์");
-      return;
-    }
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "multipart/form-data");
-    const formdata = new FormData();
-    formdata.append("file", files);
-    formdata.append("username", username);
-    fetch(
-      `/api/asset/InsertFileMinio`,
-      {
-        method: "POST",
-        // headers: myHeaders,
-        body: formdata
+      const files = fileInput.files?.[0];
+      if (!files) {
+        console.error("ไม่พบไฟล์");
+        return;
       }
-    )
-      .then((response) => {
-        response.json().then((json) => {
-          const result = json;
-          console.log(result)
-          fetch(
-            `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${result}&Description=${textareaValue}`,
-            {
-              method: "POST",
-            }
-          )
-            .then((response) => {
-              response.json().then((json) => {
-                console.log(json);
-                setTimeout(() => { window.location.href = "../../../Success" }, 100);
-              });
-              if (response.status !== 200) {
-                console.log(response);
-                alert(response)
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-              alert(error)
-            });
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "multipart/form-data");
+      const formdata = new FormData();
+      formdata.append("file", files);
+      formdata.append("username", username);
+      try {
+        const fileResponse = await fetch(`/api/asset/InsertFileMinio`, {
+          method: "POST",
+          body: formdata,
         });
-      })
-      .catch((error) => {
+        const fileResult = await fileResponse.json();
+        console.log(fileResult);
+  
+        const response = await fetch(
+          `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode.map((item) => item.CostCenter)}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${fileResult}&Description=${textareaValue}`,
+          {
+            method: "POST",
+          }
+        );
+        const result = await response.json();
+        console.log(result);
+        if (response.status === 200) {
+          setTimeout(() => {
+            window.location.href = "../../../Success";
+          }, 100);
+        } else {
+          console.log(response);
+          alert(response);
+        }
+      } catch (error) {
         console.log(error);
-
-      });
+        alert(error);
+      }
     } else {
-          fetch(
-            `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=$${dataAsset.map(
-              (data) => data.Cost_Ctr
-            )}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${null}&Description=${textareaValue}`,
-            {
-              method: "POST",
-            }
-          )
-            .then((response) => {
-              response.json().then((json) => {
-                console.log(json);
-                setTimeout(() => { window.location.href = "../../../Success" }, 100);
-              });
-              if (response.status !== 200) {
-                console.log(response);
-                alert(response)
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-              alert(error)
-            });
+      try {
+        const response = await fetch(
+          `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode.map((item) => item.CostCenter)}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${null}&Description=${textareaValue}`,
+          {
+            method: "POST",
+          }
+        );
+        const result = await response.json();
+        console.log(result);
+        if (response.status === 200) {
+          setTimeout(() => {
+            window.location.href = "../../../Success";
+          }, 100);
+        } else {
+          console.log(response);
+          alert(response);
+        }
+      } catch (error) {
+        console.log(error);
+        alert(error);
+      }
     }
-  }
+  };
+  
+
+  //console.log(branchCostCTR)
+
   useEffect(() => {
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
     if (dataDetailAsset) {
@@ -224,6 +219,9 @@ export default function Page() {
     if (newStatus !== "10") {
       setTextareaValue("");
     }
+
+    const branchNames = dataBranchCode.map((item) => item.CostCenter);
+    console.log(branchNames);
   };
 
   const handleTextareaChange = (event) => {

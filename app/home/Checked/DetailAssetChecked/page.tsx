@@ -12,7 +12,6 @@ export default function Page() {
   const [dataAsset, setDataAsset] = useState([]);
   const [resultGroupBranch, setResultGroupBranch] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [statusselect, setStatusSlect] = useState("รอตรวจนับ");
   const [textareaValue, setTextareaValue] = useState("");
   const [dataBranchCode, setDataBranchCode] = useState([]);
   useEffect(() => {
@@ -248,7 +247,7 @@ export default function Page() {
                             </h2>
                             
                             {data.Status === "1" && (<div className="lg:text-xl md:text-lg sm:text-md text-md badge badge-lg w-20">ปกติ</div>)}
-                            {data.Status === "13" && (<div className="lg:text-lg md:text-md sm:text-md text-md badge badge-lg lg:w-28 md:w-20 sm:w-20 w-20">โยกย้าย</div>)}
+                            {data.Status === "7" && (<div className="lg:text-lg md:text-md sm:text-md text-md badge badge-lg lg:w-28 md:w-20 sm:w-20 w-20">โยกย้าย</div>)}
                           </div>
                         </div>
 
@@ -287,7 +286,7 @@ export default function Page() {
                           </div>
                         )}
 
-                        {data.Status === "13" && (
+                        {data.Status === "7" && (
                           <div className="flex flex-col items-center justify-center mt-10">
                             <textarea
                               className="textarea textarea-bordered lg:w-4/6 md:w-4/5 sm:w-4/5 w-full text-black lg:text-base md:text-base sm:text-baseb"
@@ -299,49 +298,6 @@ export default function Page() {
                           </div>
                         )}
 
-                        {statusselect === "9" && (
-                          <div>
-                            <div className="flex flex-col items-center justify-center mt-5">
-                              {selectedImage && (
-                                <img
-                                  src={selectedImage}
-                                  className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
-                                  alt="Uploaded"
-                                  onClick={() =>
-                                    (
-                                      document.getElementById(
-                                        "pic"
-                                      ) as HTMLDialogElement
-                                    ).showModal()
-                                  }
-                                />
-                              )}
-
-                              <label className="cursor-pointer flex flex-col items-center justify-center mt-5">
-                                <img
-                                  src="https://minio.saksiam.co.th/public/saktech/logo/camera.png"
-                                  className="lg:h-48 md:h-24 sm:h-24 h-16 lg:w-48 md:w-24 sm:w-24 w-16"
-                                />
-                                <input
-                                  type="file"
-                                  onChange={handleImageUpload}
-                                  className="hidden"
-                                  accept="image/*"
-                                  capture="environment"
-                                />
-                              </label>
-                            </div>
-
-                            <div className="flex flex-col items-center justify-center mt-5">
-                              <textarea
-                                className="textarea textarea-bordered w-full text-black"
-                                placeholder="กรอกรายละเอียด"
-                                value={textareaValue}
-                                onChange={handleTextareaChange}
-                              ></textarea>
-                            </div>
-                          </div>
-                        )}
                       </div>
                     </div>
                   </div>
