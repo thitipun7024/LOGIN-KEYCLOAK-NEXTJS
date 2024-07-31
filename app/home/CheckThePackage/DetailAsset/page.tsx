@@ -3,10 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
-import { redirect } from "next/dist/server/api-utils";
-
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -26,17 +22,13 @@ export default function Page() {
   const decoded = jwtDecode<Token>(session.accessToken);
   const findDisplayname: any = decoded.username
   setusername(findDisplayname)
-    // const myHeaders = new Headers();
-    // myHeaders.append("Content-Type", "multipart/form-data");
-    // const formdata = new FormData();
-    // formdata.append("file", selectedImage);
-    // formdata.append("username", a);
     }
   })
 
 
   const InsertTrackingData = async () => {
-    const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+    if(statusselect == "1" || statusselect == "14"){
+      const fileInput = document.getElementById("fileInput") as HTMLInputElement;
     const files = fileInput.files?.[0];
     if (!files) {
       console.error("ไม่พบไฟล์");
@@ -85,8 +77,30 @@ export default function Page() {
         console.log(error);
 
       });
-    // setTimeout(() => { window.location.href ="../../../Success"}, 5000);
-
+    } else {
+          fetch(
+            `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=$${dataAsset.map(
+              (data) => data.Cost_Ctr
+            )}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${null}&Description=${textareaValue}`,
+            {
+              method: "POST",
+            }
+          )
+            .then((response) => {
+              response.json().then((json) => {
+                console.log(json);
+                setTimeout(() => { window.location.href = "../../../Success" }, 100);
+              });
+              if (response.status !== 200) {
+                console.log(response);
+                alert(response)
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+              alert(error)
+            });
+    }
   }
   useEffect(() => {
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
@@ -163,7 +177,7 @@ export default function Page() {
           );
 
           const dataBranchCode = await responseDetailAsset.json();
-          console.log(dataBranchCode);
+          //console.log(dataBranchCode);
 
           if (Array.isArray(dataBranchCode)) {
             setDataBranchCode(dataBranchCode);
