@@ -16,7 +16,11 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-        const getfleimage = await prisma.tblfilemanagement.findMany();
+        const getfleimage = await prisma.tblfilemanagement.findMany({
+            where: {
+                fileId : FileId
+            }
+        });
 
         return NextResponse.json(getfleimage);
     } catch (error: any) {

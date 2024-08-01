@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -14,6 +12,8 @@ export default function Page() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [textareaValue, setTextareaValue] = useState("");
   const [dataBranchCode, setDataBranchCode] = useState([]);
+  const [dataFileImage, setDataFileImage] = useState([]);
+
   useEffect(() => {
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
     if (dataDetailAsset) {
@@ -102,10 +102,43 @@ export default function Page() {
       };
       fetchDataDetailAsset();
 
+      // const fetchfileImage = async () => {
+      //   try {
+      //     const responseFileImage= await fetch(
+      //       `/api/asset/GetFile?fileId=${dataAsset.map((id) => id.fileId)}`,
+      //       {
+      //         method: "GET",
+      //         headers: {
+      //           "Cache-Control": "no-cache",
+      //           Pragma: "no-cache",
+      //         },
+      //       }
+      //     );
+
+      //     const dataFileImage = await responseFileImage.json();
+
+      //     // Ensure dataDetailAsset is an array
+      //     if (Array.isArray(dataFileImage)) {
+      //       setDataFileImage(dataFileImage);
+      //     } else {
+      //       setDataFileImage([]);
+      //     }
+      //   } catch (error) {
+      //     console.error("Error fetching detail asset:", error);
+      //   }
+      // };
+      // fetchfileImage();
+
+    }
+  }, [session, noAsset, resultGroupBranch]);
+
+  useEffect(() => {
+    if (dataAsset.length > 0) {
       const fetchfileImage = async () => {
         try {
-          const responseFileImage= await fetch(
-            `/api/asset/GetImage?fileid=${dataAsset.map((id) => id.fileId)}`,
+          const fileIds = dataAsset.map((id) => id.fileId).join(",");
+          const responseFileImage = await fetch(
+            `/api/asset/GetFile?fileId=${fileIds}`,
             {
               method: "GET",
               headers: {
@@ -114,23 +147,22 @@ export default function Page() {
               },
             }
           );
-
-          const dataDetailAsset = await responseFileImage.json();
-
-          // Ensure dataDetailAsset is an array
-          if (Array.isArray(dataDetailAsset)) {
-            setDataAsset(dataDetailAsset);
-            fetchDataDetailBranchCode(dataDetailAsset);
+  
+          const dataFileImage = await responseFileImage.json();
+  
+          if (Array.isArray(dataFileImage)) {
+            setDataFileImage(dataFileImage);
           } else {
-            setDataAsset([]);
-            window.location.href = "/home";
+            setDataFileImage([]);
           }
         } catch (error) {
-          console.error("Error fetching detail asset:", error);
+          console.error("Error fetching file image:", error);
         }
       };
+  
+      fetchfileImage();
     }
-  }, [session, noAsset, resultGroupBranch]);
+  }, [dataAsset]);
 
   if (status === "loading") {
     return (
@@ -283,7 +315,7 @@ export default function Page() {
                         {data.Status === "1" && (
                           <div className="flex flex-col items-center justify-center mt-10">
                               <img
-                                src="https://minio.saksiam.co.th/public/saktech/logo/Iconasset2.png"
+                                src={`https://smartcard-dev.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=${dataFileImage.map((file) => file.fileUpload)}`}
                                 className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
                                 alt="Uploaded"
                                 onClick={() =>
@@ -299,7 +331,7 @@ export default function Page() {
                               <dialog id="pic" className="modal">
                                 <div className="modal-box bg-black bg-opacity-10">
                                   <img
-                                    src="https://smartcard-dev.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=2024/07/f3501556-4f24-11ef-a3fe-4a0a010ea450.jpg"
+                                    src={`https://smartcard-dev.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=${dataFileImage.map((file) => file.fileUpload)}`}
                                     className="max-h-screen max-w-screen"
                                     alt="Full Size"
                                   />
