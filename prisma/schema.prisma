@@ -44,6 +44,7 @@ model AssetMaster {
   Serial_no               String?    @map("Serial_no")
   Status                  String?    @map("Status")
   Description             String?    @map("Description")
+  fileId                  String?    @map("fileId")
   CreatedBy               String?    @map("CreatedBy")
   Createtime              String?    @map("Createtime")
 
@@ -55,5 +56,19 @@ model Asset_Branch_Code {
   Name       String? 
 
   @@map("Asset_Branch_Code")
+}
+
+model tblfilemanagement {
+  fileId                  Int        @id @default(autoincrement()) @map("fileId")
+  filename                String?    @map("filename")
+  categoryid              String?    @map("categoryid")
+  descriptions            String?    @map("descriptions")
+  tags                    String?    @map("tags")
+  fileUpload              String?    @map("fileUpload")
+  filetype                String?    @map("filetype")
+  uploadedby              String?    @map("uploadedby")
+  dateupload              DateTime?  @map("dateupload")
+
+  @@map("tblfilemanagement")
 }
 

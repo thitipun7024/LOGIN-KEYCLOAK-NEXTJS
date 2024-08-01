@@ -72,6 +72,7 @@ export default function Page() {
           console.error("Error fetching detail asset:", error);
         }
       };
+
       const fetchDataDetailBranchCode = async (dataDetailAsset) => {
         try {
           const responseDetailAsset = await fetch(
@@ -100,6 +101,34 @@ export default function Page() {
         }
       };
       fetchDataDetailAsset();
+
+      const fetchfileImage = async () => {
+        try {
+          const responseFileImage= await fetch(
+            `/api/asset/GetImage?fileid=${dataAsset.map((id) => id.fileId)}`,
+            {
+              method: "GET",
+              headers: {
+                "Cache-Control": "no-cache",
+                Pragma: "no-cache",
+              },
+            }
+          );
+
+          const dataDetailAsset = await responseFileImage.json();
+
+          // Ensure dataDetailAsset is an array
+          if (Array.isArray(dataDetailAsset)) {
+            setDataAsset(dataDetailAsset);
+            fetchDataDetailBranchCode(dataDetailAsset);
+          } else {
+            setDataAsset([]);
+            window.location.href = "/home";
+          }
+        } catch (error) {
+          console.error("Error fetching detail asset:", error);
+        }
+      };
     }
   }, [session, noAsset, resultGroupBranch]);
 
@@ -270,7 +299,7 @@ export default function Page() {
                               <dialog id="pic" className="modal">
                                 <div className="modal-box bg-black bg-opacity-10">
                                   <img
-                                    src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
+                                    src="https://smartcard-dev.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=2024/07/f3501556-4f24-11ef-a3fe-4a0a010ea450.jpg"
                                     className="max-h-screen max-w-screen"
                                     alt="Full Size"
                                   />
