@@ -12,7 +12,6 @@ export default function Page() {
   const [dataAsset, setDataAsset] = useState([]);
   const [resultGroupBranch, setResultGroupBranch] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [statusselect, setStatusSlect] = useState("รอตรวจนับ");
   const [textareaValue, setTextareaValue] = useState("");
   const [dataBranchCode, setDataBranchCode] = useState([]);
   useEffect(() => {
@@ -73,6 +72,7 @@ export default function Page() {
           console.error("Error fetching detail asset:", error);
         }
       };
+
       const fetchDataDetailBranchCode = async (dataDetailAsset) => {
         try {
           const responseDetailAsset = await fetch(
@@ -101,6 +101,34 @@ export default function Page() {
         }
       };
       fetchDataDetailAsset();
+
+      const fetchfileImage = async () => {
+        try {
+          const responseFileImage= await fetch(
+            `/api/asset/GetImage?fileid=${dataAsset.map((id) => id.fileId)}`,
+            {
+              method: "GET",
+              headers: {
+                "Cache-Control": "no-cache",
+                Pragma: "no-cache",
+              },
+            }
+          );
+
+          const dataDetailAsset = await responseFileImage.json();
+
+          // Ensure dataDetailAsset is an array
+          if (Array.isArray(dataDetailAsset)) {
+            setDataAsset(dataDetailAsset);
+            fetchDataDetailBranchCode(dataDetailAsset);
+          } else {
+            setDataAsset([]);
+            window.location.href = "/home";
+          }
+        } catch (error) {
+          console.error("Error fetching detail asset:", error);
+        }
+      };
     }
   }, [session, noAsset, resultGroupBranch]);
 
@@ -248,7 +276,7 @@ export default function Page() {
                             </h2>
                             
                             {data.Status === "1" && (<div className="lg:text-xl md:text-lg sm:text-md text-md badge badge-lg w-20">ปกติ</div>)}
-                            {data.Status === "13" && (<div className="lg:text-lg md:text-md sm:text-md text-md badge badge-lg lg:w-28 md:w-20 sm:w-20 w-20">โยกย้าย</div>)}
+                            {data.Status === "7" && (<div className="lg:text-lg md:text-md sm:text-md text-md badge badge-lg lg:w-28 md:w-20 sm:w-20 w-20">โยกย้าย</div>)}
                           </div>
                         </div>
 
@@ -271,7 +299,7 @@ export default function Page() {
                               <dialog id="pic" className="modal">
                                 <div className="modal-box bg-black bg-opacity-10">
                                   <img
-                                    src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
+                                    src="https://smartcard-dev.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=2024/07/f3501556-4f24-11ef-a3fe-4a0a010ea450.jpg"
                                     className="max-h-screen max-w-screen"
                                     alt="Full Size"
                                   />
@@ -287,7 +315,7 @@ export default function Page() {
                           </div>
                         )}
 
-                        {data.Status === "13" && (
+                        {data.Status === "7" && (
                           <div className="flex flex-col items-center justify-center mt-10">
                             <textarea
                               className="textarea textarea-bordered lg:w-4/6 md:w-4/5 sm:w-4/5 w-full text-black lg:text-base md:text-base sm:text-baseb"
@@ -299,49 +327,6 @@ export default function Page() {
                           </div>
                         )}
 
-                        {statusselect === "9" && (
-                          <div>
-                            <div className="flex flex-col items-center justify-center mt-5">
-                              {selectedImage && (
-                                <img
-                                  src={selectedImage}
-                                  className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
-                                  alt="Uploaded"
-                                  onClick={() =>
-                                    (
-                                      document.getElementById(
-                                        "pic"
-                                      ) as HTMLDialogElement
-                                    ).showModal()
-                                  }
-                                />
-                              )}
-
-                              <label className="cursor-pointer flex flex-col items-center justify-center mt-5">
-                                <img
-                                  src="https://minio.saksiam.co.th/public/saktech/logo/camera.png"
-                                  className="lg:h-48 md:h-24 sm:h-24 h-16 lg:w-48 md:w-24 sm:w-24 w-16"
-                                />
-                                <input
-                                  type="file"
-                                  onChange={handleImageUpload}
-                                  className="hidden"
-                                  accept="image/*"
-                                  capture="environment"
-                                />
-                              </label>
-                            </div>
-
-                            <div className="flex flex-col items-center justify-center mt-5">
-                              <textarea
-                                className="textarea textarea-bordered w-full text-black"
-                                placeholder="กรอกรายละเอียด"
-                                value={textareaValue}
-                                onChange={handleTextareaChange}
-                              ></textarea>
-                            </div>
-                          </div>
-                        )}
                       </div>
                     </div>
                   </div>

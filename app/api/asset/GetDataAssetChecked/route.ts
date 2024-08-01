@@ -5,10 +5,10 @@ export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
     const BranchCodeSearch = searchParams.get("resultGroupBranch")
     const SakHQCodeSearch = searchParams.get("SakHQ")
-    const StatusWFA = "13";
+    const StatusWFA = "7";
     const StatusN = "1";
     const Asset_StatusA = "2";
-    const Asset_StatusNA = "17";
+    const Asset_StatusNA = "";
 
     if (!BranchCodeSearch && !SakHQCodeSearch) {
         return NextResponse.json({ message: "ไม่มีข้อมูล" }, { status: 200 });

@@ -4,7 +4,7 @@ import { type NextRequest, NextResponse } from 'next/server'
 export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
     const NoAsset = searchParams.get("NoAsset")
-    const StatusWFA = "13";
+    const StatusWFA = "7";
     const StatusN = "1";
 
     try {
