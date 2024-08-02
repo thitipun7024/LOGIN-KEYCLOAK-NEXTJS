@@ -12,7 +12,7 @@ export default function Page() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [textareaValue, setTextareaValue] = useState("");
   const [dataBranchCode, setDataBranchCode] = useState([]);
-  const [dataFileImage, setDataFileImage] = useState([{fileUpload:'2024/08/8113602c-509d-11ef-a3fe-4a0a010ea450.jpg'}]);
+  const [dataFileImage, setDataFileImage] = useState([{fileUpload:'2024/08/LoadingImage.png'}]);
 
   console.log(dataFileImage)
  useEffect(() => {
