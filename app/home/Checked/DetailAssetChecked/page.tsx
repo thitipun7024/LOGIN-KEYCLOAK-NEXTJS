@@ -302,7 +302,7 @@ export default function Page() {
                         {data.Status === "1" && (
                           <div className="flex flex-col items-center justify-center mt-10">
                             <img
-                              src={`${process.env.NEXT_PUBLIC_GET_URL_IMAGE}${dataFileImage.map(
+                              src={`${process.env.SMARTCARD_URI}${dataFileImage.map(
                                 (file) => file.fileUpload
                               )}`}
                               className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
@@ -320,7 +320,7 @@ export default function Page() {
                               <dialog id="pic" className="modal">
                                 <div className="modal-box bg-black bg-opacity-10">
                                   <img
-                                    src={`${process.env.NEXT_PUBLIC_GET_URL_IMAGE}${dataFileImage.map(
+                                    src={`${process.env.SMARTCARD_URI}${dataFileImage.map(
                                       (file) => file.fileUpload
                                     )}`}
                                     className="max-h-screen max-w-screen"
@@ -354,7 +354,7 @@ export default function Page() {
                           <div>
                             <div className="flex flex-col items-center justify-center mt-10">
                               <img
-                                src={`${process.env.NEXT_PUBLIC_GET_URL_IMAGE}${dataFileImage.map(
+                                src={`${process.env.SMARTCARD_URI}${dataFileImage.map(
                                   (file) => file.fileUpload
                                 )}`}
                                 className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
@@ -372,7 +372,7 @@ export default function Page() {
                                 <dialog id="pic" className="modal">
                                   <div className="modal-box bg-black bg-opacity-10">
                                     <img
-                                      src={`${process.env.NEXT_PUBLIC_GET_PART_IMAGE}${dataFileImage.map(
+                                      src={`${process.env.SMARTCARD_URI}${dataFileImage.map(
                                         (file) => file.fileUpload
                                       )}`}
                                       className="max-h-screen max-w-screen"
