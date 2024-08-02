@@ -410,7 +410,6 @@ export default function Page() {
                             </h2>
                             {other ? ( <select
                                 className="select select-bordered lg:select-sm md:select-md sm:select-sm select-sm lg:w-28 md:w-32 sm:w-28 w-28 max-w-xs text-black"
-                                defaultValue="รอตรวจนับ"
                                 value={selectedValue}
                                 onChange={(e) => {
                                   setSelectedValue(e.target.value);
@@ -422,7 +421,6 @@ export default function Page() {
                               </select>) : (
                               <select
                               className="select select-bordered lg:select-sm md:select-md sm:select-sm select-sm lg:w-28 md:w-32 sm:w-28 w-28 max-w-xs text-black"
-                              defaultValue="รอตรวจนับ"
                               value={selectedValue}
                               onChange={(e) => {
                                 setSelectedValue(e.target.value);
