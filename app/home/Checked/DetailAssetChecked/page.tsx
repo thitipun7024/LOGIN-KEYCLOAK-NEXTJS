@@ -199,7 +199,7 @@ export default function Page() {
                 <div className="card bg-clip-border lg:w-2/5 md:w-3/5 sm:w-11/12 w-11/12 p-1 bg-base-100 shadow-xl flex flex-flex-col items-center justify-center h-20 text-center">
                   <h2 className="lg:text-4xl md:text-2xl sm:text-2xl text-xl font-bold">
                     {data ? (
-                      data.Asset_description
+                      data.Asset_description 
                     ) : (
                       <span className="loading loading-dots loading-md"></span>
                     )}
@@ -301,7 +301,7 @@ export default function Page() {
                         {data.Status === "1" && (
                           <div className="flex flex-col items-center justify-center mt-10">
                             <img
-                              src={`https://smartcard-dev.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=${dataFileImage.map(
+                              src={`${process.env.NEXT_PUBLIC_GET_PART_IMAGE}${dataFileImage.map(
                                 (file) => file.fileUpload
                               )}`}
                               className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
@@ -319,7 +319,7 @@ export default function Page() {
                               <dialog id="pic" className="modal">
                                 <div className="modal-box bg-black bg-opacity-10">
                                   <img
-                                    src={`https://smartcard-dev.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=${dataFileImage.map(
+                                    src={`${process.env.NEXT_PUBLIC_GET_PART_IMAGE}${dataFileImage.map(
                                       (file) => file.fileUpload
                                     )}`}
                                     className="max-h-screen max-w-screen"
@@ -353,7 +353,7 @@ export default function Page() {
                           <div>
                             <div className="flex flex-col items-center justify-center mt-10">
                               <img
-                                src={`https://smartcard-dev.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=${dataFileImage.map(
+                                src={`${process.env.NEXT_PUBLIC_GET_PART_IMAGE}${dataFileImage.map(
                                   (file) => file.fileUpload
                                 )}`}
                                 className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
@@ -371,7 +371,7 @@ export default function Page() {
                                 <dialog id="pic" className="modal">
                                   <div className="modal-box bg-black bg-opacity-10">
                                     <img
-                                      src={`https://smartcard-dev.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=${dataFileImage.map(
+                                      src={`${process.env.NEXT_PUBLIC_GET_PART_IMAGE}${dataFileImage.map(
                                         (file) => file.fileUpload
                                       )}`}
                                       className="max-h-screen max-w-screen"
