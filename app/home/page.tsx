@@ -219,12 +219,12 @@ export default function Page() {
   return (
     <div className="background2">
       <div className="flex flex-col justify-center items-center min-h-screen">
-        <div className="absolute top-0 left-0 right-0 lg:h-64 md:h-56 sm:h-48 h-48 bg-blue-950 transform rounded-b-3xl">
+        <div className="absolute top-0 left-0 right-0 lg:h-64 md:h-56 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
           <div className="flex flex-col justify-center items-center mt-16">
-            <img
-              src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
-              className="lg:h-48 md:h-36 sm:h-24 h-32 lg:w-48 md:w-36 sm:w-24 w-32 lg:-mt-20 md:-mt-16 sm:-mt-16 -mt-16"
-            />
+          <img
+                    src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
+                    className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-42 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5"
+                  />
             <div className="card bg-clip-border w-auto lg:pl-10 md:pl-4 sm:pl-0 pl-2 lg:pr-10 md:pr-4 sm:pr-0 pr-2 lg:pt-2 md:pt-4 sm:pt-0 pt-1 lg:pb-2 md:pb-4 sm:pb-0 pb-1 bg-base-100 shadow-xl flex flex-row items-center justify-center">
               <img
                 src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
@@ -312,7 +312,7 @@ export default function Page() {
             </div>
 
             <div className="container contents">
-              <div className="grid lg:gap-x-28 md:gap-x-10 sm:gap-x-5 gap-x-2 gap-y-4 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-3 grid-cols-3 mt-10 justify-center">
+              <div className="grid lg:gap-x-28 md:gap-x-10 sm:gap-x-5 gap-x-2 gap-y-4 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-3 grid-cols-2 lg:mt-20 md:mt-20 sm:mt-10 mt-7 justify-center">
                 <div className="flex flex-col items-center">
                   <a href="/home/CheckThePackage" onClick={ClickParamGroup}>
                     <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
@@ -339,26 +339,18 @@ export default function Page() {
                   <span className="mt-2 text-center font-bold custom-font">สินทรัพย์ที่ถูกตรวจนับเเล้ว</span>
                 </div>
 
-                <div className="flex flex-col items-center">
-                  <a href="/home/FormNoAsset">
-                    <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
-                      <img
-                        src="https://minio.saksiam.co.th/public/saktech/logo/add.png
-                        "
-                        alt=""
-                        className="h-ful w-full object-cover ml-2"
-                      />
-                    </button>
-                  </a>
-                  <span className="mt-2 text-center font-bold custom-font">สินทรัพยที่ไม่มีเลข Asset</span>
-                </div>
               </div>
             </div>
 
-            <footer className="footer footer-center p-4 text-base-content mt-32">
-              <aside>
-              <p> © 2024 COPYRIGHT BY SAKTECH VERSION {process.env.NEXT_PUBLIC_VERSION}</p>
-              </aside>
+            <footer className="footer footer-center p-4 text-base-content lg:mt-28 md:mt-80 sm:mt-32 mt-40">
+                <aside>
+                    <p className="lg:text-base md:text-base sm:text-sm text-sm">
+                    © 2024 All Right Reserve By SakTech
+                    </p>
+                    <p className="lg:text-base md:text-base sm:text-sm text-sm">
+                    VERSION {process.env.NEXT_PUBLIC_VERSION}
+                    </p>
+                </aside>
             </footer>
           </div>
         </div>

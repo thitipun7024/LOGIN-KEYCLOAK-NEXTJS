@@ -295,7 +295,7 @@ export default function Page() {
   return (
     <div className="background2">
       <div className="flex flex-col justify-center items-center min-h-screen">
-        <div className="absolute top-0 left-0 right-0 lg:h-56 md:h-48 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
+        <div className="absolute top-0 left-0 right-0 lg:h-56 md:h-52 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
           <a
             className="btn btn-ghost mt-5 ml-3 text-white"
             href="/home/CheckThePackage"
@@ -319,9 +319,9 @@ export default function Page() {
                 key={data.ID}
               >
                 <a href="/home">
-                  <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
-                    className="lg:h-48 md:h-36 sm:h-24 h-32 lg:w-48 md:w-36 sm:w-24 w-32 lg:-mt-20 md:-mt-16 sm:-mt-16 -mt-16"
+                <img
+                    src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
+                    className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-42 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5"
                   />
                 </a>
 
@@ -558,11 +558,16 @@ export default function Page() {
                   )}
                 </div>
 
-                <footer className="footer footer-center p-4 text-base-content mt-10">
-                  <aside>
-                    <p>Copyright © 2024</p>
-                  </aside>
-                </footer>
+                <footer className="footer footer-center p-4 text-base-content lg:mt-28 md:mt-80 sm:mt-32 mt-12">
+                <aside>
+                    <p className="lg:text-base md:text-base sm:text-sm text-sm">
+                    © 2024 All Right Reserve By SakTech
+                    </p>
+                    <p className="lg:text-base md:text-base sm:text-sm text-sm">
+                    VERSION {process.env.NEXT_PUBLIC_VERSION}
+                    </p>
+                </aside>
+            </footer>
               </div>
             ))
           ) : (
@@ -610,7 +615,7 @@ export default function Page() {
             <div className="modal-box">
               <div className="flex justify-center items-center">
                 <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/warning.png"
+                    src="https://minio.saksiam.co.th/public/saktech/logo/question.png"
                     className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20"
                   />
               </div>
@@ -631,12 +636,12 @@ export default function Page() {
           <div className="modal-box">
             <div className="flex justify-center items-center">
               <img
-                src="https://minio.saksiam.co.th/public/saktech/logo/close.png"
+                src="https://minio.saksiam.co.th/public/saktech/logo/warning.png"
                 className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20"
               />
             </div>
             <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
-              ไม่มีสินทรัพย์นี้อยู่ในระบบ
+              สินทรัพย์นี้ถูกตรวจนับไปเเล้ว
             </p>
             <div className="modal-action">
               <button className="btn" onClick={closeWarningModal}>
