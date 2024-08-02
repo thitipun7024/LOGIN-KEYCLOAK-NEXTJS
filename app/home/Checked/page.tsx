@@ -113,10 +113,27 @@ function PageContent() {
 
   const filterData = () => {
     if (!Array.isArray(rows)) return [];
-    return rows.filter(row => {
-      
+  
+    const sortedData = rows.sort((a, b) => {
+      const isAWaitingApproval = (a.Status === "1" && a.Asset_Status === "") ||
+                                  (a.Status === "7" && a.Asset_Status === "") ||
+                                  (a.Status === "14" && a.Asset_Status === "");
+      const isBWaitingApproval = (b.Status === "1" && b.Asset_Status === "") ||
+                                  (b.Status === "7" && b.Asset_Status === "") ||
+                                  (b.Status === "14" && b.Asset_Status === "");
+  
+      if (isAWaitingApproval && !isBWaitingApproval) {
+        return -1; // a comes before b
+      }
+      if (!isAWaitingApproval && isBWaitingApproval) {
+        return 1; // b comes before a
+      }
+      return 0; // leave order unchanged
+    });
+  
+    return sortedData.filter(row => {
       return row.Asset_description.toLowerCase().includes(search.toLowerCase()) ||
-             row.Asset.toLowerCase().includes(search.toLowerCase())
+             row.Asset.toLowerCase().includes(search.toLowerCase());
     });
   };
 
@@ -143,7 +160,7 @@ function PageContent() {
   return (
     <div className="background2">
     <div className="flex flex-col justify-center items-center min-h-screen">
-      <div className="absolute top-0 left-0 right-0 lg:h-64 md:h-56 sm:h-48 h-52 bg-blue-950 transform rounded-b-3xl">
+      <div className="absolute top-0 left-0 right-0 lg:h-60 md:h-60 sm:h-48 h-48 bg-blue-950 transform rounded-b-3xl">
         <a className="btn btn-ghost mt-5 ml-1 text-white" href="/home">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -159,9 +176,9 @@ function PageContent() {
         </a>
         <div className="flex flex-col justify-center items-center mt-1">
         <a href="/home">
-                  <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
-                    className="lg:h-48 md:h-36 sm:h-24 h-32 lg:w-48 md:w-36 sm:w-24 w-32 lg:-mt-20 md:-mt-16 sm:-mt-16 -mt-16"
+        <img
+                    src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
+                    className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-42 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5"
                   />
                 </a>
           <label className="input input-bordered flex items-center gap-2 lg:w-1/3 md:w-2/3 sm:w-4/5 w-4/5">
@@ -219,6 +236,18 @@ function PageContent() {
                           รอการอนุมัติ
                         </div>
                     )}
+
+                    {row.Status === "14" && row.Asset_Status === "2" && (
+                        <div className="badge border-0 badge-md bg-slate-500 text-white">
+                            อื่นๆ
+                        </div>
+                    )}
+
+                    {row.Status === "14" && row.Asset_Status === "" && (
+                        <div className="badge border-0 badge-md bg-orange-500 text-white">
+                          รอการอนุมัติ
+                        </div>
+                    )}
                   </div>
                   <div className="flex-grow"></div>
                   <div className="flex lg:mr-10 md:mr-5 mr-4">
@@ -262,7 +291,17 @@ function PageContent() {
               »
             </button>
           </div>
-          <div className="h-28"></div>
+          
+          <footer className="footer footer-center p-4 text-base-content lg:mt-28 md:mt-20 sm:mt-32 mt-12">
+                <aside>
+                    <p className="lg:text-base md:text-base sm:text-sm text-sm">
+                    © 2024 All Right Reserve By SakTech
+                    </p>
+                    <p className="lg:text-base md:text-base sm:text-sm text-sm">
+                    VERSION {process.env.NEXT_PUBLIC_VERSION}
+                    </p>
+                </aside>
+          </footer>
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ export async function GET(req: NextRequest) {
     const NoAsset = searchParams.get("NoAsset")
     const StatusWFA = "7";
     const StatusN = "1";
+    const StatusO = "14";
 
     try {
         const getBranchCode = await prisma.assetMaster.findMany({
@@ -14,7 +15,8 @@ export async function GET(req: NextRequest) {
                     { 
                         OR: [
                             {Status: StatusWFA},
-                            {Status: StatusN}
+                            {Status: StatusN},
+                            {Status: StatusO}
                         ]
                          
                     },

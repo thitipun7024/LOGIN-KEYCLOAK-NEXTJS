@@ -14,6 +14,12 @@ export default function Page() {
   const [textareaValue, setTextareaValue] = useState("");
   const [dataBranchCode, setDataBranchCode] = useState([]);
   const [username, setusername] = useState<string>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalShown, setModalShown] = useState(false);
+  const [selectedValue, setSelectedValue] = useState("รอตรวจนับ");
+  const [showWarningModal, setShowWarningModal] = useState(false);
+  const [sakHQ, setSakHQ] = useState(null);
+  const [groupBaD_TH, setGroupBaD_TH] = useState(null);
 
   const InsertTrackingData = async () => {
     if (statusselect === "1" || statusselect === "14") {
@@ -88,9 +94,6 @@ export default function Page() {
             });
     }
   };
-  
-
-  //console.log(branchCostCTR)
 
   useEffect(() => {
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
@@ -110,17 +113,26 @@ export default function Page() {
     
       setusername(findDisplayname)
 
-      // ดึงข้อมูลที่เป็นข้อมูลฝ่ายหรือข้อมูล Branch
       const findGroupBranch = decoded.groups.find((group) => {
-        return (
-          group.includes("/group/SAK BRANCH/") ||
-          group.includes("/group/SAK HQ/")
-        );
+        return group.includes("/group/SAK BRANCH/");
       });
       const resultGroupBranch = findGroupBranch
         ? findGroupBranch.split("/").pop()
         : "primary";
       setResultGroupBranch(resultGroupBranch);
+
+      const findGroupBaD_TH = decoded.groups.find((group) => {
+        return (
+          group.includes("/group/SAK BRANCH_TH/") ||
+          group.includes("/group/SAK DEPARTMENT-TH/")
+        );
+      });
+      const resultGroupBaD_TH = findGroupBaD_TH ? (
+        findGroupBaD_TH.split("/").pop()
+      ) : (
+        <div className="badge badge-error badge-outline">พี่เคนไม่เพิ่มให้</div>
+      );
+      setGroupBaD_TH(resultGroupBaD_TH);
     }
   }, [session]);
 
@@ -141,13 +153,12 @@ export default function Page() {
 
           const dataDetailAsset = await responseDetailAsset.json();
 
-          // Ensure dataDetailAsset is an array
           if (Array.isArray(dataDetailAsset)) {
             setDataAsset(dataDetailAsset);
             fetchDataDetailBranchCode(dataDetailAsset);
           } else {
             setDataAsset([]);
-            window.location.href = "/home";
+            setShowWarningModal(true);
           }
         } catch (error) {
           console.error("Error fetching detail asset:", error);
@@ -183,7 +194,52 @@ export default function Page() {
       };
       fetchDataDetailAsset();
     }
-  }, [session, noAsset, resultGroupBranch]);
+    const fetchDataSakHQ = async () => {
+      try {
+        const responseSakHQ = await fetch(
+          `/api/asset/GetNoSakHQ?SakHQ=${groupBaD_TH}`,
+          {
+            method: "GET",
+            redirect: "follow",
+            headers: {
+              "Cache-Control": "no-cache",
+              Pragma: "no-cache",
+            },
+          }
+        );
+
+        if (!responseSakHQ.ok) {
+          throw new Error(`HTTP error! Status: ${responseSakHQ.status}`);
+        }
+
+        const SakHQJson = await responseSakHQ.json();
+
+        if (SakHQJson && SakHQJson.CostCenter) {
+          const costCenter = SakHQJson.CostCenter;
+          setSakHQ(costCenter);
+        }
+      } catch (error) {
+        console.error("Error fetching SakHQ data:", error);
+      }
+    };
+    fetchDataSakHQ();
+  }, [session, noAsset, resultGroupBranch, groupBaD_TH]);
+
+  useEffect(() => {
+    if (dataBranchCode.length > 0 && !modalShown) {
+      const branchCode = dataBranchCode.map((item) => item.CostCenter);
+      const groupBranch = sakHQ ? sakHQ : resultGroupBranch;
+
+      const match = branchCode.includes(groupBranch);
+
+      if (!match) {
+        setIsModalOpen(true);
+        setModalShown(true);
+        setSelectedValue("14");
+        setStatusSlect("14");
+      }
+    }
+  }, [dataBranchCode, resultGroupBranch, sakHQ, modalShown]);
 
   if (status === "loading") {
     return (
@@ -223,10 +279,23 @@ export default function Page() {
     setTextareaValue(event.target.value);
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const closeWarningModal = () => {
+    setShowWarningModal(false);
+    window.location.href = "/home/CheckThePackage";
+  };
+
   return (
     <div className="background2">
       <div className="flex flex-col justify-center items-center min-h-screen">
-        <div className="absolute top-0 left-0 right-0 lg:h-56 md:h-48 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
+        <div className="absolute top-0 left-0 right-0 lg:h-52 md:h-52 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
           <a
             className="btn btn-ghost mt-5 ml-3 text-white"
             href="/home/CheckThePackage"
@@ -250,9 +319,9 @@ export default function Page() {
                 key={data.ID}
               >
                 <a href="/home">
-                  <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
-                    className="lg:h-48 md:h-36 sm:h-24 h-32 lg:w-48 md:w-36 sm:w-24 w-32 lg:-mt-20 md:-mt-16 sm:-mt-16 -mt-16"
+                <img
+                    src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
+                    className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-42 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5"
                   />
                 </a>
 
@@ -340,7 +409,11 @@ export default function Page() {
                             <select
                               className="select select-bordered lg:select-sm md:select-md sm:select-sm select-sm lg:w-28 md:w-32 sm:w-28 w-28 max-w-xs text-black"
                               defaultValue="รอตรวจนับ"
-                              onChange={handleStatusChange}
+                              value={selectedValue}
+                              onChange={(e) => {
+                                setSelectedValue(e.target.value);
+                                handleStatusChange(e);
+                              }}
                             >
                               <option value="รอตรวจนับ">รอตรวจนับ</option>
                               <option value="1">ปกติ</option>
@@ -485,11 +558,16 @@ export default function Page() {
                   )}
                 </div>
 
-                <footer className="footer footer-center p-4 text-base-content mt-10">
-                  <aside>
-                    <p>Copyright © 2024</p>
-                  </aside>
-                </footer>
+                <footer className="footer footer-center p-4 text-base-content lg:mt-28 md:mt-80 sm:mt-32 mt-12">
+                <aside>
+                    <p className="lg:text-base md:text-base sm:text-sm text-sm">
+                    © 2024 All Right Reserve By SakTech
+                    </p>
+                    <p className="lg:text-base md:text-base sm:text-sm text-sm">
+                    VERSION {process.env.NEXT_PUBLIC_VERSION}
+                    </p>
+                </aside>
+            </footer>
               </div>
             ))
           ) : (
@@ -531,6 +609,48 @@ export default function Page() {
             <button>close</button>
           </form>
         </dialog>
+
+        {isModalOpen && (
+          <dialog open className="modal">
+            <div className="modal-box">
+              <div className="flex justify-center items-center">
+                <img
+                    src="https://minio.saksiam.co.th/public/saktech/logo/question.png"
+                    className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20"
+                  />
+              </div>
+              <p className="py-4 flex text-center font-bold">
+                สินทรัพย์นี้ไม่ใช่สินทรัพย์ที่อยู่ในสาขาของท่านกรุณาตวจสอบสินทรัพย์นี้
+              </p>
+              <div className="modal-action">
+                <button className="btn" onClick={closeModal}>
+                  ปิด
+                </button>
+              </div>
+            </div>
+          </dialog>
+        )}
+
+{showWarningModal && (
+        <dialog open className="modal">
+          <div className="modal-box">
+            <div className="flex justify-center items-center">
+              <img
+                src="https://minio.saksiam.co.th/public/saktech/logo/warning.png"
+                className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20"
+              />
+            </div>
+            <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
+              สินทรัพย์นี้ถูกตรวจนับไปเเล้ว
+            </p>
+            <div className="modal-action">
+              <button className="btn" onClick={closeWarningModal}>
+                ปิด
+              </button>
+            </div>
+          </div>
+        </dialog>
+      )}
 
       </div>
     </div>

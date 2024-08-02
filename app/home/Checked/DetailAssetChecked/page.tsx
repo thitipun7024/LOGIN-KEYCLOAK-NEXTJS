@@ -101,34 +101,6 @@ export default function Page() {
         }
       };
       fetchDataDetailAsset();
-
-      // const fetchfileImage = async () => {
-      //   try {
-      //     const responseFileImage= await fetch(
-      //       `/api/asset/GetFile?fileId=${dataAsset.map((id) => id.fileId)}`,
-      //       {
-      //         method: "GET",
-      //         headers: {
-      //           "Cache-Control": "no-cache",
-      //           Pragma: "no-cache",
-      //         },
-      //       }
-      //     );
-
-      //     const dataFileImage = await responseFileImage.json();
-
-      //     // Ensure dataDetailAsset is an array
-      //     if (Array.isArray(dataFileImage)) {
-      //       setDataFileImage(dataFileImage);
-      //     } else {
-      //       setDataFileImage([]);
-      //     }
-      //   } catch (error) {
-      //     console.error("Error fetching detail asset:", error);
-      //   }
-      // };
-      // fetchfileImage();
-
     }
   }, [session, noAsset, resultGroupBranch]);
 
@@ -147,9 +119,9 @@ export default function Page() {
               },
             }
           );
-  
+
           const dataFileImage = await responseFileImage.json();
-  
+
           if (Array.isArray(dataFileImage)) {
             setDataFileImage(dataFileImage);
           } else {
@@ -159,7 +131,7 @@ export default function Page() {
           console.error("Error fetching file image:", error);
         }
       };
-  
+
       fetchfileImage();
     }
   }, [dataAsset]);
@@ -187,7 +159,6 @@ export default function Page() {
     }
   };
 
-
   const handleTextareaChange = (event) => {
     setTextareaValue(event.target.value);
   };
@@ -195,7 +166,7 @@ export default function Page() {
   return (
     <div className="background2">
       <div className="flex flex-col justify-center items-center min-h-screen">
-        <div className="absolute top-0 left-0 right-0 lg:h-56 md:h-48 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
+      <div className="absolute top-0 left-0 right-0 lg:h-52 md:h-52 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
           <a
             className="btn btn-ghost mt-5 ml-3 text-white"
             href="/home/Checked"
@@ -219,14 +190,14 @@ export default function Page() {
                 key={data.ID}
               >
                 <a href="/home">
-                  <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/LogoParcel.png"
-                    className="lg:h-48 md:h-36 sm:h-24 h-32 lg:w-48 md:w-36 sm:w-24 w-32 lg:-mt-20 md:-mt-16 sm:-mt-16 -mt-16"
+                <img
+                    src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
+                    className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-42 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5"
                   />
                 </a>
 
                 <div className="card bg-clip-border lg:w-2/5 md:w-3/5 sm:w-11/12 w-11/12 p-1 bg-base-100 shadow-xl flex flex-flex-col items-center justify-center h-20 text-center">
-                  <h2 className="lg:text-4xl md:text-2xl sm:text-2xl text-2xl font-bold">
+                  <h2 className="lg:text-4xl md:text-2xl sm:text-2xl text-xl font-bold">
                     {data ? (
                       data.Asset_description
                     ) : (
@@ -295,8 +266,10 @@ export default function Page() {
                                 item ? (
                                   item.Name
                                 ) : (
-                                  <span className="loading loading-dots loading-md" key={item
-                                  .CostCenter}></span>
+                                  <span
+                                    className="loading loading-dots loading-md"
+                                    key={item.CostCenter}
+                                  ></span>
                                 )
                               )}
                             </p>
@@ -306,32 +279,49 @@ export default function Page() {
                             <h2 className=" font-bold text-white mb-1 lg:text-xl md:text-2xl sm:text-md text-lg">
                               สถานะ
                             </h2>
-                            
-                            {data.Status === "1" && (<div className="lg:text-xl md:text-lg sm:text-md text-md badge badge-lg w-20">ปกติ</div>)}
-                            {data.Status === "7" && (<div className="lg:text-lg md:text-md sm:text-md text-md badge badge-lg lg:w-28 md:w-20 sm:w-20 w-20">โยกย้าย</div>)}
+
+                            {data.Status === "1" && (
+                              <div className="lg:text-xl md:text-lg sm:text-md text-md badge badge-lg w-20">
+                                ปกติ
+                              </div>
+                            )}
+                            {data.Status === "7" && (
+                              <div className="lg:text-lg md:text-md sm:text-md text-md badge badge-lg lg:w-28 md:w-20 sm:w-20 w-20">
+                                โยกย้าย
+                              </div>
+                            )}
+                            {data.Status === "14" && (
+                              <div className="lg:text-xl md:text-lg sm:text-md text-md badge badge-lg w-20">
+                                อื่นๆ
+                              </div>
+                            )}
                           </div>
                         </div>
 
                         {data.Status === "1" && (
                           <div className="flex flex-col items-center justify-center mt-10">
-                              <img
-                                src={`https://smartcard-dev.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=${dataFileImage.map((file) => file.fileUpload)}`}
-                                className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
-                                alt="Uploaded"
-                                onClick={() =>
-                                  (
-                                    document.getElementById(
-                                      "pic"
-                                    ) as HTMLDialogElement
-                                  ).showModal()
-                                }
-                              />
+                            <img
+                              src={`https://smartcard-dev.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=${dataFileImage.map(
+                                (file) => file.fileUpload
+                              )}`}
+                              className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
+                              alt="Uploaded"
+                              onClick={() =>
+                                (
+                                  document.getElementById(
+                                    "pic"
+                                  ) as HTMLDialogElement
+                                ).showModal()
+                              }
+                            />
 
                             <div>
                               <dialog id="pic" className="modal">
                                 <div className="modal-box bg-black bg-opacity-10">
                                   <img
-                                    src={`https://smartcard-dev.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=${dataFileImage.map((file) => file.fileUpload)}`}
+                                    src={`https://smartcard-dev.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=${dataFileImage.map(
+                                      (file) => file.fileUpload
+                                    )}`}
                                     className="max-h-screen max-w-screen"
                                     alt="Full Size"
                                   />
@@ -353,12 +343,62 @@ export default function Page() {
                               className="textarea textarea-bordered lg:w-4/6 md:w-4/5 sm:w-4/5 w-full text-black lg:text-base md:text-base sm:text-baseb"
                               placeholder="กรอกรายละเอียด"
                               defaultValue={data.Description}
-                              style={{ color: 'black' }}
+                              style={{ color: "black" }}
                               disabled
                             ></textarea>
                           </div>
                         )}
 
+                        {data.Status === "14" && (
+                          <div>
+                            <div className="flex flex-col items-center justify-center mt-10">
+                              <img
+                                src={`https://smartcard-dev.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=${dataFileImage.map(
+                                  (file) => file.fileUpload
+                                )}`}
+                                className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
+                                alt="Uploaded"
+                                onClick={() =>
+                                  (
+                                    document.getElementById(
+                                      "pic"
+                                    ) as HTMLDialogElement
+                                  ).showModal()
+                                }
+                              />
+
+                              <div>
+                                <dialog id="pic" className="modal">
+                                  <div className="modal-box bg-black bg-opacity-10">
+                                    <img
+                                      src={`https://smartcard-dev.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=${dataFileImage.map(
+                                        (file) => file.fileUpload
+                                      )}`}
+                                      className="max-h-screen max-w-screen"
+                                      alt="Full Size"
+                                    />
+                                  </div>
+                                  <form
+                                    method="dialog"
+                                    className="modal-backdrop"
+                                  >
+                                    <button>close</button>
+                                  </form>
+                                </dialog>
+                              </div>
+                            </div>
+
+                            <div className="flex flex-col items-center justify-center mt-10">
+                              <textarea
+                                className="textarea textarea-bordered lg:w-4/6 md:w-4/5 sm:w-4/5 w-full text-black lg:text-base md:text-base sm:text-baseb"
+                                placeholder="กรอกรายละเอียด"
+                                defaultValue={data.Description}
+                                style={{ color: "black" }}
+                                disabled
+                              ></textarea>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -387,11 +427,16 @@ export default function Page() {
                   )}
                 </div>
 
-                <footer className="footer footer-center p-4 text-base-content mt-10">
-                  <aside>
-                    <p>Copyright © 2024</p>
-                  </aside>
-                </footer>
+                <footer className="footer footer-center p-4 text-base-content lg:mt-28 md:mt-20 sm:mt-32 mt-12">
+                <aside>
+                    <p className="lg:text-base md:text-base sm:text-sm text-sm">
+                    © 2024 All Right Reserve By SakTech
+                    </p>
+                    <p className="lg:text-base md:text-base sm:text-sm text-sm">
+                    VERSION {process.env.NEXT_PUBLIC_VERSION}
+                    </p>
+                </aside>
+          </footer>
               </div>
             ))
           ) : (
@@ -433,9 +478,7 @@ export default function Page() {
             <button>close</button>
           </form>
         </dialog>
-        
       </div>
     </div>
   );
 }
-

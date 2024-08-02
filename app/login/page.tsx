@@ -22,6 +22,17 @@ export default function page() {
             <div className="flex justify-center items-center mt-20">
                 <Button />              
             </div>
+
+            <footer className="footer footer-center p-4 text-base-content lg:mt-60 md:mt-96 sm:mt-32 mt-40">
+                <aside>
+                    <p className="lg:text-lg md:text-base sm:text-sm text-sm">
+                    © 2024 All Right Reserve By SakTech
+                    </p>
+                    <p className="lg:text-lg md:text-base sm:text-sm text-sm">
+                    VERSION {process.env.NEXT_PUBLIC_VERSION}
+                    </p>
+                </aside>
+            </footer>
         </div>
   )
 }
