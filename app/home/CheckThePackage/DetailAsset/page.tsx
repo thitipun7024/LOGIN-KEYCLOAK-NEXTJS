@@ -20,6 +20,7 @@ export default function Page() {
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [sakHQ, setSakHQ] = useState(null);
   const [groupBaD_TH, setGroupBaD_TH] = useState(null);
+  const [other, setOther] = useState(false);
 
   const InsertTrackingData = async () => {
     if (statusselect === "1" || statusselect === "14") {
@@ -237,6 +238,7 @@ export default function Page() {
         setModalShown(true);
         setSelectedValue("14");
         setStatusSlect("14");
+        setOther(true)
       }
     }
   }, [dataBranchCode, resultGroupBranch, sakHQ, modalShown]);
@@ -406,7 +408,19 @@ export default function Page() {
                             <h2 className=" font-bold text-white mb-1 lg:text-xl md:text-2xl sm:text-md text-lg">
                               สถานะ
                             </h2>
-                            <select
+                            {other ? ( <select
+                                className="select select-bordered lg:select-sm md:select-md sm:select-sm select-sm lg:w-28 md:w-32 sm:w-28 w-28 max-w-xs text-black"
+                                defaultValue="รอตรวจนับ"
+                                value={selectedValue}
+                                onChange={(e) => {
+                                  setSelectedValue(e.target.value);
+                                  handleStatusChange(e);
+                                }}
+                                disabled
+                              >
+                                <option value="14">อื่นๆ</option>
+                              </select>) : (
+                              <select
                               className="select select-bordered lg:select-sm md:select-md sm:select-sm select-sm lg:w-28 md:w-32 sm:w-28 w-28 max-w-xs text-black"
                               defaultValue="รอตรวจนับ"
                               value={selectedValue}
@@ -420,6 +434,7 @@ export default function Page() {
                               <option value="7">โยกย้าย</option>
                               <option value="14">อื่นๆ</option>
                             </select>
+                            )}
                           </div>
                         </div>
 
