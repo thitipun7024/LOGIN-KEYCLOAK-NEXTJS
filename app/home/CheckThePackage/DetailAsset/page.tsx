@@ -295,7 +295,7 @@ export default function Page() {
   return (
     <div className="background2">
       <div className="flex flex-col justify-center items-center min-h-screen">
-        <div className="absolute top-0 left-0 right-0 lg:h-56 md:h-52 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
+        <div className="absolute top-0 left-0 right-0 lg:h-52 md:h-52 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
           <a
             className="btn btn-ghost mt-5 ml-3 text-white"
             href="/home/CheckThePackage"

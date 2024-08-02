@@ -187,7 +187,7 @@ function PageContent() {
   return (
     <div className="background2">
     <div className="flex flex-col justify-center items-center min-h-screen">
-      <div className="absolute top-0 left-0 right-0 lg:h-64 md:h-60 sm:h-48 h-48 bg-blue-950 transform rounded-b-3xl">
+      <div className="absolute top-0 left-0 right-0 lg:h-60 md:h-60 sm:h-48 h-48 bg-blue-950 transform rounded-b-3xl">
         <a className="btn btn-ghost mt-5 ml-1 text-white" href="/home">
           <svg
             xmlns="http://www.w3.org/2000/svg"
