@@ -4,6 +4,7 @@ import Logout from "@/components/Logout";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
+import Image from "next/image";
 import "../globals.css";
 
 export default function Page() {
@@ -221,15 +222,42 @@ export default function Page() {
       <div className="flex flex-col justify-center items-center min-h-screen">
         <div className="absolute top-0 left-0 right-0 lg:h-64 md:h-56 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
           <div className="flex flex-col justify-center items-center mt-16">
-          <img
+          {/* <img
                     src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
                     className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-42 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5"
-                  />
+                  /> */}
+
+            <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5">
+            <Image
+              src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
+              alt="Picture of the author"
+              style={{
+                width: '100%',
+                height: 'auto',
+              }}
+              width={1200}
+              height={0}
+              priority
+            />
+            </div>
             <div className="card bg-clip-border w-auto lg:pl-10 md:pl-4 sm:pl-0 pl-2 lg:pr-10 md:pr-4 sm:pr-0 pr-2 lg:pt-2 md:pt-4 sm:pt-0 pt-1 lg:pb-2 md:pb-4 sm:pb-0 pb-1 bg-base-100 shadow-xl flex flex-row items-center justify-center">
-              <img
+              {/* <img
                 src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
                 className="lg:h-32 h-20 lg:w-32 w-20 m-4 lg:-ml-1 ml-2"
-              />
+              /> */}
+              <div className="lg:h-32 h-20 lg:w-32 w-20 m-4 lg:-ml-1 ml-2">
+                <Image 
+                  src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png" 
+                  alt="alt" 
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                  }}
+                  width={1200}
+                  height={0} 
+                  priority
+                />
+              </div>
               <div className="flex flex-col lg:ml-5 md:ml-5 sm:ml-5 ml-0">
                 <h2 className="lg:text-2xl md:text-1xl text-xl font-bold ">
                   {decoded.displayName}
@@ -312,15 +340,28 @@ export default function Page() {
             </div>
 
             <div className="container contents">
-              <div className="grid lg:gap-x-28 md:gap-x-10 sm:gap-x-5 gap-x-2 gap-y-4 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-3 grid-cols-2 lg:mt-20 md:mt-20 sm:mt-10 mt-7 justify-center">
+              <div className="grid lg:gap-x-28 md:gap-x-10 sm:gap-x-5 gap-x-2 gap-y-4 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-3 grid-cols-2 lg:mt-12 md:mt-20 sm:mt-10 mt-7 justify-center">
                 <div className="flex flex-col items-center">
                   <a href="/home/CheckThePackage" onClick={ClickParamGroup}>
                     <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
-                      <img
+                      {/* <img
                         src="https://minio.saksiam.co.th/public/saktech/logo/Iconasset2.png"
                         alt=""
                         className="h-full w-full object-cover"
+                      /> */}
+                      <div className="h-full w-full object-cover">
+                      <Image
+                        src="https://minio.saksiam.co.th/public/saktech/logo/Iconasset2.png"
+                        alt="Picture of the author"
+                        style={{
+                          width: '100%',
+                          height: 'auto',
+                        }}
+                        width={1200}
+                        height={0}
+                        priority
                       />
+                      </div>
                     </button>
                   </a>
                   <span className="mt-2 text-center font-bold">ตรวจสินทรัพย์</span>
@@ -329,10 +370,21 @@ export default function Page() {
                 <div className="flex flex-col items-center">
                   <a href="/home/Checked">
                     <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
-                      <img
+                      {/* <img
                         src="https://minio.saksiam.co.th/public/saktech/logo/checklist.png"
                         alt=""
                         className="h-full w-full object-cover ml-2"
+                      /> */}
+                      <Image
+                        src="https://minio.saksiam.co.th/public/saktech/logo/checklist.png"
+                        alt="Picture of the author"
+                        style={{
+                          width: '100%',
+                          height: 'auto',
+                        }}
+                        width={1200}
+                        height={0}
+                        priority
                       />
                     </button>
                   </a>
@@ -342,7 +394,7 @@ export default function Page() {
               </div>
             </div>
 
-            <footer className="footer footer-center p-4 text-base-content lg:mt-28 md:mt-80 sm:mt-32 mt-40">
+            <footer className="footer footer-center p-4 text-base-content lg:mt-28 md:mt-80 sm:mt-32 mt-52">
                 <aside>
                     <p className="lg:text-base md:text-base sm:text-sm text-sm">
                     © 2024 All Right Reserve By SakTech

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
+import Image from "next/image";
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -24,75 +25,81 @@ export default function Page() {
 
   const InsertTrackingData = async () => {
     if (statusselect === "1" || statusselect === "14") {
-      const fileInput = document.getElementById("fileInput") as HTMLInputElement;
-    const files = fileInput.files?.[0];
-    if (!files) {
-      console.error("ไม่พบไฟล์");
-      return;
-    }
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "multipart/form-data");
-    const formdata = new FormData();
-    formdata.append("file", files);
-    formdata.append("username", username);
-    fetch(
-      `/api/asset/InsertFileMinio`,
-      {
-        method: "POST",
-        body: formdata
+      const fileInput = document.getElementById(
+        "fileInput"
+      ) as HTMLInputElement;
+      const files = fileInput.files?.[0];
+      if (!files) {
+        console.error("ไม่พบไฟล์");
+        return;
       }
-    )
-      .then((response) => {
-        response.json().then((json) => {
-          const result = json;
-          console.log(result)
-          fetch(
-            `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode.map((item) => item.CostCenter)}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${result}&Description=${textareaValue}`,
-            {
-              method: "POST",
-            }
-          )
-            .then((response) => {
-              response.json().then((json) => {
-                console.log(json);
-                setTimeout(() => { window.location.href = "../../../Success" }, 100);
-              });
-              if (response.status !== 200) {
-                console.log(response);
-                alert(response)
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-              alert(error)
-            });
-        });
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "multipart/form-data");
+      const formdata = new FormData();
+      formdata.append("file", files);
+      formdata.append("username", username);
+      fetch(`/api/asset/InsertFileMinio`, {
+        method: "POST",
+        body: formdata,
       })
-      .catch((error) => {
-        console.log(error);
-
-      });
-    } else {
-          fetch(
-            `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode.map((item) => item.CostCenter)}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${null}&Description=${textareaValue}`,
-            {
-              method: "POST",
-            }
-          )
-            .then((response) => {
-              response.json().then((json) => {
-                console.log(json);
-                setTimeout(() => { window.location.href = "../../../Success" }, 100);
-              });
-              if (response.status !== 200) {
-                console.log(response);
-                alert(response)
+        .then((response) => {
+          response.json().then((json) => {
+            const result = json;
+            console.log(result);
+            fetch(
+              `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode.map(
+                (item) => item.CostCenter
+              )}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${result}&Description=${textareaValue}`,
+              {
+                method: "POST",
               }
-            })
-            .catch((error) => {
-              console.log(error);
-              alert(error)
-            });
+            )
+              .then((response) => {
+                response.json().then((json) => {
+                  console.log(json);
+                  setTimeout(() => {
+                    window.location.href = "../../../Success";
+                  }, 100);
+                });
+                if (response.status !== 200) {
+                  console.log(response);
+                  alert(response);
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+                alert(error);
+              });
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      fetch(
+        `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode.map(
+          (item) => item.CostCenter
+        )}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${null}&Description=${textareaValue}`,
+        {
+          method: "POST",
+        }
+      )
+        .then((response) => {
+          response.json().then((json) => {
+            console.log(json);
+            setTimeout(() => {
+              window.location.href = "../../../Success";
+            }, 100);
+          });
+          if (response.status !== 200) {
+            console.log(response);
+            alert(response);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          alert(error);
+        });
     }
   };
 
@@ -109,10 +116,10 @@ export default function Page() {
   useEffect(() => {
     if (session) {
       const decoded = jwtDecode<Token>(session.accessToken);
-      const findDisplayname: any = decoded.username
+      const findDisplayname: any = decoded.username;
       //console.log(findDisplayname)
-    
-      setusername(findDisplayname)
+
+      setusername(findDisplayname);
 
       const findGroupBranch = decoded.groups.find((group) => {
         return group.includes("/group/SAK BRANCH/");
@@ -238,7 +245,7 @@ export default function Page() {
         setModalShown(true);
         setSelectedValue("14");
         setStatusSlect("14");
-        setOther(true)
+        setOther(true);
       }
     }
   }, [dataBranchCode, resultGroupBranch, sakHQ, modalShown]);
@@ -262,7 +269,10 @@ export default function Page() {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setSelectedImage(URL.createObjectURL(file));
+      const objectURL = URL.createObjectURL(file);
+      setSelectedImage(objectURL);
+    } else {
+      console.error("No file selected");
     }
   };
 
@@ -321,10 +331,19 @@ export default function Page() {
                 key={data.ID}
               >
                 <a href="/home">
-                <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
-                    className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-42 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5"
-                  />
+                  <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5">
+                    <Image
+                      src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
+                      alt="Picture of the author"
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                      }}
+                      width={1200}
+                      height={0}
+                      priority
+                    />
+                  </div>
                 </a>
 
                 <div className="card bg-clip-border lg:w-2/5 md:w-3/5 sm:w-11/12 w-11/12 p-1 bg-base-100 shadow-xl flex flex-flex-col items-center justify-center h-20 text-center">
@@ -397,8 +416,10 @@ export default function Page() {
                                 item ? (
                                   item.Name
                                 ) : (
-                                  <span className="loading loading-dots loading-md" key={item
-                                    .CostCenter}></span>
+                                  <span
+                                    className="loading loading-dots loading-md"
+                                    key={item.CostCenter}
+                                  ></span>
                                 )
                               )}
                             </p>
@@ -408,7 +429,8 @@ export default function Page() {
                             <h2 className=" font-bold text-white mb-1 lg:text-xl md:text-2xl sm:text-md text-lg">
                               สถานะ
                             </h2>
-                            {other ? ( <select
+                            {other ? (
+                              <select
                                 className="select select-bordered lg:select-sm md:select-md sm:select-sm select-sm lg:w-28 md:w-32 sm:w-28 w-28 max-w-xs text-black"
                                 value={selectedValue}
                                 onChange={(e) => {
@@ -418,20 +440,21 @@ export default function Page() {
                                 disabled
                               >
                                 <option value="14">อื่นๆ</option>
-                              </select>) : (
+                              </select>
+                            ) : (
                               <select
-                              className="select select-bordered lg:select-sm md:select-md sm:select-sm select-sm lg:w-28 md:w-32 sm:w-28 w-28 max-w-xs text-black"
-                              value={selectedValue}
-                              onChange={(e) => {
-                                setSelectedValue(e.target.value);
-                                handleStatusChange(e);
-                              }}
-                            >
-                              <option value="รอตรวจนับ">รอตรวจนับ</option>
-                              <option value="1">ปกติ</option>
-                              <option value="7">โยกย้าย</option>
-                              <option value="14">อื่นๆ</option>
-                            </select>
+                                className="select select-bordered lg:select-sm md:select-md sm:select-sm select-sm lg:w-28 md:w-32 sm:w-28 w-28 max-w-xs text-black"
+                                value={selectedValue}
+                                onChange={(e) => {
+                                  setSelectedValue(e.target.value);
+                                  handleStatusChange(e);
+                                }}
+                              >
+                                <option value="รอตรวจนับ">รอตรวจนับ</option>
+                                <option value="1">ปกติ</option>
+                                <option value="7">โยกย้าย</option>
+                                <option value="14">อื่นๆ</option>
+                              </select>
                             )}
                           </div>
                         </div>
@@ -439,25 +462,45 @@ export default function Page() {
                         {statusselect === "1" && (
                           <div className="flex flex-col items-center justify-center mt-5">
                             {selectedImage && (
-                              <img
-                                src={selectedImage}
-                                className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
-                                alt="Uploaded"
-                                onClick={() =>
-                                  (
-                                    document.getElementById(
-                                      "pic"
-                                    ) as HTMLDialogElement
-                                  ).showModal()
-                                }
-                              />
+                              <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
+                                <Image
+                                  src={
+                                    selectedImage ||
+                                    "https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
+                                  }
+                                  alt="Uploaded"
+                                  style={{
+                                    width: "100%",
+                                    height: "auto",
+                                  }}
+                                  width={1200}
+                                  height={0}
+                                  priority
+                                  onClick={() =>
+                                    (
+                                      document.getElementById(
+                                        "pic"
+                                      ) as HTMLDialogElement
+                                    ).showModal()
+                                  }
+                                />
+                              </div>
                             )}
 
                             <label className="cursor-pointer flex flex-col items-center justify-center mt-5">
-                              <img
-                                src="https://minio.saksiam.co.th/public/saktech/logo/camera.png"
-                                className="lg:h-36 md:h-24 sm:h-24 h-16 lg:w-36 md:w-24 sm:w-24 w-16"
-                              />
+                              <div className="lg:h-36 md:h-24 sm:h-24 h-16 lg:w-36 md:w-24 sm:w-24 w-16">
+                                <Image
+                                  src="https://minio.saksiam.co.th/public/saktech/logo/camera.png"
+                                  alt="Picture of the author"
+                                  style={{
+                                    width: "100%",
+                                    height: "auto",
+                                  }}
+                                  width={1200}
+                                  height={0}
+                                  priority
+                                />
+                              </div>
                               <input
                                 type="file"
                                 id="fileInput"
@@ -471,11 +514,22 @@ export default function Page() {
                             <div>
                               <dialog id="pic" className="modal">
                                 <div className="modal-box bg-black bg-opacity-10">
-                                  <img
-                                    src={selectedImage}
-                                    className="max-h-screen max-w-screen"
-                                    alt="Full Size"
-                                  />
+                                  <div className="max-h-screen max-w-scree">
+                                    <Image
+                                      src={
+                                        selectedImage ||
+                                        "https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
+                                      }
+                                      alt="Picture of the author"
+                                      style={{
+                                        width: "100%",
+                                        height: "auto",
+                                      }}
+                                      width={1200}
+                                      height={0}
+                                      priority
+                                    />
+                                  </div>
                                 </div>
                                 <form
                                   method="dialog"
@@ -503,25 +557,42 @@ export default function Page() {
                           <div>
                             <div className="flex flex-col items-center justify-center mt-5">
                               {selectedImage && (
-                                <img
-                                  src={selectedImage}
-                                  className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
-                                  alt="Uploaded"
-                                  onClick={() =>
-                                    (
-                                      document.getElementById(
-                                        "pic"
-                                      ) as HTMLDialogElement
-                                    ).showModal()
-                                  }
-                                />
+                                <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
+                                  <Image
+                                    src={selectedImage}
+                                    alt="Uploaded"
+                                    style={{
+                                      width: "100%",
+                                      height: "auto",
+                                    }}
+                                    width={1200}
+                                    height={0}
+                                    priority
+                                    onClick={() =>
+                                      (
+                                        document.getElementById(
+                                          "pic"
+                                        ) as HTMLDialogElement
+                                      ).showModal()
+                                    }
+                                  />
+                                </div>
                               )}
 
                               <label className="cursor-pointer flex flex-col items-center justify-center mt-5">
-                                <img
-                                  src="https://minio.saksiam.co.th/public/saktech/logo/camera.png"
-                                  className="lg:h-48 md:h-24 sm:h-24 h-16 lg:w-48 md:w-24 sm:w-24 w-16"
-                                />
+                                <div className="lg:h-36 md:h-24 sm:h-24 h-16 lg:w-36 md:w-24 sm:w-24 w-16">
+                                  <Image
+                                    src="https://minio.saksiam.co.th/public/saktech/logo/camera.png"
+                                    alt="Picture of the author"
+                                    style={{
+                                      width: "100%",
+                                      height: "auto",
+                                    }}
+                                    width={1200}
+                                    height={0}
+                                    priority
+                                  />
+                                </div>
                                 <input
                                   type="file"
                                   id="fileInput"
@@ -572,15 +643,15 @@ export default function Page() {
                 </div>
 
                 <footer className="footer footer-center p-4 text-base-content lg:mt-28 md:mt-80 sm:mt-32 mt-12">
-                <aside>
+                  <aside>
                     <p className="lg:text-base md:text-base sm:text-sm text-sm">
-                    © 2024 All Right Reserve By SakTech
+                      © 2024 All Right Reserve By SakTech
                     </p>
                     <p className="lg:text-base md:text-base sm:text-sm text-sm">
-                    VERSION {process.env.NEXT_PUBLIC_VERSION}
+                      VERSION {process.env.NEXT_PUBLIC_VERSION}
                     </p>
-                </aside>
-            </footer>
+                  </aside>
+                </footer>
               </div>
             ))
           ) : (
@@ -600,7 +671,7 @@ export default function Page() {
               <form method="dialog" className="flex items-center">
                 <a
                   className="btn mr-2 bg-blue-950 text-white"
-                  onClick={() => (InsertTrackingData())}
+                  onClick={() => InsertTrackingData()}
                 >
                   ยืนยัน
                 </a>
@@ -610,27 +681,23 @@ export default function Page() {
           </div>
         </dialog>
 
-        <dialog id="pic" className="modal">
-          <div className="modal-box bg-black bg-opacity-10">
-            <img
-              src={selectedImage}
-              className="max-h-screen max-w-screen"
-              alt="Full Size"
-            />
-          </div>
-          <form method="dialog" className="modal-backdrop">
-            <button>close</button>
-          </form>
-        </dialog>
-
         {isModalOpen && (
           <dialog open className="modal">
             <div className="modal-box">
               <div className="flex justify-center items-center">
-                <img
+                <div className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
+                  <Image
                     src="https://minio.saksiam.co.th/public/saktech/logo/question.png"
-                    className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20"
+                    alt="Picture of the author"
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                    }}
+                    width={1200}
+                    height={0}
+                    priority
                   />
+                </div>
               </div>
               <p className="py-4 flex text-center font-bold">
                 สินทรัพย์นี้ไม่ใช่สินทรัพย์ที่อยู่ในสาขาของท่านกรุณาตวจสอบสินทรัพย์นี้
@@ -644,27 +711,35 @@ export default function Page() {
           </dialog>
         )}
 
-{showWarningModal && (
-        <dialog open className="modal">
-          <div className="modal-box">
-            <div className="flex justify-center items-center">
-              <img
-                src="https://minio.saksiam.co.th/public/saktech/logo/warning.png"
-                className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20"
-              />
+        {showWarningModal && (
+          <dialog open className="modal">
+            <div className="modal-box">
+              <div className="flex justify-center items-center">
+                <div className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
+                <Image
+                  src="https://minio.saksiam.co.th/public/saktech/logo/warning.png"
+                  alt="Picture of the author"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                  }}
+                  width={1200}
+                  height={0}
+                  priority
+                />
+                </div>
+              </div>
+              <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
+                สินทรัพย์นี้ถูกตรวจนับไปเเล้ว
+              </p>
+              <div className="modal-action">
+                <button className="btn" onClick={closeWarningModal}>
+                  ปิด
+                </button>
+              </div>
             </div>
-            <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
-              สินทรัพย์นี้ถูกตรวจนับไปเเล้ว
-            </p>
-            <div className="modal-action">
-              <button className="btn" onClick={closeWarningModal}>
-                ปิด
-              </button>
-            </div>
-          </div>
-        </dialog>
-      )}
-
+          </dialog>
+        )}
       </div>
     </div>
   );

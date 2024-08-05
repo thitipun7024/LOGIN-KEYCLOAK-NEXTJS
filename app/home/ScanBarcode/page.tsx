@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Quagga from "quagga";
+import Image from "next/image";
 
 
 interface QuaggaState {
@@ -220,9 +221,21 @@ const BarcodeScanner = () => {
             </svg>
           </a>
             <div className="flex flex-col justify-center items-center -mt-2">
-              <h2 className="text-white lg:text-4xl text-2xl  font-bold mb-4">
-                ระบบตรวจนับพัสดุ
-              </h2>
+            <a href="/home">
+              <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5">
+                <Image
+                  src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
+                  alt="Picture of the author"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                  }}
+                  width={1200}
+                  height={0}
+                  priority
+                />
+              </div>
+            </a>
               <div className="card bg-clip-border lg:w-2/5 md:w-3/5 w-11/12 p-1 bg-base-100  shadow-xl flex flex-row items-center justify-center h-32">
                 <h2 className="text-4xl font-bold">SCAN BARCODE</h2>
               </div>
