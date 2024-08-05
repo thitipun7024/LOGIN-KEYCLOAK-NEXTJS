@@ -29,7 +29,7 @@ ARG BUILDTIME=
 ENV NEXT_PUBLIC_APP_INFO="Version: ${VERSION}, Build: ${BUILDTIME}, Commit: ${REVISION}"
 ENV NEXT_PUBLIC_VERSION=${VERSION}
 
-RUN yarn build
+RUN yarn run build
 
 # 3. Production image, copy all the files and run next
 FROM base AS runner
