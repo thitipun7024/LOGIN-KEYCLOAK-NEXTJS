@@ -139,36 +139,36 @@ export default function Page() {
   }, [dataAsset]);
 
 
-  // useEffect(() => {
-  //   if (session) {
-  //     const fetchUrlImage = async () => {
-  //       try {
-  //         const responseFileImage = await fetch(
-  //           `/api/asset/GetImageURL`,
-  //           {
-  //             method: "GET",
-  //             headers: {
-  //               "Cache-Control": "no-cache",
-  //               Pragma: "no-cache",
-  //             },
-  //           }
-  //         );
+  useEffect(() => {
+    if (session) {
+      const fetchUrlImage = async () => {
+        try {
+          const responseFileImage = await fetch(
+            `/api/asset/GetImageURL`,
+            {
+              method: "GET",
+              headers: {
+                "Cache-Control": "no-cache",
+                Pragma: "no-cache",
+              },
+            }
+          );
 
-  //         const dataFileImage = await responseFileImage.json();
+          const dataFileImage = await responseFileImage.json();
 
-  //         if (dataFileImage !== null || dataFileImage !== '') {
-  //           setUrlImage(dataFileImage);
-  //         } else {
-  //           setUrlImage('');
-  //         }
-  //       } catch (error) {
-  //         console.error("Error fetching file image:", error);
-  //       }
-  //     };
+          if (dataFileImage !== null || dataFileImage !== '') {
+            setUrlImage(dataFileImage);
+          } else {
+            setUrlImage('');
+          }
+        } catch (error) {
+          console.error("Error fetching file image:", error);
+        }
+      };
 
-  //     fetchUrlImage();
-  //   }
-  // }, [session]);
+      fetchUrlImage();
+    }
+  }, [session]);
 
   if (status === "loading") {
     return (
