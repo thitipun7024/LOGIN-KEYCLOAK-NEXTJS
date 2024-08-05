@@ -15,7 +15,7 @@ export default function Page() {
   const [dataFileImage, setDataFileImage] = useState([{fileUpload:'2024/08/LoadingImage.png'}]);
   const [urlImage, setUrlImage] = useState("");
 
-  console.log(process.env.NEXT_PUBLIC_SMARTCARD_URI)
+  // console.log(process.env.NEXT_PUBLIC_SMARTCARD_URI)
  useEffect(() => {
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
     if (dataDetailAsset) {
