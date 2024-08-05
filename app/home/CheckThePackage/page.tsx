@@ -252,7 +252,7 @@ function PageContent() {
                     className="lg:h-24 h-16 lg:w-24 w-16 m-4 lg:ml-5 ml-4"
                   />
                   <div className="flex flex-col lg:ml-5 ml-0">
-                    <h1 className="lg:text-3xl md:text-1xl sm:text-xl text-xl font-bold text-white">
+                    <h1 className="lg:text-3xl md:text-1xl sm:text-xl text-xl font-bold text-white break-words lg:w-96 md:w-full sm:w-36 w-32">
                       {row.Asset_description}
                     </h1>
                     <h2 className="lg:text-lg md:text-lg sm:text-xl text-sm mb-1 text-white">
