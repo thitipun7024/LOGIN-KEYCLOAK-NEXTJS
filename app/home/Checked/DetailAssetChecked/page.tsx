@@ -14,7 +14,7 @@ export default function Page() {
   const [dataBranchCode, setDataBranchCode] = useState([]);
   const [dataFileImage, setDataFileImage] = useState([{fileUpload:'2024/08/LoadingImage.png'}]);
 
-  console.log(dataFileImage)
+  console.log(process.env.NEXT_PUBLIC_SMARTCARD_URI)
  useEffect(() => {
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
     if (dataDetailAsset) {
@@ -354,7 +354,7 @@ export default function Page() {
                           <div>
                             <div className="flex flex-col items-center justify-center mt-10">
                               <img
-                                src={`${process.env.NEXT_PUBLIC_SMARTCARD_URI}${dataFileImage.map(
+                                src={`https://smartcard-uat.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=${dataFileImage.map(
                                   (file) => file.fileUpload
                                 )}`}
                                 className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
@@ -372,7 +372,7 @@ export default function Page() {
                                 <dialog id="pic" className="modal">
                                   <div className="modal-box bg-black bg-opacity-10">
                                     <img
-                                      src={`${process.env.NEXT_PUBLIC_SMARTCARD_URI}${dataFileImage.map(
+                                      src={`https://smartcard-uat.saksiam.co.th/minio/get/c2FrLWFzc2V0LWRldiNkeGhLSjZ2Z1MwQjNOTUo1Q1hFNklwY2Y3RVBobnU2dyNzYWstYXNzZXQtZGV2I01UQXVOUzR4TkM0eE1qSTZPVEF3TUFvPQo=?code=${dataFileImage.map(
                                         (file) => file.fileUpload
                                       )}`}
                                       className="max-h-screen max-w-screen"

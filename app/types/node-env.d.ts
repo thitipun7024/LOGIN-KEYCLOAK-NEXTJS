@@ -7,6 +7,6 @@ declare namespace NodeJS {
     KEYCLOAK_ISSUER: string
     AUTHBASIC_LOG_SMS: string
     ENDPOINT_LOG_SMS: string
-
+    NEXT_PUBLIC_SMARTCARD_URI: string
   }
 }
