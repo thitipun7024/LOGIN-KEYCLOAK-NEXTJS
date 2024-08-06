@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logout from "@/components/Logout";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
@@ -13,6 +13,9 @@ export default function Page() {
   const [sakHQ, setSakHQ] = useState(null);
   const [countNochecked, setCountNoChecked] = useState(null);
   const [countChecked, setCountChecked] = useState(null);
+  const [dataBranchCode, setDataBranchCode] = useState([]);
+  const [hasFetched, setHasFetched] = useState(false);
+
 
   if (status === "loading") {
     return (
@@ -217,6 +220,41 @@ export default function Page() {
   fetchDataSakHQ();
   //Function
 
+  //Function
+  const fetchDataDetailBranchCode = async () => {
+    if (!hasFetched) { 
+      try {
+        const responseDetailAsset = await fetch(
+          `/api/asset/GetBranchCode?BranchCode=${resultGroupBranch}`,
+          {
+            method: "GET",
+            redirect: "follow",
+            headers: {
+              "Cache-Control": "no-cache",
+              Pragma: "no-cache",
+            },
+          }
+        );
+
+        const dataBranchCode = await responseDetailAsset.json();
+
+        if (Array.isArray(dataBranchCode)) {
+          setDataBranchCode(dataBranchCode);
+        } else {
+          setDataBranchCode([]);
+        }
+        setHasFetched(true); // ตั้งค่าว่าได้ดึงข้อมูลแล้ว
+      } catch (error) {
+        console.error("Error fetching detail asset:", error);
+      }
+    }
+  };
+
+  if (!hasFetched) {
+    fetchDataDetailBranchCode();
+  }
+  //Function
+
   return (
     <div className="background2">
       <div className="flex flex-col justify-center items-center min-h-screen">
@@ -253,14 +291,23 @@ export default function Page() {
                 <h2 className="lg:text-2xl md:text-1xl text-xl font-bold ">
                   {decoded.displayName}
                 </h2>
-                <h2 className="lg:text-lg md:text-lg lg:w-60 md:w-60 sm:w-full w-full text-sm break-words whitespace-normal">
+                <h2 className="lg:text-lg md:text-lg lg:w-60 md:w-60 sm:w-full w-56 text-sm break-words whitespace-normal">
                   {resultGroupPosition}
                 </h2>
                 <h2 className="lg:text-lg md:text-lg text-sm">
-                  {resultGroupBaD_TH}
+                {dataBranchCode.map((item) =>
+                                item ? (
+                                  item.Name
+                                ) : (
+                                  <span
+                                    className="loading loading-dots loading-md"
+                                    key={item.CostCenter}
+                                  ></span>
+                                )
+                              )}
                 </h2>
               </div>
-              <div className="lg:ml-2 md:ml-5 sm:ml-3 ml-3 pr-1">
+              <div className="lg:ml-2 md:ml-5 sm:ml-3 -ml-12 pr-1">
                 <button
                   className=""
                   onClick={() =>
@@ -361,11 +408,6 @@ export default function Page() {
                 <div className="flex flex-col items-center">
                   <a href="/home/Checked">
                     <button className="flex items-center justify-center btn btn-primary bg-blue-950 border-0 h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36 p-2">
-                      {/* <img
-                        src="https://minio.saksiam.co.th/public/saktech/logo/checklist.png"
-                        alt=""
-                        className="h-full w-full object-cover ml-2"
-                      /> */}
                       <Image
                         src="https://minio.saksiam.co.th/public/saktech/logo/checklist.png"
                         alt="Picture of the author"

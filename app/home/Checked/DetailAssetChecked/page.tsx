@@ -339,12 +339,11 @@ export default function Page() {
                                 )}`}
                                 alt="Uploaded"
                                 style={{
-                                  width: "80%",
-                                  height: "auto",
-                                  justifyItems: "center",
+                                  width: "100%",
+                                  height: "100%",
                                 }}
                                 width={1200}
-                                height={500}
+                                height={0}
                                 priority
                                 onClick={() =>
                                   (
@@ -380,12 +379,11 @@ export default function Page() {
                                 )}`}
                                   alt="Uploaded"
                                   style={{
-                                    width: "80%",
-                                    height: "auto",
-                                    justifyItems: "center",
+                                    width: "100%",
+                                    height: "100%",
                                   }}
                                   width={1200}
-                                  height={500}
+                                  height={0}
                                   priority
                                   onClick={() =>
                                     (

@@ -494,7 +494,7 @@ export default function Page() {
                                   alt="Uploaded"
                                   style={{
                                     width: "100%",
-                                    height: "auto",
+                                    height: "100%",
                                   }}
                                   width={1200}
                                   height={0}
@@ -557,7 +557,7 @@ export default function Page() {
                                     alt="Uploaded"
                                     style={{
                                       width: "100%",
-                                      height: "auto",
+                                      height: "100%",
                                     }}
                                     width={1200}
                                     height={0}
