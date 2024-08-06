@@ -146,7 +146,7 @@ export default function Page() {
           const responseFileImage = await fetch(
             `/api/asset/GetImageURL`,
             {
-              method: "GET",
+              method: "POST",
               headers: {
                 "Cache-Control": "no-cache",
                 Pragma: "no-cache",
