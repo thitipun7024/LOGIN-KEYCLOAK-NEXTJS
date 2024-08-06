@@ -249,8 +249,8 @@ function PageContent() {
           </h1>
   
           <div className="justify-end items-end text-right lg:w-7/12 md:w-8/12 sm:w-10/12 w-10/12">
-            <h1 className=" mb-2 lg:text-xl md:text-base sm:text-2xl text-sm font-bold">
-              {countNochecked ? countNochecked : <span className="loading loading-dots loading-md"></span>} / {count ? count : <span className="loading loading-dots loading-md"></span>}
+            <h1 className=" mb-2 lg:text-xl md:text-base sm:text-2xl text-sm font-bold text-blue-950">
+              <span className="lg:text-2xl md:text-lg sm:text-xl text-lg">{countNochecked ? countNochecked : <span className="loading loading-dots loading-md"></span>}</span> <span className="text-gray-400">/</span> <span className="text-gray-400">{count ? count : <span className="loading loading-dots loading-md"></span>}</span> 
             </h1>
           </div>
           <div className="container contents">
