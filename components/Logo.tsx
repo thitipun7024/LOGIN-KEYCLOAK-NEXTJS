@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import '../app/globals.css';
+import Image from 'next/image';
 
 const ClientLogo: React.FC = () => {
     const router = useRouter();
@@ -17,7 +18,8 @@ const ClientLogo: React.FC = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen logoContainer">
-            <img src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-white.png" alt="Logo" width="200" />
+            {/* <img src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-white.png" alt="Logo" width="200" /> */}
+            <Image src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-white.png" alt="Logo" width={200} height={0} />
         </div>
     );
 };

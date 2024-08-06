@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
+import Image from "next/image";
 
 function PageContent() {
   const { data: session, status } = useSession();
@@ -203,11 +204,20 @@ function PageContent() {
         </a>
         <div className="flex flex-col justify-center items-center mt-1">
         <a href="/home">
-        <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
-                    className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-42 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5"
-                  />
-                </a>
+          <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-7">
+            <Image
+              src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
+              alt="Picture of the author"
+              style={{
+                width: '100%',
+                height: 'auto',
+              }}
+              width={1200}
+              height={0}
+              priority
+            />
+          </div>
+        </a>
           <label className="input input-bordered flex items-center gap-2 lg:w-1/3 md:w-2/3 sm:w-4/5 w-4/5">
             <input
               type="text"
@@ -239,18 +249,27 @@ function PageContent() {
           </h1>
   
           <div className="justify-end items-end text-right lg:w-7/12 md:w-8/12 sm:w-10/12 w-10/12">
-            <h1 className=" mb-2 lg:text-xl md:text-base sm:text-2xl text-sm font-bold">
-              {countNochecked ? countNochecked : <span className="loading loading-dots loading-md"></span>} / {count ? count : <span className="loading loading-dots loading-md"></span>}
+            <h1 className=" mb-2 lg:text-xl md:text-base sm:text-2xl text-sm font-bold text-blue-950">
+              <span className="lg:text-2xl md:text-lg sm:text-xl text-lg">{countNochecked ? countNochecked : <span className="loading loading-dots loading-md"></span>}</span> <span className="text-gray-400">/</span> <span className="text-gray-400">{count ? count : <span className="loading loading-dots loading-md"></span>}</span> 
             </h1>
           </div>
           <div className="container contents">
             {selectedData ? selectedData.map((row) => (
               <div className="container flex items-center justify-center mb-3" key={row.Asset}>
                 <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
-                  <img
+                  <div className="lg:h-24 h-16 lg:w-24 w-16 m-4 lg:ml-5 ml-4">
+                  <Image
                     src="https://minio.saksiam.co.th/public/saktech/logo/Iconasset2.png"
-                    className="lg:h-24 h-16 lg:w-24 w-16 m-4 lg:ml-5 ml-4"
+                    alt="Icon Asset"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                    }}
+                    width={1200}
+                    height={0}
+                    priority
                   />
+                  </div>
                   <div className="flex flex-col lg:ml-5 ml-0">
                     <h1 className="lg:text-3xl md:text-1xl sm:text-xl text-xl font-bold text-white break-words lg:w-96 md:w-full sm:w-36 w-32">
                       {row.Asset_description}

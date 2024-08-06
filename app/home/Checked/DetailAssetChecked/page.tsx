@@ -3,20 +3,20 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
+import Image from "next/image";
 
 export default function Page() {
   const { data: session, status } = useSession();
   const [noAsset, setNoAsset] = useState<string[]>([]);
   const [dataAsset, setDataAsset] = useState([]);
   const [resultGroupBranch, setResultGroupBranch] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [textareaValue, setTextareaValue] = useState("");
   const [dataBranchCode, setDataBranchCode] = useState([]);
   const [dataFileImage, setDataFileImage] = useState([{fileUpload:'2024/08/LoadingImage.png'}]);
   const [urlImage, setUrlImage] = useState("");
 
   // console.log(process.env.NEXT_PUBLIC_SMARTCARD_URI)
  useEffect(() => {
+
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
     if (dataDetailAsset) {
       const parsedDataDetailAsset = JSON.parse(dataDetailAsset);
@@ -186,21 +186,10 @@ export default function Page() {
     );
   }
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedImage(URL.createObjectURL(file));
-    }
-  };
-
-  const handleTextareaChange = (event) => {
-    setTextareaValue(event.target.value);
-  };
-
   return (
     <div className="background2">
       <div className="flex flex-col justify-center items-center min-h-screen">
-      <div className="absolute top-0 left-0 right-0 lg:h-52 md:h-52 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
+        <div className="absolute top-0 left-0 right-0 lg:h-52 md:h-52 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
           <a
             className="btn btn-ghost mt-5 ml-3 text-white"
             href="/home/Checked"
@@ -224,16 +213,25 @@ export default function Page() {
                 key={data.ID}
               >
                 <a href="/home">
-                <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
-                    className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-42 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5"
-                  />
+                  <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-7">
+                    <Image
+                      src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
+                      alt="Picture of the author"
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                      }}
+                      width={1200}
+                      height={0}
+                      priority
+                    />
+                  </div>
                 </a>
 
                 <div className="card bg-clip-border lg:w-2/5 md:w-3/5 sm:w-11/12 w-11/12 p-1 bg-base-100 shadow-xl flex flex-flex-col items-center justify-center h-20 text-center">
                   <h2 className="lg:text-4xl md:text-2xl sm:text-2xl text-xl font-bold">
                     {data ? (
-                      data.Asset_description 
+                      data.Asset_description
                     ) : (
                       <span className="loading loading-dots loading-md"></span>
                     )}
@@ -420,6 +418,8 @@ export default function Page() {
                                   </form>
                                 </dialog>
                               </div>
+
+                              <div></div>
                             </div>
 
                             <div className="flex flex-col items-center justify-center mt-10">
@@ -436,41 +436,18 @@ export default function Page() {
                       </div>
                     </div>
                   </div>
-
-                  {(selectedImage || textareaValue) && (
-                    <div className="flex items-center justify-center mt-2">
-                      <button
-                        className="btn btn-primary bg-blue-950 text-white border-0 w-36 mr-3"
-                        onClick={() =>
-                          (
-                            document.getElementById(
-                              "confirm"
-                            ) as HTMLDialogElement
-                          ).showModal()
-                        }
-                      >
-                        ยืนยันการบันทึก
-                      </button>
-                      <a
-                        className="btn btn-active btn-ghost text-blue-950 border-0 w-36"
-                        href="/home/CheckThePackage"
-                      >
-                        ยกเลิก
-                      </a>
-                    </div>
-                  )}
                 </div>
 
                 <footer className="footer footer-center p-4 text-base-content lg:mt-28 md:mt-20 sm:mt-32 mt-12">
-                <aside>
+                  <aside>
                     <p className="lg:text-base md:text-base sm:text-sm text-sm">
-                    © 2024 All Right Reserve By SakTech
+                      © 2024 All Right Reserve By SakTech
                     </p>
                     <p className="lg:text-base md:text-base sm:text-sm text-sm">
-                    VERSION {process.env.NEXT_PUBLIC_VERSION}
+                      VERSION {process.env.NEXT_PUBLIC_VERSION}
                     </p>
-                </aside>
-          </footer>
+                  </aside>
+                </footer>
               </div>
             ))
           ) : (
@@ -478,40 +455,30 @@ export default function Page() {
           )}
         </div>
 
-        <dialog id="confirm" className="modal">
-          <div className="modal-box">
-            <h3 className="font-bold text-xl text-blue-950">
-              ยืนยันการตวจสินทรัพย์ !
-            </h3>
-            <p className="py-5 mt-3 lg:text-lg md:text-lg sm:text-base text-base text-blue-950 flex items-center justify-center">
-              คุณยืนยันที่จะส่งการตรวจสินทรัพย์ใช่ไหม
-            </p>
-            <div className="modal-action flex items-center">
-              <form method="dialog" className="flex items-center">
-                <a
-                  className="btn mr-2 bg-blue-950 text-white"
-                  href="../../../Success"
-                >
-                  ยืนยัน
-                </a>
-                <button className="btn">ยกเลิก</button>
-              </form>
+        <div>
+          <dialog id="pic" className="modal">
+            <div className="modal-box bg-black bg-opacity-10">
+              <div className="max-h-screen max-w-screen">
+                <Image
+                  src={`${
+                    process.env.NEXT_PUBLIC_SMARTCARD_URI
+                  }${dataFileImage.map((file) => file.fileUpload)}`}
+                  alt="Picture of the author"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                  }}
+                  width={1200}
+                  height={0}
+                  priority
+                />
+              </div>
             </div>
-          </div>
-        </dialog>
-
-        <dialog id="pic" className="modal">
-          <div className="modal-box bg-black bg-opacity-10">
-            <img
-              src={selectedImage}
-              className="max-h-screen max-w-screen"
-              alt="Full Size"
-            />
-          </div>
-          <form method="dialog" className="modal-backdrop">
-            <button>close</button>
-          </form>
-        </dialog>
+            <form method="dialog" className="modal-backdrop">
+              <button>close</button>
+            </form>
+          </dialog>
+        </div>
       </div>
     </div>
   );
