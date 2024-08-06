@@ -222,11 +222,6 @@ export default function Page() {
       <div className="flex flex-col justify-center items-center min-h-screen">
         <div className="absolute top-0 left-0 right-0 lg:h-64 md:h-56 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
           <div className="flex flex-col justify-center items-center mt-16">
-          {/* <img
-                    src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
-                    className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-42 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5"
-                  /> */}
-
             <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5">
             <Image
               src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
@@ -241,10 +236,6 @@ export default function Page() {
             />
             </div>
             <div className="card bg-clip-border w-auto lg:pl-10 md:pl-4 sm:pl-0 pl-2 lg:pr-10 md:pr-4 sm:pr-0 pr-2 lg:pt-2 md:pt-4 sm:pt-0 pt-1 lg:pb-2 md:pb-4 sm:pb-0 pb-1 bg-base-100 shadow-xl flex flex-row items-center justify-center">
-              {/* <img
-                src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
-                className="lg:h-32 h-20 lg:w-32 w-20 m-4 lg:-ml-1 ml-2"
-              /> */}
               <div className="lg:h-32 h-20 lg:w-32 w-20 m-4 lg:-ml-1 ml-2">
                 <Image 
                   src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png" 
