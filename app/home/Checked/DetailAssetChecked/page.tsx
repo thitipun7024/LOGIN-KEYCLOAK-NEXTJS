@@ -155,9 +155,9 @@ export default function Page() {
           );
 
           const dataFileImage = await responseFileImage.json();
-
+          
           if (dataFileImage !== null || dataFileImage !== '') {
-            setUrlImage(dataFileImage);
+            setUrlImage(dataFileImage.uri);
           } else {
             setUrlImage('');
           }
