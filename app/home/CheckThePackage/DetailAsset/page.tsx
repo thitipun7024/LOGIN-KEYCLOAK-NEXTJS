@@ -63,17 +63,24 @@ export default function Page() {
                 });
                 if (response.status !== 200) {
                   console.log(response);
-                  alert(response);
+                  setTimeout(() => {
+                    window.location.href = "../../../NoSuccess";
+                  }, 100);
                 }
               })
               .catch((error) => {
                 console.log(error);
-                alert(error);
+                setTimeout(() => {
+                  window.location.href = "../../../NoSuccess";
+                }, 100);
               });
           });
         })
         .catch((error) => {
           console.log(error);
+          setTimeout(() => {
+            window.location.href = "../../../NoSuccess";
+          }, 100);
         });
     } else {
       fetch(
@@ -93,12 +100,16 @@ export default function Page() {
           });
           if (response.status !== 200) {
             console.log(response);
-            alert(response);
+            setTimeout(() => {
+              window.location.href = "../../../NoSuccess";
+            }, 100);
           }
         })
         .catch((error) => {
           console.log(error);
-          alert(error);
+          setTimeout(() => {
+            window.location.href = "../../../NoSuccess";
+          }, 100);
         });
     }
   };
@@ -510,35 +521,6 @@ export default function Page() {
                                 capture="environment"
                               />
                             </label>
-
-                            <div>
-                              <dialog id="pic" className="modal">
-                                <div className="modal-box bg-black bg-opacity-10">
-                                  <div className="max-h-screen max-w-scree">
-                                    <Image
-                                      src={
-                                        selectedImage ||
-                                        "https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
-                                      }
-                                      alt="Picture of the author"
-                                      style={{
-                                        width: "100%",
-                                        height: "auto",
-                                      }}
-                                      width={1200}
-                                      height={0}
-                                      priority
-                                    />
-                                  </div>
-                                </div>
-                                <form
-                                  method="dialog"
-                                  className="modal-backdrop"
-                                >
-                                  <button>close</button>
-                                </form>
-                              </dialog>
-                            </div>
                           </div>
                         )}
 
@@ -699,9 +681,9 @@ export default function Page() {
                   />
                 </div>
               </div>
-              <p className="py-4 flex text-center font-bold">
-                สินทรัพย์นี้ไม่ใช่สินทรัพย์ที่อยู่ในสาขาของท่านกรุณาตวจสอบสินทรัพย์นี้
-              </p>
+              <p className="py-4 flex justify-center text-center font-bold break-words lg:w-11/12 md:w-8/12 sm:w-8/12 w-11/12 mx-auto">
+  สินทรัพย์นี้ไม่ใช่สินทรัพย์ที่อยู่ในสังกัดของท่านกรุณาตรวจสอบ
+</p>
               <div className="modal-action">
                 <button className="btn" onClick={closeModal}>
                   ปิด
@@ -716,17 +698,17 @@ export default function Page() {
             <div className="modal-box">
               <div className="flex justify-center items-center">
                 <div className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
-                <Image
-                  src="https://minio.saksiam.co.th/public/saktech/logo/warning.png"
-                  alt="Picture of the author"
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                  }}
-                  width={1200}
-                  height={0}
-                  priority
-                />
+                  <Image
+                    src="https://minio.saksiam.co.th/public/saktech/logo/warning.png"
+                    alt="Picture of the author"
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                    }}
+                    width={1200}
+                    height={0}
+                    priority
+                  />
                 </div>
               </div>
               <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
@@ -740,6 +722,32 @@ export default function Page() {
             </div>
           </dialog>
         )}
+
+        <div>
+          <dialog id="pic" className="modal">
+            <div className="modal-box bg-black bg-opacity-10">
+              <div className="max-h-screen max-w-scree">
+                <Image
+                  src={
+                    selectedImage ||
+                    "https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
+                  }
+                  alt="Picture of the author"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                  }}
+                  width={1200}
+                  height={0}
+                  priority
+                />
+              </div>
+            </div>
+            <form method="dialog" className="modal-backdrop">
+              <button>close</button>
+            </form>
+          </dialog>
+        </div>
       </div>
     </div>
   );
