@@ -257,7 +257,7 @@ function PageContent() {
             {selectedData ? selectedData.map((row) => (
               <div className="container flex items-center justify-center mb-3" key={row.Asset}>
                 <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
-                  <div className="lg:h-24 h-16 lg:w-24 w-16 m-4 lg:ml-5 ml-4">
+                <div className=" flex justify-center items-center lg:h-24 md:h-18 sm:h-14 h-16 lg:w-24 md:w-18 sm:w-16 w-16 m-4 lg:ml-5 ml-4">
                   <Image
                     src="https://minio.saksiam.co.th/public/saktech/logo/Iconasset2.png"
                     alt="Icon Asset"
@@ -271,7 +271,7 @@ function PageContent() {
                   />
                   </div>
                   <div className="flex flex-col lg:ml-5 ml-0">
-                    <h1 className="lg:text-3xl md:text-1xl sm:text-xl text-xl font-bold text-white break-words lg:w-96 md:w-full sm:w-36 w-32">
+                  <h1 className="lg:text-3xl md:text-1xl sm:text-xl text-sm font-bold text-white">
                       {row.Asset_description}
                     </h1>
                     <h2 className="lg:text-lg md:text-lg sm:text-xl text-sm mb-1 text-white">
