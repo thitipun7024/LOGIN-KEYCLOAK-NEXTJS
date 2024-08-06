@@ -38,9 +38,9 @@ const BarcodeScanner = () => {
     },
     locator: {
       patchSize: "large",
-      halfSample: true,
+      halfSample: false,
     },
-    numOfWorkers: 4,
+    numOfWorkers: 0,
     decoder: {
       readers: ["codabar_reader"],
     },

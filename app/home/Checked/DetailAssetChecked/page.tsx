@@ -11,11 +11,12 @@ export default function Page() {
   const [dataAsset, setDataAsset] = useState([]);
   const [resultGroupBranch, setResultGroupBranch] = useState(null);
   const [dataBranchCode, setDataBranchCode] = useState([]);
-  const [dataFileImage, setDataFileImage] = useState([
-    { fileUpload: "2024/08/LoadingImage.png" },
-  ]);
+  const [dataFileImage, setDataFileImage] = useState([{fileUpload:'2024/08/LoadingImage.png'}]);
+  const [urlImage, setUrlImage] = useState("");
 
-  useEffect(() => {
+  // console.log(process.env.NEXT_PUBLIC_SMARTCARD_URI)
+ useEffect(() => {
+
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
     if (dataDetailAsset) {
       const parsedDataDetailAsset = JSON.parse(dataDetailAsset);
@@ -24,7 +25,7 @@ export default function Page() {
       console.log("ไม่มีข้อมูลใน sessionStorage");
     }
   }, []);
-
+    
   useEffect(() => {
     if (session) {
       const decoded = jwtDecode<Token>(session.accessToken);
@@ -136,6 +137,38 @@ export default function Page() {
       fetchfileImage();
     }
   }, [dataAsset]);
+
+
+  useEffect(() => {
+    if (session) {
+      const fetchUrlImage = async () => {
+        try {
+          const responseFileImage = await fetch(
+            `/api/asset/GetImageURL`,
+            {
+              method: "POST",
+              headers: {
+                "Cache-Control": "no-cache",
+                Pragma: "no-cache",
+              },
+            }
+          );
+
+          const dataFileImage = await responseFileImage.json();
+          
+          if (dataFileImage !== null || dataFileImage !== '') {
+            setUrlImage(dataFileImage.uri);
+          } else {
+            setUrlImage('');
+          }
+        } catch (error) {
+          console.error("Error fetching file image:", error);
+        }
+      };
+
+      fetchUrlImage();
+    }
+  }, [session]);
 
   if (status === "loading") {
     return (
@@ -299,30 +332,39 @@ export default function Page() {
 
                         {data.Status === "1" && (
                           <div className="flex flex-col items-center justify-center mt-10">
-                            <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
-                              <Image
-                                src={`${
-                                  process.env.NEXT_PUBLIC_SMARTCARD_URI
-                                }${dataFileImage.map(
-                                  (file) => file.fileUpload
-                                )}`}
-                                alt="Uploaded"
-                                style={{
-                                  width: "80%",
-                                  height: "auto",
-                                  justifyItems: "center",
-                                }}
-                                width={1200}
-                                height={500}
-                                priority
-                                onClick={() =>
-                                  (
-                                    document.getElementById(
-                                      "pic"
-                                    ) as HTMLDialogElement
-                                  ).showModal()
-                                }
-                              />
+                            <img
+                              src={`${urlImage}${dataFileImage.map(
+                                (file) => file.fileUpload
+                              )}`}
+                              className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
+                              alt="Uploaded"
+                              onClick={() =>
+                                (
+                                  document.getElementById(
+                                    "pic"
+                                  ) as HTMLDialogElement
+                                ).showModal()
+                              }
+                            />
+
+                            <div>
+                              <dialog id="pic" className="modal">
+                                <div className="modal-box bg-black bg-opacity-10">
+                                  <img
+                                    src={`${urlImage}${dataFileImage.map(
+                                      (file) => file.fileUpload
+                                    )}`}
+                                    className="max-h-screen max-w-screen"
+                                    alt="Full Size"
+                                  />
+                                </div>
+                                <form
+                                  method="dialog"
+                                  className="modal-backdrop"
+                                >
+                                  <button>close</button>
+                                </form>
+                              </dialog>
                             </div>
                           </div>
                         )}
@@ -342,30 +384,39 @@ export default function Page() {
                         {data.Status === "14" && (
                           <div>
                             <div className="flex flex-col items-center justify-center mt-10">
-                              <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
-                                <Image
-                                  src={`${
-                                    process.env.NEXT_PUBLIC_SMARTCARD_URI
-                                  }${dataFileImage.map(
-                                    (file) => file.fileUpload
-                                  )}`}
-                                  alt="Uploaded"
-                                  style={{
-                                    width: "80%",
-                                    height: "auto",
-                                    justifyItems: "center",
-                                  }}
-                                  width={1200}
-                                  height={500}
-                                  priority
-                                  onClick={() =>
-                                    (
-                                      document.getElementById(
-                                        "pic"
-                                      ) as HTMLDialogElement
-                                    ).showModal()
-                                  }
-                                />
+                              <img
+                                src={`${urlImage}${dataFileImage.map(
+                                  (file) => file.fileUpload
+                                )}`}
+                                className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
+                                alt="Uploaded"
+                                onClick={() =>
+                                  (
+                                    document.getElementById(
+                                      "pic"
+                                    ) as HTMLDialogElement
+                                  ).showModal()
+                                }
+                              />
+
+                              <div>
+                                <dialog id="pic" className="modal">
+                                  <div className="modal-box bg-black bg-opacity-10">
+                                    <img
+                                      src={`${urlImage}${dataFileImage.map(
+                                        (file) => file.fileUpload
+                                      )}`}
+                                      className="max-h-screen max-w-screen"
+                                      alt="Full Size"
+                                    />
+                                  </div>
+                                  <form
+                                    method="dialog"
+                                    className="modal-backdrop"
+                                  >
+                                    <button>close</button>
+                                  </form>
+                                </dialog>
                               </div>
 
                               <div></div>
