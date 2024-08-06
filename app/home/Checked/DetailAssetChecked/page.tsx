@@ -11,9 +11,11 @@ export default function Page() {
   const [dataAsset, setDataAsset] = useState([]);
   const [resultGroupBranch, setResultGroupBranch] = useState(null);
   const [dataBranchCode, setDataBranchCode] = useState([]);
-  const [dataFileImage, setDataFileImage] = useState([{fileUpload:'2024/08/LoadingImage.png'}]);
+  const [dataFileImage, setDataFileImage] = useState([
+    { fileUpload: "2024/08/LoadingImage.png" },
+  ]);
 
- useEffect(() => {
+  useEffect(() => {
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
     if (dataDetailAsset) {
       const parsedDataDetailAsset = JSON.parse(dataDetailAsset);
@@ -154,7 +156,7 @@ export default function Page() {
   return (
     <div className="background2">
       <div className="flex flex-col justify-center items-center min-h-screen">
-      <div className="absolute top-0 left-0 right-0 lg:h-52 md:h-52 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
+        <div className="absolute top-0 left-0 right-0 lg:h-52 md:h-52 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
           <a
             className="btn btn-ghost mt-5 ml-3 text-white"
             href="/home/Checked"
@@ -177,26 +179,26 @@ export default function Page() {
                 className="flex flex-col justify-center items-center mt-1"
                 key={data.ID}
               >
-                 <a href="/home">
-              <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-7">
-                <Image
-                  src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
-                  alt="Picture of the author"
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                  }}
-                  width={1200}
-                  height={0}
-                  priority
-                />
-              </div>
-            </a>
+                <a href="/home">
+                  <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-7">
+                    <Image
+                      src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
+                      alt="Picture of the author"
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                      }}
+                      width={1200}
+                      height={0}
+                      priority
+                    />
+                  </div>
+                </a>
 
                 <div className="card bg-clip-border lg:w-2/5 md:w-3/5 sm:w-11/12 w-11/12 p-1 bg-base-100 shadow-xl flex flex-flex-col items-center justify-center h-20 text-center">
                   <h2 className="lg:text-4xl md:text-2xl sm:text-2xl text-xl font-bold">
                     {data ? (
-                      data.Asset_description 
+                      data.Asset_description
                     ) : (
                       <span className="loading loading-dots loading-md"></span>
                     )}
@@ -298,55 +300,29 @@ export default function Page() {
                         {data.Status === "1" && (
                           <div className="flex flex-col items-center justify-center mt-10">
                             <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
-                                <Image
-                                  src={`${process.env.NEXT_PUBLIC_SMARTCARD_URI}${dataFileImage.map(
-                                    (file) => file.fileUpload
-                                  )}`}
-                                  alt="Uploaded"
-                                  style={{
-                                    width: "80%",
-                                    height: "auto",
-                                    justifyItems: "center"
-                                  }}
-                                  width={1200}
-                                  height={500}
-                                  priority
-                                  onClick={() =>
-                                    (
-                                      document.getElementById(
-                                        "pic"
-                                      ) as HTMLDialogElement
-                                    ).showModal()
-                                  }
-                                />
-                            </div>
-
-                            <div>
-                              <dialog id="pic" className="modal">
-                                <div className="modal-box bg-black bg-opacity-10">
-                                  <div className="max-h-screen max-w-screen">
-                                  <Image
-                                    src={`${process.env.NEXT_PUBLIC_SMARTCARD_URI}${dataFileImage.map(
-                                      (file) => file.fileUpload
-                                    )}`}
-                                    alt="Picture of the author"
-                                    style={{
-                                      width: "100%",
-                                      height: "auto",
-                                    }}
-                                    width={1200}
-                                    height={0}
-                                    priority
-                                  />
-                                  </div>
-                                </div>
-                                <form
-                                  method="dialog"
-                                  className="modal-backdrop"
-                                >
-                                  <button>close</button>
-                                </form>
-                              </dialog>
+                              <Image
+                                src={`${
+                                  process.env.NEXT_PUBLIC_SMARTCARD_URI
+                                }${dataFileImage.map(
+                                  (file) => file.fileUpload
+                                )}`}
+                                alt="Uploaded"
+                                style={{
+                                  width: "80%",
+                                  height: "auto",
+                                  justifyItems: "center",
+                                }}
+                                width={1200}
+                                height={500}
+                                priority
+                                onClick={() =>
+                                  (
+                                    document.getElementById(
+                                      "pic"
+                                    ) as HTMLDialogElement
+                                  ).showModal()
+                                }
+                              />
                             </div>
                           </div>
                         )}
@@ -366,16 +342,18 @@ export default function Page() {
                         {data.Status === "14" && (
                           <div>
                             <div className="flex flex-col items-center justify-center mt-10">
-                            <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
-                            <Image
-                                  src={`${process.env.NEXT_PUBLIC_SMARTCARD_URI}${dataFileImage.map(
+                              <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
+                                <Image
+                                  src={`${
+                                    process.env.NEXT_PUBLIC_SMARTCARD_URI
+                                  }${dataFileImage.map(
                                     (file) => file.fileUpload
                                   )}`}
                                   alt="Uploaded"
                                   style={{
                                     width: "80%",
                                     height: "auto",
-                                    justifyItems: "center"
+                                    justifyItems: "center",
                                   }}
                                   width={1200}
                                   height={500}
@@ -390,8 +368,7 @@ export default function Page() {
                                 />
                               </div>
 
-                              <div>
-                              </div>
+                              <div></div>
                             </div>
 
                             <div className="flex flex-col items-center justify-center mt-10">
@@ -408,62 +385,50 @@ export default function Page() {
                       </div>
                     </div>
                   </div>
-
                 </div>
 
                 <footer className="footer footer-center p-4 text-base-content lg:mt-28 md:mt-20 sm:mt-32 mt-12">
-                <aside>
+                  <aside>
                     <p className="lg:text-base md:text-base sm:text-sm text-sm">
-                    © 2024 All Right Reserve By SakTech
+                      © 2024 All Right Reserve By SakTech
                     </p>
                     <p className="lg:text-base md:text-base sm:text-sm text-sm">
-                    VERSION {process.env.NEXT_PUBLIC_VERSION}
+                      VERSION {process.env.NEXT_PUBLIC_VERSION}
                     </p>
-                </aside>
-          </footer>
+                  </aside>
+                </footer>
               </div>
             ))
           ) : (
             <span className="loading loading-dots loading-lg text-blue-950"></span>
           )}
         </div>
+
+        <div>
+          <dialog id="pic" className="modal">
+            <div className="modal-box bg-black bg-opacity-10">
+              <div className="max-h-screen max-w-screen">
+                <Image
+                  src={`${
+                    process.env.NEXT_PUBLIC_SMARTCARD_URI
+                  }${dataFileImage.map((file) => file.fileUpload)}`}
+                  alt="Picture of the author"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                  }}
+                  width={1200}
+                  height={0}
+                  priority
+                />
+              </div>
+            </div>
+            <form method="dialog" className="modal-backdrop">
+              <button>close</button>
+            </form>
+          </dialog>
+        </div>
       </div>
     </div>
   );
 }
-
-                                {/* <Image
-                                  src={`${process.env.NEXT_PUBLIC_SMARTCARD_URI}${dataFileImage.map(
-                                    (file) => file.fileUpload
-                                  )}`}
-                                  alt="Uploaded"
-                                  style={{
-                                    width: "100%",
-                                    height: "auto",
-                                  }}
-                                  width={1200}
-                                  height={0}
-                                  priority
-                                  onClick={() =>
-                                    (
-                                      document.getElementById(
-                                        "pic"
-                                      ) as HTMLDialogElement
-                                    ).showModal()
-                                  }
-                                /> */}
-
-{/* <img
-                              src={`${process.env.NEXT_PUBLIC_SMARTCARD_URI}${dataFileImage.map(
-                                (file) => file.fileUpload
-                              )}`}
-                              className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer"
-                              alt="Uploaded"
-                              onClick={() =>
-                                (
-                                  document.getElementById(
-                                    "pic"
-                                  ) as HTMLDialogElement
-                                ).showModal()
-                              }
-                            /> */}
