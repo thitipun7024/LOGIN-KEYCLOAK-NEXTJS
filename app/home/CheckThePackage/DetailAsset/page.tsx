@@ -19,6 +19,7 @@ export default function Page() {
   const [modalShown, setModalShown] = useState(false);
   const [selectedValue, setSelectedValue] = useState("รอตรวจนับ");
   const [showWarningModal, setShowWarningModal] = useState(false);
+  const [modalAssetChecked, setModalAssetChecked] = useState(false);
   const [sakHQ, setSakHQ] = useState(null);
   const [groupBaD_TH, setGroupBaD_TH] = useState(null);
   const [other, setOther] = useState(false);
@@ -173,8 +174,14 @@ export default function Page() {
           const dataDetailAsset = await responseDetailAsset.json();
 
           if (Array.isArray(dataDetailAsset)) {
-            setDataAsset(dataDetailAsset);
-            fetchDataDetailBranchCode(dataDetailAsset);
+
+            const hasStatus = dataDetailAsset.some((item) => item.Status === "16");
+            if(hasStatus){
+              setDataAsset(dataDetailAsset);
+              fetchDataDetailBranchCode(dataDetailAsset);
+            } else {
+              setModalAssetChecked(true)
+            }
           } else {
             setDataAsset([]);
             setShowWarningModal(true);
@@ -312,6 +319,11 @@ export default function Page() {
 
   const closeWarningModal = () => {
     setShowWarningModal(false);
+    window.location.href = "/home/CheckThePackage";
+  };
+
+  const closeModalAssetChecked = () => {
+    setModalAssetChecked(false);
     window.location.href = "/home/CheckThePackage";
   };
 
@@ -699,6 +711,36 @@ export default function Page() {
               <div className="flex justify-center items-center">
                 <div className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
                   <Image
+                    src="https://minio.saksiam.co.th/public/saktech/logo/cross.png"
+                    alt="Picture of the author"
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                    }}
+                    width={1200}
+                    height={0}
+                    priority
+                  />
+                </div>
+              </div>
+              <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
+                ไม่มีสินทรพย์นี้อยู่ในระบบ
+              </p>
+              <div className="modal-action">
+                <button className="btn" onClick={closeWarningModal}>
+                  ปิด
+                </button>
+              </div>
+            </div>
+          </dialog>
+        )}
+
+{modalAssetChecked && (
+          <dialog open className="modal">
+            <div className="modal-box">
+              <div className="flex justify-center items-center">
+                <div className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
+                  <Image
                     src="https://minio.saksiam.co.th/public/saktech/logo/warning.png"
                     alt="Picture of the author"
                     style={{
@@ -715,7 +757,7 @@ export default function Page() {
                 สินทรัพย์นี้ถูกตรวจนับไปเเล้ว
               </p>
               <div className="modal-action">
-                <button className="btn" onClick={closeWarningModal}>
+                <button className="btn" onClick={closeModalAssetChecked}>
                   ปิด
                 </button>
               </div>

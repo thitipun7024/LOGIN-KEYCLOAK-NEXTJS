@@ -4,15 +4,11 @@ import { type NextRequest, NextResponse } from 'next/server'
 export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
     const NoAsset = searchParams.get("NoAsset")
-    const Status = "16";
 
     try {
         const getBranchCode = await prisma.assetMaster.findMany({
             where: {
-                AND: [
-                    { Status: Status },
-                    { Asset: NoAsset }
-                ]
+                Asset: NoAsset
             }
         });
 
