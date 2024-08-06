@@ -334,9 +334,9 @@ export default function Page() {
                           <div className="flex flex-col items-center justify-center mt-10">
                             <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
                               <Image
-                                src={`${
-                                  process.env.NEXT_PUBLIC_SMARTCARD_URI
-                                  }${dataFileImage.map((file) => file.fileUpload)}`}
+                                src={`${urlImage}${dataFileImage.map(
+                                  (file) => file.fileUpload
+                                )}`}
                                 alt="Uploaded"
                                 style={{
                                   width: "80%",
@@ -375,9 +375,9 @@ export default function Page() {
                             <div className="flex flex-col items-center justify-center mt-10">
                               <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
                                 <Image
-                                 src={`${
-                                  process.env.NEXT_PUBLIC_SMARTCARD_URI
-                                  }${dataFileImage.map((file) => file.fileUpload)}`}
+                                 src={`${urlImage}${dataFileImage.map(
+                                  (file) => file.fileUpload
+                                )}`}
                                   alt="Uploaded"
                                   style={{
                                     width: "80%",
@@ -438,9 +438,9 @@ export default function Page() {
             <div className="modal-box bg-black bg-opacity-10">
               <div className="max-h-screen max-w-screen">
                 <Image
-                   src={`${
-                    process.env.NEXT_PUBLIC_SMARTCARD_URI
-                    }${dataFileImage.map((file) => file.fileUpload)}`}
+                   src={`${urlImage}${dataFileImage.map(
+                    (file) => file.fileUpload
+                  )}`}
                   alt="Picture of the author"
                   style={{
                     width: "100%",
