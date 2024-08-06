@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Quagga from "quagga";
 import Image from "next/image";
 
-
 interface QuaggaState {
   inputStream: {
     type: string;
@@ -24,11 +23,6 @@ interface QuaggaState {
   };
   locate: boolean;
   multiple: boolean;
-}
-
-interface BarcodeContextType {
-  barcode: string;
-  setBarcode: (barcode: string) => void;
 }
 
 const BarcodeScanner = () => {
@@ -75,9 +69,7 @@ const BarcodeScanner = () => {
     ) as HTMLSelectElement;
 
     if (deviceSelection) {
-      while (deviceSelection.firstChild) {
-        deviceSelection.removeChild(deviceSelection.firstChild);
-      }
+      deviceSelection.innerHTML = ""; // ล้างรายการที่มีอยู่แล้ว
       devices.forEach((device) => {
         const option = document.createElement("option");
         option.value = device.deviceId || device.id;
@@ -92,45 +84,49 @@ const BarcodeScanner = () => {
 
   const attachListeners = () => {
     initCameraSelection();
+
     const stopButton = document.querySelector(".controls button.stop");
     if (stopButton) {
-      stopButton.addEventListener("click", (e: Event) => {
-        e.preventDefault();
-        Quagga.stop();
-      });
+      stopButton.addEventListener("click", handleStopClick);
     }
 
     const readerConfigGroup = document.querySelector(
       ".controls .reader-config-group"
     );
     if (readerConfigGroup) {
-      readerConfigGroup.addEventListener("change", (e: Event) => {
-        e.preventDefault();
-        const target = e.target as HTMLInputElement;
-        const value =
-          target.type === "checkbox" ? querySelectedReaders() : target.value;
-        const name = target.name;
-        const statePath = convertNameToState(name);
-
-        setState((prevState) => ({
-          ...prevState,
-          [statePath]: value,
-        }));
-      });
+      readerConfigGroup.addEventListener("change", handleReaderConfigChange);
     }
+  };
+
+  const handleStopClick = (e: Event) => {
+    e.preventDefault();
+    Quagga.stop();
+  };
+
+  const handleReaderConfigChange = (e: Event) => {
+    e.preventDefault();
+    const target = e.target as HTMLInputElement;
+    const value =
+      target.type === "checkbox" ? querySelectedReaders() : target.value;
+    const statePath = convertNameToState(target.name);
+
+    setState((prevState) => ({
+      ...prevState,
+      [statePath]: value,
+    }));
   };
 
   const detachListeners = () => {
     const stopButton = document.querySelector(".controls button.stop");
     if (stopButton) {
-      stopButton.removeEventListener("click", () => Quagga.stop());
+      stopButton.removeEventListener("click", handleStopClick);
     }
 
     const readerConfigGroup = document.querySelector(
       ".controls .reader-config-group"
     );
     if (readerConfigGroup) {
-      readerConfigGroup.removeEventListener("change", () => {});
+      readerConfigGroup.removeEventListener("change", handleReaderConfigChange);
     }
   };
 
@@ -177,7 +173,7 @@ const BarcodeScanner = () => {
       drawingCtx.moveTo(0, middleY);
       drawingCtx.lineTo(canvasWidth, middleY);
       drawingCtx.strokeStyle = "red";
-      drawingCtx.lineWidth =3;
+      drawingCtx.lineWidth = 3;
       drawingCtx.stroke();
       drawingCtx.closePath();
     });
@@ -242,11 +238,16 @@ const BarcodeScanner = () => {
                 <div className="card w-10/12 max-w-lg items-center mt-5">
                   <div id="interactive" className="viewport w-full"></div>
                 </div>
-              <footer className="footer footer-center p-4 text-base-content">
-                <aside>
-                  <p>Copyright © 2024</p>
-                </aside>
-              </footer>
+                <footer className="footer footer-center p-4 text-base-content lg:mt-28 md:mt-80 sm:mt-32 mt-12">
+                  <aside>
+                    <p className="lg:text-base md:text-base sm:text-sm text-sm">
+                      © 2024 All Right Reserve By SakTech
+                    </p>
+                    <p className="lg:text-base md:text-base sm:text-sm text-sm">
+                      VERSION {process.env.NEXT_PUBLIC_VERSION}
+                    </p>
+                  </aside>
+                </footer>
             </div>
           </div>
         </div>
