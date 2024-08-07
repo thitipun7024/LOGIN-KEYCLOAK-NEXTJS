@@ -724,7 +724,7 @@ export default function Page() {
                 </div>
               </div>
               <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
-                ไม่มีสินทรพย์นี้อยู่ในระบบ
+                ไม่มีสินทัพย์นี้อยู่ในระบบ
               </p>
               <div className="modal-action">
                 <button className="btn" onClick={closeWarningModal}>
