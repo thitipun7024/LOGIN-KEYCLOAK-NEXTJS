@@ -23,95 +23,81 @@ export default function Page() {
   const [sakHQ, setSakHQ] = useState(null);
   const [groupBaD_TH, setGroupBaD_TH] = useState(null);
   const [other, setOther] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const InsertTrackingData = async () => {
+    setIsLoading(true); // เริ่ม Loading
+  
     if (statusselect === "1" || statusselect === "14") {
-      const fileInput = document.getElementById(
-        "fileInput"
-      ) as HTMLInputElement;
+      const fileInput = document.getElementById("fileInput") as HTMLInputElement;
       const files = fileInput.files?.[0];
       if (!files) {
         console.error("ไม่พบไฟล์");
+        setIsLoading(false); // หยุด Loading
         return;
       }
+  
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "multipart/form-data");
       const formdata = new FormData();
       formdata.append("file", files);
       formdata.append("username", username);
-      fetch(`/api/asset/InsertFileMinio`, {
-        method: "POST",
-        body: formdata,
-      })
-        .then((response) => {
-          response.json().then((json) => {
-            const result = json;
-            console.log(result);
-            fetch(
-              `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode.map(
-                (item) => item.CostCenter
-              )}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${result}&Description=${textareaValue}`,
-              {
-                method: "POST",
-              }
-            )
-              .then((response) => {
-                response.json().then((json) => {
-                  console.log(json);
-                  setTimeout(() => {
-                    window.location.href = "../../../Success";
-                  }, 100);
-                });
-                if (response.status !== 200) {
-                  console.log(response);
-                  setTimeout(() => {
-                    window.location.href = "../../../NoSuccess";
-                  }, 100);
-                }
-              })
-              .catch((error) => {
-                console.log(error);
-                setTimeout(() => {
-                  window.location.href = "../../../NoSuccess";
-                }, 100);
-              });
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-          setTimeout(() => {
-            window.location.href = "../../../NoSuccess";
-          }, 100);
-        });
-    } else {
-      fetch(
-        `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode.map(
-          (item) => item.CostCenter
-        )}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${null}&Description=${textareaValue}`,
-        {
+  
+      try {
+        const uploadResponse = await fetch(`/api/asset/InsertFileMinio`, {
           method: "POST",
-        }
-      )
-        .then((response) => {
-          response.json().then((json) => {
-            console.log(json);
-            setTimeout(() => {
-              window.location.href = "../../../Success";
-            }, 100);
-          });
-          if (response.status !== 200) {
-            console.log(response);
-            setTimeout(() => {
-              window.location.href = "../../../NoSuccess";
-            }, 100);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          setTimeout(() => {
-            window.location.href = "../../../NoSuccess";
-          }, 100);
+          body: formdata,
         });
+        const uploadResult = await uploadResponse.json();
+  
+        const response = await fetch(
+          `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode.map(
+            (item) => item.CostCenter
+          )}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${uploadResult}&Description=${textareaValue}`,
+          {
+            method: "POST",
+          }
+        );
+  
+        const result = await response.json();
+        console.log(result);
+  
+        if (response.status === 200) {
+          window.location.href = "../../../Success";
+        } else {
+          window.location.href = "../../../NoSuccess";
+        }
+      } catch (error) {
+        console.log(error);
+        window.location.href = "../../../NoSuccess";
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      try {
+        const response = await fetch(
+          `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode.map(
+            (item) => item.CostCenter
+          )}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${null}&Description=${textareaValue}`,
+          {
+            method: "POST",
+          }
+        );
+  
+        const result = await response.json();
+        console.log(result);
+  
+        if (response.status === 200) {
+          window.location.href = "../../../Success";
+        } else {
+          window.location.href = "../../../NoSuccess";
+        }
+      } catch (error) {
+        console.log(error);
+        window.location.href = "../../../NoSuccess";
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -654,8 +640,10 @@ export default function Page() {
         </div>
 
         <dialog id="confirm" className="modal">
-          <div className="modal-box">
-            <h3 className="font-bold text-xl text-blue-950">
+          <div className="modal-box flex justify-center items-center">
+          {isLoading ? (<span className="loading loading-dots loading-lg text-blue-950"></span>) : (
+            <div>
+              <h3 className="font-bold text-xl text-blue-950">
               ยืนยันการตรวจทรัพย์สิน !
             </h3>
             <p className="py-5 mt-3 lg:text-lg md:text-lg sm:text-base text-base text-blue-950 flex items-center justify-center">
@@ -672,6 +660,8 @@ export default function Page() {
                 <button className="btn">ยกเลิก</button>
               </form>
             </div>
+            </div>
+          )}
           </div>
         </dialog>
 
