@@ -11,19 +11,47 @@ export async function POST(req: NextRequest) {
     const fileupload: string | null = searchParams.get("fileupload");
     const Description: string | null = searchParams.get("Description");
 
+
+
     if (req.method !== 'POST') {
         return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
     }
     else{
-  
+        if(process.env.KEYCLOAK_ISSUER="https://sso.saksiam.net/auth/realms/devsaksiam"){
+            try {
+                const updateAsset = await prisma.$queryRaw`
+                DECLARE @AssetCode nvarchar(30) = ${AssetCode}
+                DECLARE @Status nvarchar(30) = ${Status}
+                DECLARE @Branch nvarchar(30) = ${Branch}
+                DECLARE @Comment nvarchar(500) = ${Comment}
+                DECLARE @CreateBy nvarchar(50) = 'DEVSAK\'+${CreateBy}
+                DECLARE @fileupload nvarchar(max) = ${fileupload}
+                DECLARE @Description nvarchar(100) = ${Description}
+                EXECUTE [dbo].[InsertTrackingData] 
+                @AssetCode
+                ,@Status
+                ,@Branch
+                ,@Comment
+                ,@CreateBy
+                ,@CheckerBy
+                ,@fileupload
+                ,@Description
+                `
+        
+                return NextResponse.json(updateAsset, { status: 200 });
+            } catch (error) {
+                console.error(error);
+                return NextResponse.json({ error: error }, { status: 500 });
+            }
+        }
+       else{
         try {
             const updateAsset = await prisma.$queryRaw`
             DECLARE @AssetCode nvarchar(30) = ${AssetCode}
             DECLARE @Status nvarchar(30) = ${Status}
             DECLARE @Branch nvarchar(30) = ${Branch}
             DECLARE @Comment nvarchar(500) = ${Comment}
-            DECLARE @CreateBy nvarchar(50) = ${CreateBy}
-            DECLARE @CheckerBy nvarchar(50) = ${CreateBy}
+            DECLARE @CreateBy nvarchar(50) = 'SAK\'+${CreateBy}
             DECLARE @fileupload nvarchar(max) = ${fileupload}
             DECLARE @Description nvarchar(100) = ${Description}
             EXECUTE [dbo].[InsertTrackingData] 
@@ -42,5 +70,6 @@ export async function POST(req: NextRequest) {
             console.error(error);
             return NextResponse.json({ error: error }, { status: 500 });
         }
+       }
     }
 }
