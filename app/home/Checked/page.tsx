@@ -115,7 +115,7 @@ function PageContent() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false); 
-    }, 800);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, []);
