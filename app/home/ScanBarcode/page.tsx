@@ -1,32 +1,59 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 import Quagga from "quagga";
 import Image from "next/image";
 
+interface QuaggaState {
+  inputStream: {
+    type: string;
+    constraints: {
+      width: { min: number };
+      height: { min: number };
+      aspectRatio: { min: number; max: number };
+      facingMode: string;
+    };
+  };
+  locator: {
+    patchSize: string;
+    halfSample: boolean;
+  };
+  numOfWorkers: number;
+  decoder: {
+    readers: string[];
+  };
+  locate: boolean;
+  multiple: boolean;
+}
+
 const BarcodeScanner = () => {
-  const [state, setState] = useState({
+  const [state, setState] = useState<QuaggaState>({
     inputStream: {
-      type: 'LiveStream',
+      type: "LiveStream",
       constraints: {
-        width: { min: 360 },
-        height: { min: 360 },
-        aspectRatio: { min: 1, max: 1 },
-        facingMode: 'environment', // or user
+        width: { min: 640 },
+        height: { min: 480 },
+        aspectRatio: { min: 1, max: 100 },
+        facingMode: "environment",
       },
     },
     locator: {
-      patchSize: 'large',
-      halfSample: true,
+      patchSize: "large",
+      halfSample: false,
     },
     numOfWorkers: 0,
     decoder: {
-      readers: ['codabar_reader'],
+      readers: ["codabar_reader"],
     },
     locate: true,
     multiple: true,
   });
 
   const [showResult, setShowResult] = useState<string>("");
+
+  const handleBackToScan = () => {
+    window.location.reload();
+  };
+
   useEffect(() => {
     if (showResult !== "") {
       sessionStorage.setItem('NoAsset', showResult);
@@ -34,25 +61,21 @@ const BarcodeScanner = () => {
     }
   }, [showResult]);
 
-
-
-  const handleBackToScan = () => {
-    window.location.reload();
-  };
-
   const initCameraSelection = async () => {
     const devices = await Quagga.CameraAccess.enumerateVideoDevices();
     const streamLabel = Quagga.CameraAccess.getActiveStreamLabel();
-    const deviceSelection = document.getElementById('deviceSelection') as HTMLSelectElement;
+    const deviceSelection = document.getElementById(
+      "deviceSelection"
+    ) as HTMLSelectElement;
 
     if (deviceSelection) {
-      while (deviceSelection.firstChild) {
-        deviceSelection.removeChild(deviceSelection.firstChild);
-      }
-      devices.forEach((device: any) => {
-        const option = document.createElement('option');
+      deviceSelection.innerHTML = ""; // ล้างรายการที่มีอยู่แล้ว
+      devices.forEach((device) => {
+        const option = document.createElement("option");
         option.value = device.deviceId || device.id;
-        option.appendChild(document.createTextNode(device.label || device.deviceId || device.id));
+        option.appendChild(
+          document.createTextNode(device.label || device.deviceId || device.id)
+        );
         option.selected = streamLabel === device.label;
         deviceSelection.appendChild(option);
       });
@@ -61,53 +84,67 @@ const BarcodeScanner = () => {
 
   const attachListeners = () => {
     initCameraSelection();
-    const stopButton = document.querySelector('.controls button.stop');
+
+    const stopButton = document.querySelector(".controls button.stop");
     if (stopButton) {
-      stopButton.addEventListener('click', (e: Event) => {
-        e.preventDefault();
-        Quagga.stop();
-      });
+      stopButton.addEventListener("click", handleStopClick);
     }
 
-    const readerConfigGroup = document.querySelector('.controls .reader-config-group');
+    const readerConfigGroup = document.querySelector(
+      ".controls .reader-config-group"
+    );
     if (readerConfigGroup) {
-      readerConfigGroup.addEventListener('change', (e: Event) => {
-        e.preventDefault();
-        const target = e.target as HTMLInputElement;
-        const value = target.type === 'checkbox' ? querySelectedReaders() : target.value;
-        const name = target.name;
-        const statePath = convertNameToState(name);
-
-        setState((prevState) => ({
-          ...prevState,
-          [statePath]: value,
-        }));
-      });
+      readerConfigGroup.addEventListener("change", handleReaderConfigChange);
     }
   };
 
+  const handleStopClick = (e: Event) => {
+    e.preventDefault();
+    Quagga.stop();
+  };
+
+  const handleReaderConfigChange = (e: Event) => {
+    e.preventDefault();
+    const target = e.target as HTMLInputElement;
+    const value =
+      target.type === "checkbox" ? querySelectedReaders() : target.value;
+    const statePath = convertNameToState(target.name);
+
+    setState((prevState) => ({
+      ...prevState,
+      [statePath]: value,
+    }));
+  };
+
   const detachListeners = () => {
-    const stopButton = document.querySelector('.controls button.stop');
+    const stopButton = document.querySelector(".controls button.stop");
     if (stopButton) {
-      stopButton.removeEventListener('click', () => Quagga.stop());
+      stopButton.removeEventListener("click", handleStopClick);
     }
 
-    const readerConfigGroup = document.querySelector('.controls .reader-config-group');
+    const readerConfigGroup = document.querySelector(
+      ".controls .reader-config-group"
+    );
     if (readerConfigGroup) {
-      readerConfigGroup.removeEventListener('change', () => { });
+      readerConfigGroup.removeEventListener("change", handleReaderConfigChange);
     }
   };
 
   const querySelectedReaders = () => {
-    return Array.from(document.querySelectorAll('.readers input[type=checkbox]'))
+    return Array.from(
+      document.querySelectorAll(".readers input[type=checkbox]")
+    )
       .filter((element) => (element as HTMLInputElement).checked)
       .map((element) => (element as HTMLInputElement).name);
   };
 
   const convertNameToState = (name: string) => {
-    return name.replace('_', '.').split('-').reduce((result, value) => {
-      return result + value.charAt(0).toUpperCase() + value.substring(1);
-    });
+    return name
+      .replace("_", ".")
+      .split("-")
+      .reduce((result, value) => {
+        return result + value.charAt(0).toUpperCase() + value.substring(1);
+      });
   };
 
   useEffect(() => {
@@ -121,7 +158,6 @@ const BarcodeScanner = () => {
     });
 
     Quagga.onProcessed((result: any) => {
-
       const drawingCanvas = Quagga.canvas.dom.overlay;
       const drawingCtx = drawingCanvas.getContext("2d", {
         willReadFrequently: true,
@@ -130,8 +166,8 @@ const BarcodeScanner = () => {
       const canvasHeight = parseInt(drawingCanvas.getAttribute("height")!);
       drawingCtx.clearRect(0, 0, canvasWidth, canvasHeight);
       // Calculate middle of the canvas
-      const middleX = canvasWidth / 2;
-      const middleY = canvasHeight / 2;
+      const middleX = canvasWidth / 2.2;
+      const middleY = canvasHeight / 2.2;
       // Draw horizontal line in the middle
       drawingCtx.beginPath();
       drawingCtx.moveTo(0, middleY);
@@ -140,26 +176,9 @@ const BarcodeScanner = () => {
       drawingCtx.lineWidth = 3;
       drawingCtx.stroke();
       drawingCtx.closePath();
-      if (result) {
-        if (result.boxes) {
-          drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute('width')!), parseInt(drawingCanvas.getAttribute('height')!));
-          result.boxes
-            .filter((box: any) => box !== result.box)
-            .forEach((box: any) => {
-              Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: 'green', lineWidth: 2 });
-            });
-        }
-
-        if (result.box) {
-          Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: '#00F', lineWidth: 2 });
-        }
-
-        if (result.codeResult && result.codeResult.code) {
-          Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'red', lineWidth: 3 });
-        }
-      }
     });
-    let lastResult = '';
+
+    let lastResult = "";
     Quagga.onDetected((result: any) => {
       const code: string = result.codeResult.code;
       const code2 = code.replace(/A/g, "");
@@ -167,32 +186,18 @@ const BarcodeScanner = () => {
         setShowResult(code2);
 
         lastResult = code2;
-        const node = document.createElement('li');
-        node.innerHTML = `
-            <div class="thumbnail">
-              <div class="imgWrapper"><img src="${Quagga.canvas.dom.image.toDataURL()}" /></div>
-              <div class="caption"><h4 class="code">${code}</h4></div>
-            </div>
-          `;
-        const resultStrip = document.getElementById('result_strip');
-        if (resultStrip) {
-          const thumbnails = resultStrip.querySelector('ul.thumbnails');
-          if (thumbnails) {
-            thumbnails.prepend(node);
-          }
-        }
-        Quagga.offProcessed(() => { });
-        Quagga.offDetected(() => { });
+        Quagga.offProcessed(() => {});
+        Quagga.offDetected(() => {});
         Quagga.stop();
       }
-      if (lastResult == code) { }
     });
 
     return () => {
       detachListeners();
       Quagga.stop();
     };
-  }, []);
+  }, [state]);
+
   if (showResult === "") {
     return (
       <div className="background2">
@@ -231,12 +236,7 @@ const BarcodeScanner = () => {
                 <h2 className="text-4xl font-bold">SCAN BARCODE</h2>
               </div>
                 <div className="card w-10/12 max-w-lg items-center mt-5">
-                <div id="interactive" className="viewport"></div>
-              <div className="reader-config-group">
-                <h5>กล้อง</h5>
-      
-                <select id="deviceSelection"></select>
-            </div>
+                  <div id="interactive" className="viewport w-full"></div>
                 </div>
                 <footer className="footer footer-center p-4 text-base-content lg:mt-28 md:mt-80 sm:mt-32 mt-12">
                   <aside>
@@ -265,10 +265,7 @@ const BarcodeScanner = () => {
     );
   }
 
-  else {
-
-  }
-
+  return null;
 };
 
 export default BarcodeScanner;
