@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
                 DECLARE @Status nvarchar(30) = ${Status}
                 DECLARE @Branch nvarchar(30) = ${Branch}
                 DECLARE @Comment nvarchar(500) = ${Comment}
-                DECLARE @CreateBy nvarchar(50) = 'DEVSAK\'+${CreateBy}
+                DECLARE @CreateBy nvarchar(50) = 'devsak\\'+${CreateBy}
                 DECLARE @fileupload nvarchar(max) = ${fileupload}
                 DECLARE @Description nvarchar(100) = ${Description}
                 EXECUTE [dbo].[InsertTrackingData] 
@@ -33,7 +33,6 @@ export async function POST(req: NextRequest) {
                 ,@Branch
                 ,@Comment
                 ,@CreateBy
-                ,@CheckerBy
                 ,@fileupload
                 ,@Description
                 `
@@ -51,7 +50,7 @@ export async function POST(req: NextRequest) {
             DECLARE @Status nvarchar(30) = ${Status}
             DECLARE @Branch nvarchar(30) = ${Branch}
             DECLARE @Comment nvarchar(500) = ${Comment}
-            DECLARE @CreateBy nvarchar(50) = 'SAK\'+${CreateBy}
+            DECLARE @CreateBy nvarchar(50) = 'sak\\'+${CreateBy}
             DECLARE @fileupload nvarchar(max) = ${fileupload}
             DECLARE @Description nvarchar(100) = ${Description}
             EXECUTE [dbo].[InsertTrackingData] 
@@ -60,7 +59,6 @@ export async function POST(req: NextRequest) {
             ,@Branch
             ,@Comment
             ,@CreateBy
-            ,@CheckerBy
             ,@fileupload
             ,@Description
             `
