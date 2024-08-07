@@ -656,7 +656,7 @@ export default function Page() {
         <dialog id="confirm" className="modal">
           <div className="modal-box">
             <h3 className="font-bold text-xl text-blue-950">
-              ยืนยันการตวจสินทรัพย์ !
+              ยืนยันการตรวจสินทรัพย์ !
             </h3>
             <p className="py-5 mt-3 lg:text-lg md:text-lg sm:text-base text-base text-blue-950 flex items-center justify-center">
               คุณยืนยันที่จะส่งการตรวจสินทรัพย์ใช่หรือไม่
