@@ -5,10 +5,10 @@ export default function Login() {
   return (
     <div>
           <button 
-            className="btn btn-lg btn-primary bg-blue-950 text-white rounded-full border-0"
+            className="btn btn-lg btn-primary bg-blue-950 text-white rounded-full border-0 w-44"
             onClick={() => signIn("keycloak")}
           >
-            Sign in with keycloak
+            เข้าสู่ระบบ
           </button>
     </div>
   );

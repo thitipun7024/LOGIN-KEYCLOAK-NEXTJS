@@ -406,7 +406,7 @@ export default function Page() {
 
                           <div className="flex flex-col items-center text-center">
                             <h2 className=" font-bold text-white mb-1 lg:text-xl md:text-2xl sm:text-md text-lg">
-                              ชื่อสินทรัพย์
+                              ชื่อทรัพย์สิน
                             </h2>
                             <p className="lg:text-xl md:text-lg sm:text-md text-md text-white">
                               {data ? (
@@ -656,10 +656,10 @@ export default function Page() {
         <dialog id="confirm" className="modal">
           <div className="modal-box">
             <h3 className="font-bold text-xl text-blue-950">
-              ยืนยันการตรวจสินทรัพย์ !
+              ยืนยันการตรวจทรัพย์สิน !
             </h3>
             <p className="py-5 mt-3 lg:text-lg md:text-lg sm:text-base text-base text-blue-950 flex items-center justify-center">
-              คุณยืนยันที่จะส่งการตรวจสินทรัพย์ใช่หรือไม่
+              คุณยืนยันที่จะส่งการตรวจทรัพย์สินใช่หรือไม่
             </p>
             <div className="modal-action flex items-center">
               <form method="dialog" className="flex items-center">
@@ -694,7 +694,7 @@ export default function Page() {
                 </div>
               </div>
               <p className="py-4 flex justify-center text-center font-bold break-words lg:w-11/12 md:w-8/12 sm:w-8/12 w-11/12 mx-auto">
-  สินทรัพย์นี้ไม่ใช่สินทรัพย์ที่อยู่ในสังกัดของท่านกรุณาตรวจสอบ
+              ทรัพย์สินนี้ไม่ใช่ทรัพย์สินที่อยู่ในสังกัดของท่านกรุณาตรวจสอบ
 </p>
               <div className="modal-action">
                 <button className="btn" onClick={closeModal}>
@@ -724,7 +724,7 @@ export default function Page() {
                 </div>
               </div>
               <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
-                ไม่มีสินทรัพย์นี้อยู่ในระบบ
+                ไม่มีทรัพย์สินนี้อยู่ในระบบ
               </p>
               <div className="modal-action">
                 <button className="btn" onClick={closeWarningModal}>
@@ -754,7 +754,7 @@ export default function Page() {
                 </div>
               </div>
               <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
-                สินทรัพย์นี้ถูกตรวจนับไปเเล้ว
+              ทรัพย์สินนี้ถูกตรวจนับไปเเล้ว
               </p>
               <div className="modal-action">
                 <button className="btn" onClick={closeModalAssetChecked}>
