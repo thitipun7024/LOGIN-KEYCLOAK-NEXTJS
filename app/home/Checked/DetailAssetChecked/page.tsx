@@ -265,7 +265,7 @@ export default function Page() {
 
                           <div className="flex flex-col items-center text-center">
                             <h2 className=" font-bold text-white mb-1 lg:text-xl md:text-2xl sm:text-md text-lg">
-                              ชื่อสินทรัพย์
+                              ชื่อทรัพย์สิน
                             </h2>
                             <p className="lg:text-xl md:text-lg sm:text-md text-md text-white">
                               {data ? (

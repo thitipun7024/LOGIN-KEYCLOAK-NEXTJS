@@ -24,7 +24,7 @@ export default function page() {
             </div>
 
             <div className='text-center mt-16 font-bold lg:text-6xl md:text-3xl text-4xl text-blue-950'>
-                ระบบตรวจนับพัสดุ
+                ระบบตรวจนับทรัพย์สิน
             </div>
 
             <div className="flex justify-center items-center mt-2">

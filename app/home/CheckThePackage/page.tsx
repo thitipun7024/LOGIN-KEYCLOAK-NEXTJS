@@ -257,7 +257,7 @@ function PageContent() {
                   <input
                     type="text"
                     className="grow lg:w-1/3 md:w-2/3 sm:w-4/5 w-4/5"
-                    placeholder="ค้นหาข้อมูลพัสดุ....."
+                    placeholder="ค้นหาข้อมูลทรัพย์สิน....."
                     value={search}
                     onChange={handleChange}
                   />
@@ -282,7 +282,7 @@ function PageContent() {
 
                 <div className="mt-8"></div>
                 <h1 className="mb-5 mt-10 lg:text-4xl md:text-3xl sm:text-2xl text-3xl font-bold">
-                  ไม่มีรายการสินทรัพย์
+                  ไม่มีรายการทรัพย์สิน
                 </h1>
               </div>
             </div>
@@ -325,7 +325,7 @@ function PageContent() {
                   <input
                     type="text"
                     className="grow lg:w-1/3 md:w-2/3 sm:w-4/5 w-4/5"
-                    placeholder="ค้นหาข้อมูลพัสดุ....."
+                    placeholder="ค้นหาข้อมูลทรัพย์สิน....."
                     value={search}
                     onChange={handleChange}
                   />
@@ -350,7 +350,7 @@ function PageContent() {
 
                 <div className="mt-8"></div>
                 <h1 className="mb-5 mt-2 lg:text-4xl md:text-3xl sm:text-2xl text-3xl font-bold">
-                  รายการ
+                  รายการทรัพย์สิน
                 </h1>
 
                 <div className="justify-end items-end text-right lg:w-7/12 md:w-8/12 sm:w-10/12 w-10/12">
