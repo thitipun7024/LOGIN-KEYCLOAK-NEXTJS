@@ -659,7 +659,7 @@ export default function Page() {
               ยืนยันการตวจสินทรัพย์ !
             </h3>
             <p className="py-5 mt-3 lg:text-lg md:text-lg sm:text-base text-base text-blue-950 flex items-center justify-center">
-              คุณยืนยันที่จะส่งการตรวจสินทรัพย์ใช่ไหม
+              คุณยืนยันที่จะส่งการตรวจสินทรัพย์ใช่หรือไม่
             </p>
             <div className="modal-action flex items-center">
               <form method="dialog" className="flex items-center">
@@ -724,7 +724,7 @@ export default function Page() {
                 </div>
               </div>
               <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
-                ไม่มีสินทัพย์นี้อยู่ในระบบ
+                ไม่มีสินทรัพย์นี้อยู่ในระบบ
               </p>
               <div className="modal-action">
                 <button className="btn" onClick={closeWarningModal}>
