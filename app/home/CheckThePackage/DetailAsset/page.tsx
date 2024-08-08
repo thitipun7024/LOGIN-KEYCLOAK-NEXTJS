@@ -27,29 +27,31 @@ export default function Page() {
 
   const InsertTrackingData = async () => {
     setIsLoading(true); // เริ่ม Loading
-  
+
     if (statusselect === "1" || statusselect === "14") {
-      const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+      const fileInput = document.getElementById(
+        "fileInput"
+      ) as HTMLInputElement;
       const files = fileInput.files?.[0];
       if (!files) {
         console.error("ไม่พบไฟล์");
         setIsLoading(false); // หยุด Loading
         return;
       }
-  
+
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "multipart/form-data");
       const formdata = new FormData();
       formdata.append("file", files);
       formdata.append("username", username);
-  
+
       try {
         const uploadResponse = await fetch(`/api/asset/InsertFileMinio`, {
           method: "POST",
           body: formdata,
         });
         const uploadResult = await uploadResponse.json();
-  
+
         const response = await fetch(
           `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode.map(
             (item) => item.CostCenter
@@ -58,10 +60,10 @@ export default function Page() {
             method: "POST",
           }
         );
-  
+
         const result = await response.json();
         console.log(result);
-  
+
         if (response.status === 200) {
           window.location.href = "../../../Success";
         } else {
@@ -83,10 +85,10 @@ export default function Page() {
             method: "POST",
           }
         );
-  
+
         const result = await response.json();
         console.log(result);
-  
+
         if (response.status === 200) {
           window.location.href = "../../../Success";
         } else {
@@ -160,13 +162,14 @@ export default function Page() {
           const dataDetailAsset = await responseDetailAsset.json();
 
           if (Array.isArray(dataDetailAsset)) {
-
-            const hasStatus = dataDetailAsset.some((item) => item.Status === "16");
-            if(hasStatus){
+            const hasStatus = dataDetailAsset.some(
+              (item) => item.Status === "16"
+            );
+            if (hasStatus) {
               setDataAsset(dataDetailAsset);
               fetchDataDetailBranchCode(dataDetailAsset);
             } else {
-              setModalAssetChecked(true)
+              setModalAssetChecked(true);
             }
           } else {
             setDataAsset([]);
@@ -315,7 +318,8 @@ export default function Page() {
 
   return (
     <div className="background2">
-      <div className="flex flex-col justify-center items-center min-h-screen">
+      {!modalAssetChecked && !showWarningModal && (
+        <div className="flex flex-col justify-center items-center min-h-screen">
         <div className="absolute top-0 left-0 right-0 lg:h-52 md:h-52 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
           <a
             className="btn btn-ghost mt-5 ml-3 text-white"
@@ -641,119 +645,31 @@ export default function Page() {
 
         <dialog id="confirm" className="modal">
           <div className="modal-box flex justify-center items-center">
-          {isLoading ? (<span className="loading loading-dots loading-lg text-blue-950"></span>) : (
-            <div>
-              <h3 className="font-bold text-xl text-blue-950">
-              ยืนยันการตรวจทรัพย์สิน !
-            </h3>
-            <p className="py-5 mt-3 lg:text-lg md:text-lg sm:text-base text-base text-blue-950 flex items-center justify-center">
-              คุณยืนยันที่จะส่งการตรวจทรัพย์สินใช่หรือไม่
-            </p>
-            <div className="modal-action flex items-center">
-              <form method="dialog" className="flex items-center">
-                <a
-                  className="btn mr-2 bg-blue-950 text-white"
-                  onClick={() => InsertTrackingData()}
-                >
-                  ยืนยัน
-                </a>
-                <button className="btn">ยกเลิก</button>
-              </form>
-            </div>
-            </div>
-          )}
+            {isLoading ? (
+              <span className="loading loading-dots loading-lg text-blue-950"></span>
+            ) : (
+              <div>
+                <h3 className="font-bold text-xl text-blue-950">
+                  ยืนยันการตรวจทรัพย์สิน !
+                </h3>
+                <p className="py-5 mt-3 lg:text-lg md:text-lg sm:text-base text-base text-blue-950 flex items-center justify-center">
+                  คุณยืนยันที่จะส่งการตรวจทรัพย์สินใช่หรือไม่
+                </p>
+                <div className="modal-action flex items-center">
+                  <form method="dialog" className="flex items-center">
+                    <a
+                      className="btn mr-2 bg-blue-950 text-white"
+                      onClick={() => InsertTrackingData()}
+                    >
+                      ยืนยัน
+                    </a>
+                    <button className="btn">ยกเลิก</button>
+                  </form>
+                </div>
+              </div>
+            )}
           </div>
         </dialog>
-
-        {isModalOpen && (
-          <dialog open className="modal">
-            <div className="modal-box">
-              <div className="flex justify-center items-center">
-                <div className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
-                  <Image
-                    src="https://minio.saksiam.co.th/public/saktech/logo/question.png"
-                    alt="Picture of the author"
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                    }}
-                    width={1200}
-                    height={0}
-                    priority
-                  />
-                </div>
-              </div>
-              <p className="py-4 flex justify-center text-center font-bold break-words lg:w-11/12 md:w-8/12 sm:w-8/12 w-11/12 mx-auto">
-              ทรัพย์สินนี้ไม่ใช่ทรัพย์สินที่อยู่ในสังกัดของท่านกรุณาตรวจสอบ
-</p>
-              <div className="modal-action">
-                <button className="btn" onClick={closeModal}>
-                  ปิด
-                </button>
-              </div>
-            </div>
-          </dialog>
-        )}
-
-        {showWarningModal && (
-          <dialog open className="modal">
-            <div className="modal-box">
-              <div className="flex justify-center items-center">
-                <div className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
-                  <Image
-                    src="https://minio.saksiam.co.th/public/saktech/logo/cross.png"
-                    alt="Picture of the author"
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                    }}
-                    width={1200}
-                    height={0}
-                    priority
-                  />
-                </div>
-              </div>
-              <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
-                ไม่มีทรัพย์สินนี้อยู่ในระบบ
-              </p>
-              <div className="modal-action">
-                <button className="btn" onClick={closeWarningModal}>
-                  ปิด
-                </button>
-              </div>
-            </div>
-          </dialog>
-        )}
-
-{modalAssetChecked && (
-          <dialog open className="modal">
-            <div className="modal-box">
-              <div className="flex justify-center items-center">
-                <div className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
-                  <Image
-                    src="https://minio.saksiam.co.th/public/saktech/logo/warning.png"
-                    alt="Picture of the author"
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                    }}
-                    width={1200}
-                    height={0}
-                    priority
-                  />
-                </div>
-              </div>
-              <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
-              ทรัพย์สินนี้ถูกตรวจนับไปเเล้ว
-              </p>
-              <div className="modal-action">
-                <button className="btn" onClick={closeModalAssetChecked}>
-                  ปิด
-                </button>
-              </div>
-            </div>
-          </dialog>
-        )}
 
         <div>
           <dialog id="pic" className="modal">
@@ -781,6 +697,97 @@ export default function Page() {
           </dialog>
         </div>
       </div>
+      )}
+
+      {isModalOpen && (
+        <dialog open className="modal">
+          <div className="modal-box">
+            <div className="flex justify-center items-center">
+              <div className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
+                <Image
+                  src="https://minio.saksiam.co.th/public/saktech/logo/question.png"
+                  alt="Picture of the author"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                  }}
+                  width={1200}
+                  height={0}
+                  priority
+                />
+              </div>
+            </div>
+            <p className="py-4 flex justify-center text-center font-bold break-words lg:w-11/12 md:w-8/12 sm:w-8/12 w-11/12 mx-auto">
+              ทรัพย์สินนี้ไม่ใช่ทรัพย์สินที่อยู่ในสังกัดของท่านกรุณาตรวจสอบ
+            </p>
+            <div className="modal-action">
+              <button className="btn" onClick={closeModal}>
+                ปิด
+              </button>
+            </div>
+          </div>
+        </dialog>
+      )}
+
+      {showWarningModal && (
+        <dialog open className="modal">
+          <div className="modal-box">
+            <div className="flex justify-center items-center">
+              <div className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
+                <Image
+                  src="https://minio.saksiam.co.th/public/saktech/logo/cross.png"
+                  alt="Picture of the author"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                  }}
+                  width={1200}
+                  height={0}
+                  priority
+                />
+              </div>
+            </div>
+            <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
+              ไม่มีทรัพย์สินนี้อยู่ในระบบ
+            </p>
+            <div className="modal-action">
+              <button className="btn" onClick={closeWarningModal}>
+                ปิด
+              </button>
+            </div>
+          </div>
+        </dialog>
+      )}
+
+      {modalAssetChecked && (
+        <dialog open className="modal">
+          <div className="modal-box">
+            <div className="flex justify-center items-center">
+              <div className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
+                <Image
+                  src="https://minio.saksiam.co.th/public/saktech/logo/warning.png"
+                  alt="Picture of the author"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                  }}
+                  width={1200}
+                  height={0}
+                  priority
+                />
+              </div>
+            </div>
+            <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
+              ทรัพย์สินนี้ถูกตรวจนับไปเเล้ว
+            </p>
+            <div className="modal-action">
+              <button className="btn" onClick={closeModalAssetChecked}>
+                ปิด
+              </button>
+            </div>
+          </div>
+        </dialog>
+      )}
     </div>
   );
 }
