@@ -9,9 +9,9 @@ const BarcodeScanner = () => {
     inputStream: {
       type: 'LiveStream',
       constraints: {
-        width: { min: 1 },
-        height: { min: 1 },
-        aspectRatio: { min: 1, max: 1 },
+        width: { min: 640 },
+        height: { min: 360 },
+        // aspectRatio: { min: 1, max: 100 },
         facingMode: 'environment', // or user
       },
     },
@@ -173,56 +173,7 @@ const BarcodeScanner = () => {
       drawingCtx.moveTo(0, middleY);
       drawingCtx.lineTo(canvasWidth, middleY);
       drawingCtx.strokeStyle = "red";
-      drawingCtx.lineWidth = 5;
-      drawingCtx.stroke();
-      drawingCtx.closePath();
-
-      // Draw border lines
-      const borderSize = 30;
-      const borderColor = "white";
-      const lineWidth = 10;
-
-      // Adjusted border positions
-      const inset = 70; // Adjust this value to move borders inward
-      const inset2 = 125; // Adjust this value to move borders inward
-
-      // Top-left corner
-      drawingCtx.beginPath();
-      drawingCtx.moveTo(inset, borderSize + inset2);
-      drawingCtx.lineTo(inset, inset2);
-      drawingCtx.lineTo(borderSize + inset, inset2);
-      drawingCtx.strokeStyle = borderColor;
-      drawingCtx.lineWidth = lineWidth;
-      drawingCtx.stroke();
-      drawingCtx.closePath();
-
-      // Top-right corner
-      drawingCtx.beginPath();
-      drawingCtx.moveTo(canvasWidth - borderSize - inset, inset2);
-      drawingCtx.lineTo(canvasWidth - inset, inset2);
-      drawingCtx.lineTo(canvasWidth - inset, borderSize + inset2);
-      drawingCtx.strokeStyle = borderColor;
-      drawingCtx.lineWidth = lineWidth;
-      drawingCtx.stroke();
-      drawingCtx.closePath();
-
-      // Bottom-left corner
-      drawingCtx.beginPath();
-      drawingCtx.moveTo(inset, canvasHeight - borderSize - inset2);
-      drawingCtx.lineTo(inset, canvasHeight - inset2);
-      drawingCtx.lineTo(borderSize + inset, canvasHeight - inset2);
-      drawingCtx.strokeStyle = borderColor;
-      drawingCtx.lineWidth = lineWidth;
-      drawingCtx.stroke();
-      drawingCtx.closePath();
-
-      // Bottom-right corner
-      drawingCtx.beginPath();
-      drawingCtx.moveTo(canvasWidth - borderSize - inset, canvasHeight - inset2);
-      drawingCtx.lineTo(canvasWidth - inset, canvasHeight - inset2);
-      drawingCtx.lineTo(canvasWidth - inset, canvasHeight - borderSize - inset2);
-      drawingCtx.strokeStyle = borderColor;
-      drawingCtx.lineWidth = lineWidth;
+      drawingCtx.lineWidth = 2;
       drawingCtx.stroke();
       drawingCtx.closePath();
 
