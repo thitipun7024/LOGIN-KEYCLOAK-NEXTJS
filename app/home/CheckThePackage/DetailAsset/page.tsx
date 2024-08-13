@@ -703,7 +703,7 @@ export default function Page() {
         <dialog open className="modal">
           <div className="modal-box">
             <div className="flex justify-center items-center">
-              <div className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
+              <div className="lg:h-48 md:h-20 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
                 <Image
                   src="https://minio.saksiam.co.th/public/saktech/logo/question.png"
                   alt="Picture of the author"
@@ -733,7 +733,7 @@ export default function Page() {
         <dialog open className="modal">
           <div className="modal-box">
             <div className="flex justify-center items-center">
-              <div className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
+              <div className="lg:h-48 md:h-20 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
                 <Image
                   src="https://minio.saksiam.co.th/public/saktech/logo/cross.png"
                   alt="Picture of the author"
@@ -763,7 +763,7 @@ export default function Page() {
         <dialog open className="modal">
           <div className="modal-box">
             <div className="flex justify-center items-center">
-              <div className="lg:h-48 md:h-36 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
+              <div className="lg:h-48 md:h-20 sm:h-24 h-20 lg:w-48 md:w-20 sm:w-24 w-20">
                 <Image
                   src="https://minio.saksiam.co.th/public/saktech/logo/warning.png"
                   alt="Picture of the author"
