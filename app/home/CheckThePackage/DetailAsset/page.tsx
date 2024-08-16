@@ -35,7 +35,7 @@ export default function Page() {
       const files = fileInput.files?.[0];
       if (!files) {
         console.error("ไม่พบไฟล์");
-        setIsLoading(false); // หยุด Loading
+        setIsLoading(false); 
         return;
       }
 

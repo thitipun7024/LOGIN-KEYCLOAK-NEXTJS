@@ -30,7 +30,7 @@ export default function Signin({
 }: SignInPageProp) {
   const { data: session } = useSession();
   if (session) {
-    redirect(callbackUrl || "/Home");
+    redirect(callbackUrl || "/home");
   } else {
     return(
       redirect("/login")

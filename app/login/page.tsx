@@ -4,6 +4,7 @@ import '../globals.css'
 import Image from 'next/image'
 
 export default function page() {
+
   return (
         <div className='background'>
             <div className="flex justify-center items-center">
