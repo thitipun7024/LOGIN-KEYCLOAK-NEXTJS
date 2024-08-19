@@ -7,6 +7,7 @@ export async function POST(req: NextRequest) {
     const Branch: string | null = searchParams.get('Branch');
     const Action: string | null = searchParams.get('Action');
     const ActionDetail: string | null = searchParams.get('ActionDetail');
+    const Status: string | null = searchParams.get('Status');
     const Asset: string | null = searchParams.get('Asset');
     const BranchAsset: string | null = searchParams.get('BranchAsset');
 
@@ -20,6 +21,7 @@ export async function POST(req: NextRequest) {
                 Branch,
                 Action,
                 Action_detail: ActionDetail,
+                Status,
                 Asset,
                 Branch_asset: BranchAsset
             },
