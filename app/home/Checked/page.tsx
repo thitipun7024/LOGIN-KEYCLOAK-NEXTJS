@@ -287,7 +287,7 @@ function PageContent() {
            <div className="background2">
       <div className="flex flex-col justify-center items-center min-h-screen">
         <div className="absolute top-0 left-0 right-0 lg:h-60 md:h-60 sm:h-48 h-48 bg-blue-950 transform rounded-b-3xl">
-          <a className="btn btn-ghost mt-5 ml-1 text-white" href="/home">
+          <a className="btn btn-ghost mt-5 ml-1 text-white" onClick={ClickBackPage}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="30"
@@ -301,7 +301,7 @@ function PageContent() {
             </svg>
           </a>
           <div className="flex flex-col justify-center items-center mt-1">
-            <a href="/home">
+            <a onClick={ClickLogoBackPage}>
               <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-7">
                 <Image
                   src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
@@ -320,7 +320,7 @@ function PageContent() {
               <input
                 type="text"
                 className="grow lg:w-1/3 md:w-2/3 sm:w-4/5 w-4/5"
-                placeholder="ค้นหาข้อมูลทรัพย์สิน....."
+                placeholder="ค้นหาข้อมูลสินทรัพย์....."
                 value={search}
                 onChange={handleChange}
               />
