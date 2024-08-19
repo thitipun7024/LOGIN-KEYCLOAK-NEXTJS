@@ -11,12 +11,11 @@ export async function POST(req: NextRequest) {
     const Asset: string | null = searchParams.get('Asset');
     const BranchAsset: string | null = searchParams.get('BranchAsset');
 
-    const Action_datetime = new Date(Date.now() + 7 * 3600 * 1000);
+   //const Action_datetime = new Date(Date.now() + 7 * 3600 * 1000);
 
     try {
         const result = await prisma.asset_Log.create({
             data: {
-                Action_datetime,
                 Create_by,
                 Branch,
                 Action,

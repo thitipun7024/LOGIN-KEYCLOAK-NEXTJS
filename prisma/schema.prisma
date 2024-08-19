@@ -74,7 +74,6 @@ model tblfilemanagement {
 
 model Asset_Log {
   ID                      Int        @id @default(autoincrement()) @map("ID")
-  Action_datetime         DateTime   @map("Action_datetime")
   Create_by               String?     @map("Create_by")
   Branch                  String?     @map("Branch")
   Action                  String?     @map("Action")
