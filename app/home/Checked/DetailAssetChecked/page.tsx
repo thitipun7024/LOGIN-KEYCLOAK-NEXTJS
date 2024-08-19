@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
 import Image from "next/image";
+import asset_log from "../../../../function/asset_log";
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -13,6 +14,7 @@ export default function Page() {
   const [dataBranchCode, setDataBranchCode] = useState([]);
   const [dataFileImage, setDataFileImage] = useState([{fileUpload:'2024/08/LoadingImage.png'}]);
   const [urlImage, setUrlImage] = useState("");
+  const [usedecoded, setUseDecoded] = useState<Token | null>(null);
 
   // console.log(process.env.NEXT_PUBLIC_SMARTCARD_URI)
  useEffect(() => {
@@ -29,7 +31,7 @@ export default function Page() {
   useEffect(() => {
     if (session) {
       const decoded = jwtDecode<Token>(session.accessToken);
-      //console.log(decoded);
+      setUseDecoded(decoded);
 
       // ดึงข้อมูลที่เป็นข้อมูลฝ่ายหรือข้อมูล Branch
       const findGroupBranch = decoded.groups.find((group) => {
@@ -186,13 +188,31 @@ export default function Page() {
     );
   }
 
+  const ClickBackPage = async () => {
+    try {
+      await asset_log(usedecoded.username, resultGroupBranch, "ปุ่มย้อนกลับ", "ปุ่มย้อนกลับไปสู่หน้ารายการสินทรัพย์ที่ถูกครวจนับเเล้ว", "", "", "");
+      window.location.href = "/home/Checked";
+    } catch (error) {
+      console.error("Error action:", error);
+    }
+  };
+
+  const ClickLogoBackPage = async () => {
+    try {
+      await asset_log(usedecoded.username, resultGroupBranch, 'Logo', 'Logo ย้อนกลับหน้าเเรก','', '', '');
+      window.location.href = "/home";
+    } catch (error) {
+      console.error("Error action:", error);
+    }
+  };
+
   return (
     <div className="background2">
       <div className="flex flex-col justify-center items-center min-h-screen">
         <div className="absolute top-0 left-0 right-0 lg:h-52 md:h-52 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
           <a
             className="btn btn-ghost mt-5 ml-3 text-white"
-            href="/home/Checked"
+            onClick={ClickBackPage}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -212,7 +232,7 @@ export default function Page() {
                 className="flex flex-col justify-center items-center mt-1"
                 key={data.ID}
               >
-                <a href="/home">
+                <a onClick={ClickLogoBackPage}>
                   <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-7">
                     <Image
                       src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"

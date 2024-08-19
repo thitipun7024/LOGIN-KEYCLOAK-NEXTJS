@@ -30,93 +30,100 @@ export default function Page() {
 
   const InsertTrackingData = async () => {
     setIsLoading(true);
-
-    if (statusselect === "1" || statusselect === "14") {
-      const fileInput = document.getElementById(
-        "fileInput"
-      ) as HTMLInputElement;
-      const files = fileInput.files?.[0];
-      if (!files) {
-        console.error("ไม่พบไฟล์");
-        setIsLoading(false);
-        return;
-      }
-
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "multipart/form-data");
-      const formdata = new FormData();
-      formdata.append("file", files);
-      formdata.append("username", username);
-
-      try {
-        const uploadResponse = await fetch(`/api/asset/InsertFileMinio`, {
-          method: "POST",
-          body: formdata,
-        });
-        const uploadResult = await uploadResponse.json();
-
-        const response = await fetch(
-          `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode.map(
-            (item) => item.CostCenter
-          )}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${uploadResult}&Description=${textareaValue}`,
-          {
-            method: "POST",
-          }
-        );
-        const result = await response.json();
-
-        const dataAssetNoBranch: any = dataAsset.map((item) => item.Cost_Ctr);
-          try {
-            await asset_log(
-              usedecoded?.username || "unknown",
-              resultGroupBranch,
-              "Modal",
-              "สินทรัพย์ที่ไม่ใช่สินทรัพของสังกัดที่ตรวจนับ",
-              '',
-              noAsset,
-              dataAssetNoBranch
-            );
-            setIsModalOpen(false);
-          } catch (error) {
-            console.error("Error ModalChecked action:", error);
-        };
-
-        if (response.status === 200) {
-          window.location.href = "../../../Success";
-        } else {
-          window.location.href = "../../../NoSuccess";
-        }
-      } catch (error) {
-        console.log(error);
-        window.location.href = "../../../NoSuccess";
-      } finally {
-        setIsLoading(false);
-      }
+    let statusToSend = statusselect;
+    if (statusselect === "1") {
+      statusToSend = "ปกติ";
+    } else if (statusselect === "7") {
+      statusToSend = "โยกย้าย";
     } else {
-      try {
-        const response = await fetch(
-          `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode.map(
-            (item) => item.CostCenter
-          )}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${null}&Description=${textareaValue}`,
-          {
-            method: "POST",
-          }
-        );
+      statusToSend = "อื่นๆ";
+    }
 
-        const result = await response.json();
-        console.log(result);
+    const dataAssetNoBranch: any = dataAsset.map((item) => item.Cost_Ctr);
+    try {
+      await asset_log(
+        usedecoded?.username || "unknown",
+        resultGroupBranch,
+        "ยืนยัน",
+        "ยืนยันการส่งการตรวจนับสินทรัพย์",
+        statusToSend,
+        noAsset,
+        dataAssetNoBranch
+      );
 
-        if (response.status === 200) {
-          window.location.href = "../../../Success";
-        } else {
-          window.location.href = "../../../NoSuccess";
+      if (statusselect === "1" || statusselect === "14") {
+        const fileInput = document.getElementById(
+          "fileInput"
+        ) as HTMLInputElement;
+        const files = fileInput.files?.[0];
+        const fileToSend = files ? files : "";
+        if (!files) {
+          console.log("ไม่มีไฟล์ที่ถูกเลือก");
         }
-      } catch (error) {
-        console.log(error);
-        window.location.href = "../../../NoSuccess";
-      } finally {
-        setIsLoading(false);
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "multipart/form-data");
+        const formdata = new FormData();
+        formdata.append("file", fileToSend);
+        formdata.append("username", username);
+
+        try {
+          const uploadResponse = await fetch(`/api/asset/InsertFileMinio`, {
+            method: "POST",
+            body: formdata,
+          });
+          const uploadResult = await uploadResponse.json();
+
+          const response = await fetch(
+            `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode.map(
+              (item) => item.CostCenter
+            )}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${uploadResult}&Description=${textareaValue}`,
+            {
+              method: "POST",
+            }
+          );
+          const result = await response.json();
+          console.log(result);
+
+          if (response.status === 200) {
+            window.location.href = "../../../Success";
+          } else {
+            window.location.href = "../../../NoSuccess";
+          }
+        } catch (error) {
+          console.log(error);
+          window.location.href = "../../../NoSuccess";
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        try {
+          const response = await fetch(
+            `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode.map(
+              (item) => item.CostCenter
+            )}&Comment=${textareaValue}&CreateBy=${username}&fileupload=${null}&Description=${textareaValue}`,
+            {
+              method: "POST",
+            }
+          );
+
+          const result = await response.json();
+          console.log(result);
+
+          if (response.status === 200) {
+            window.location.href = "../../../Success";
+          } else {
+            window.location.href = "../../../NoSuccess";
+          }
+        } catch (error) {
+          console.log(error);
+          window.location.href = "../../../NoSuccess";
+        } finally {
+          setIsLoading(false);
+        }
       }
+    } catch (error) {
+      console.error("Error ModalChecked action:", error);
     }
   };
 
@@ -324,6 +331,24 @@ export default function Page() {
     setIsModalOpen(true);
   };
 
+  const closeCancel = async () => {
+    const dataAssetNoBranch: any = dataAsset.map((item) => item.Cost_Ctr);
+    try {
+      await asset_log(
+        usedecoded?.username || "unknown",
+        resultGroupBranch,
+        "ยกเลิก",
+        "ยกเลิกการส่งการตรวจนับสินทรัพย์",
+        "",
+        noAsset,
+        dataAssetNoBranch
+      );
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error ModalChecked action:", error);
+    }
+  };
+
   const closeModal = async () => {
     const dataAssetNoBranch: any = dataAsset.map((item) => item.Cost_Ctr);
     try {
@@ -332,14 +357,14 @@ export default function Page() {
         resultGroupBranch,
         "Modal",
         "สินทรัพย์ที่ไม่ใช่สินทรัพของสังกัดที่ตรวจนับ",
-        '',
+        "",
         noAsset,
         dataAssetNoBranch
       );
       setIsModalOpen(false);
     } catch (error) {
       console.error("Error ModalChecked action:", error);
-    };
+    }
   };
 
   const closeWarningModal = async () => {
@@ -349,7 +374,7 @@ export default function Page() {
         resultGroupBranch,
         "Modal",
         "สินทรัพย์ที่ไม่มีอยู่ในระบบ",
-        '',
+        "",
         noAsset,
         ""
       );
@@ -362,14 +387,13 @@ export default function Page() {
 
   const closeModalAssetChecked = async () => {
     const dataBranchAsset = dataBranch.map((branch) => branch.Cost_Ctr);
-    //console.log(dataBranch)
     try {
       await asset_log(
         usedecoded?.username || "unknown",
         resultGroupBranch,
         "Modal",
         "สินทรัพย์ที่ถูกตรวจนับเเล้ว",
-        '',
+        "",
         noAsset,
         dataBranchAsset
       );
@@ -379,7 +403,24 @@ export default function Page() {
       console.error("Error ModalChecked action:", error);
     }
   };
-  //console.log(dataAsset)
+
+  const ClickBackPage = async () => {
+    try {
+      await asset_log(usedecoded.username, resultGroupBranch, "ปุ่มย้อนกลับ", "ปุ่มย้อนกลับไปสู่หน้ารายการสินทรัพย์ที่ยังไม่ถูกตรวจนับ", "", "", "");
+      window.location.href = "/home/CheckThePackage";
+    } catch (error) {
+      console.error("Error action:", error);
+    }
+  };
+
+  const ClickLogoBackPage = async () => {
+    try {
+      await asset_log(usedecoded.username, resultGroupBranch, 'Logo', 'Logo ย้อนกลับหน้าเเรก','', '', '');
+      window.location.href = "/home";
+    } catch (error) {
+      console.error("Error action:", error);
+    }
+  };
 
   return (
     <div className="background2">
@@ -388,7 +429,7 @@ export default function Page() {
           <div className="absolute top-0 left-0 right-0 lg:h-52 md:h-52 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
             <a
               className="btn btn-ghost mt-5 ml-3 text-white"
-              href="/home/CheckThePackage"
+              onClick={ClickBackPage}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -408,7 +449,7 @@ export default function Page() {
                   className="flex flex-col justify-center items-center mt-1"
                   key={data.ID}
                 >
-                  <a href="/home">
+                  <a onClick={ClickLogoBackPage}>
                     <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5">
                       <Image
                         src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
@@ -441,14 +482,14 @@ export default function Page() {
                       <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
                         <div className="card-body">
                           <h2 className="text-center lg:text-4xl md:text-3xl sm:text-xl text-2xl -mt-5 text-yellow-400 font-bold">
-                            รายละเอียด
+                            รายละเอียดสินทรัพย์
                           </h2>
                           <hr className="border-t-2 border-yellow-400 mt-2" />
 
                           <div className="grid lg:gap-x-20 md:gap-x-20 sm:gap-x-20 gap-x-3 gap-y-10 lg:grid-cols-2 md:grid-cols-2 grid-cols-2 justify-center mt-5">
                             <div className="flex flex-col items-center">
                               <h2 className=" font-bold text-white mb-1 lg:text-xl md:text-2xl sm:text-md text-lg">
-                                Asset
+                                เลขที่สินทรัพย์
                               </h2>
                               <p className="lg:text-xl md:text-lg sm:text-md text-md text-white">
                                 {data ? (
@@ -461,7 +502,7 @@ export default function Page() {
 
                             <div className="flex flex-col items-center text-center">
                               <h2 className=" font-bold text-white mb-1 lg:text-xl md:text-2xl sm:text-md text-lg">
-                                ชื่อทรัพย์สิน
+                                ชื่อสินทรัพย์
                               </h2>
                               <p className="lg:text-xl md:text-lg sm:text-md text-md text-white">
                                 {data ? (
@@ -474,7 +515,7 @@ export default function Page() {
 
                             <div className="flex flex-col items-center">
                               <h2 className=" font-bold text-white mb-1 lg:text-xl md:text-2xl sm:text-md text-lg">
-                                ประเภทพัสดุ
+                                ประเภทสินทรัพย์
                               </h2>
                               <p className="lg:text-xl md:text-lg sm:text-md text-md text-white">
                                 {data ? (
@@ -684,6 +725,7 @@ export default function Page() {
                         <a
                           className="btn btn-active btn-ghost text-blue-950 border-0 w-36"
                           href="/home/CheckThePackage"
+                          onClick={closeCancel}
                         >
                           ยกเลิก
                         </a>
@@ -715,10 +757,10 @@ export default function Page() {
               ) : (
                 <div>
                   <h3 className="font-bold text-xl text-blue-950">
-                    ยืนยันการตรวจทรัพย์สิน !
+                    ยืนยันการตรวจสินทรัพย์ !
                   </h3>
                   <p className="py-5 mt-3 lg:text-lg md:text-lg sm:text-base text-base text-blue-950 flex items-center justify-center">
-                    คุณยืนยันที่จะส่งการตรวจทรัพย์สินใช่หรือไม่
+                    คุณยืนยันที่จะส่งการตรวจสินทรัพย์ใช่หรือไม่
                   </p>
                   <div className="modal-action flex items-center">
                     <form method="dialog" className="flex items-center">
@@ -728,7 +770,9 @@ export default function Page() {
                       >
                         ยืนยัน
                       </a>
-                      <button className="btn">ยกเลิก</button>
+                      <button className="btn" onClick={closeCancel}>
+                        ยกเลิก
+                      </button>
                     </form>
                   </div>
                 </div>
@@ -783,7 +827,7 @@ export default function Page() {
               </div>
             </div>
             <p className="py-4 flex justify-center text-center font-bold break-words lg:w-11/12 md:w-8/12 sm:w-8/12 w-11/12 mx-auto">
-              ทรัพย์สินนี้ไม่ใช่ทรัพย์สินที่อยู่ในสังกัดของท่านกรุณาตรวจสอบ
+              สินทรัพย์รายการนี้ไม่ได้อยู่ในสังกัดของท่าน กรุณาตรวจสอบ
             </p>
             <div className="modal-action">
               <button className="btn" onClick={closeModal}>
@@ -813,7 +857,7 @@ export default function Page() {
               </div>
             </div>
             <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
-              ไม่มีทรัพย์สินนี้อยู่ในระบบ
+              ไม่มีสิทรัพย์นี้อยู่ในระบบ
             </p>
             <div className="modal-action">
               <button className="btn" onClick={closeWarningModal}>
@@ -843,7 +887,7 @@ export default function Page() {
               </div>
             </div>
             <p className="py-4 flex text-center justify-center font-bold lg:text-lg md:text-lg sm:text-lg text-lg">
-              ทรัพย์สินนี้ถูกตรวจนับไปเเล้ว
+              สินทรัพย์นี้ถูกตรวจนับไปเเล้ว
             </p>
             <div className="modal-action">
               <button className="btn" onClick={closeModalAssetChecked}>

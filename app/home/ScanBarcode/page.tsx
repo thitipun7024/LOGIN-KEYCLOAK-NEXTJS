@@ -1,8 +1,11 @@
 "use client"
 import { useEffect, useState } from 'react';
-// @ts-ignore
+import asset_log from "../../../function/asset_log";
 import Quagga from 'quagga';
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { jwtDecode } from "jwt-decode";
+import { Token } from "next-auth/jwt";
 
 const BarcodeScanner = () => {
   const [state, setState] = useState({
@@ -27,13 +30,70 @@ const BarcodeScanner = () => {
     multiple: true,
   });
 
+  const [usedecoded, setUseDecoded] = useState<Token | null>(null);
+  const { data: session, status } = useSession();
+  const [username, setusername] = useState<string>(null);
+  const [resultGroupBranch, setResultGroupBranch] = useState(null);
+  const [groupBaD_TH, setGroupBaD_TH] = useState(null);
+
+  useEffect(() => {
+    if (session) {
+      const decoded = jwtDecode<Token>(session.accessToken);
+      setUseDecoded(decoded);
+      const findDisplayname: any = decoded.username;
+
+      setusername(findDisplayname);
+
+      const findGroupBranch = decoded.groups.find((group) => {
+        return (
+          group.includes("/group/SAK BRANCH/") ||
+          group.includes("/group/SAK HQ/")
+        );
+      });
+      const resultGroupBranch = findGroupBranch
+        ? findGroupBranch.split("/").pop()
+        : "primary";
+      setResultGroupBranch(resultGroupBranch);
+
+      const findGroupBaD_TH = decoded.groups.find((group) => {
+        return (
+          group.includes("/group/SAK BRANCH_TH/") ||
+          group.includes("/group/SAK DEPARTMENT-TH/")
+        );
+      });
+      const resultGroupBaD_TH = findGroupBaD_TH ? (
+        findGroupBaD_TH.split("/").pop()
+      ) : (
+        <div className="badge badge-error badge-outline">ไม่มีข้อมูล</div>
+      );
+      setGroupBaD_TH(resultGroupBaD_TH);
+    }
+  }, [session]);
+
   let lastResult = '';
   const [showResult, setShowResult] = useState<string>("");
   useEffect(() => {
-    if (showResult !== "") {
-      sessionStorage.setItem('NoAsset', showResult);
-      window.location.href = `/home/CheckThePackage/DetailAsset`;
-    }
+    const handleAssetLog = async () => {
+      if (showResult !== "") {
+        try {
+          await asset_log(
+            usedecoded?.username || "unknown",
+            resultGroupBranch,
+            "Scan",
+            "เเสกนบาร์โค้ด",
+            "",
+            showResult,
+            ""
+          );
+          sessionStorage.setItem('NoAsset', showResult);
+          window.location.href = `/home/CheckThePackage/DetailAsset`;
+        } catch (error) {
+          console.error("Error ModalChecked action:", error);
+        }
+      }
+    };
+  
+    handleAssetLog();
   }, [showResult]);
 
   const initCameraSelection = async () => {
@@ -230,12 +290,30 @@ const BarcodeScanner = () => {
     };
   }, [state]);
 
+  const ClickBackPage = async () => {
+    try {
+      await asset_log(usedecoded.username, resultGroupBranch, "ปุ่มย้อนกลับ", "ปุ่มย้อนกลับไปสู่หน้ารายการสินทรัพย์ที่ยังไม่ถูกตรวจนับ", "", "", "");
+      window.location.href = "/home/CheckThePackage";
+    } catch (error) {
+      console.error("Error action:", error);
+    }
+  };
+
+  const ClickLogoBackPage = async () => {
+    try {
+      await asset_log(usedecoded.username, resultGroupBranch, 'Logo', 'Logo ย้อนกลับหน้าเเรก','', '', '');
+      window.location.href = "/home";
+    } catch (error) {
+      console.error("Error action:", error);
+    }
+  };
+
   if (showResult === "") {
     return (
       <div className="background2">
         <div className="flex flex-col justify-center items-center min-h-screen">
           <div className="absolute top-0 left-0 right-0 h-44 bg-blue-950 transform rounded-b-3xl">
-            <a className="btn btn-ghost mt-4 ml-3 text-white" href="/home/CheckThePackage">
+            <a className="btn btn-ghost mt-4 ml-3 text-white" onClick={ClickBackPage}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"
@@ -249,7 +327,7 @@ const BarcodeScanner = () => {
               </svg>
             </a>
             <div className="flex flex-col justify-center items-center -mt-2">
-              <a href="/home">
+              <a onClick={ClickLogoBackPage}>
                 <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5">
                   <Image
                     src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"

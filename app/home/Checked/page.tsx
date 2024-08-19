@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
 import Image from "next/image";
+import asset_log from "./../../../function/asset_log";
 
 function PageContent() {
   const { data: session, status } = useSession();
@@ -17,6 +18,7 @@ function PageContent() {
   const [currentPage, setCurrentPage] = useState(1);
   const [resultGroupBranchNo, setResultGroupBranch] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [usedecoded, setUseDecoded] = useState<Token | null>(null);
   const itemsPerPage = 10;
 
   const handlePreviousPage = () => {
@@ -34,6 +36,7 @@ function PageContent() {
   useEffect(() => {
     if (session) {
       const decoded = jwtDecode<Token>(session.accessToken);
+      setUseDecoded(decoded);
 
       const findGroupBranch = decoded.groups.find((group) => {
         return (
@@ -122,13 +125,18 @@ function PageContent() {
 
   //Function
   const ClickDetailAsset = async (row) => {
-    sessionStorage.setItem("NoAsset", row.Asset);
-    window.location.href = `/home/Checked/DetailAssetChecked`;
+      try {
+        await asset_log(usedecoded.username, resultGroupBranchNo, 'ปุ่มรายละเอียดสินทรัพย์ที่ถูกตรวจนับเล้ว', 'ปุ่มเข้่าหน้ารายละเอียดสินทรัพย์ที่ถูกตรวจนับเล้ว','', row.Asset, row.Cost_Ctr);
+        sessionStorage.setItem("NoAsset", row.Asset);
+        window.location.href = `/home/Checked/DetailAssetChecked`;
+      } catch (error) {
+        console.error("Error ScanBarcode action:", error);
+    };
   };
   //Function
 
   useEffect(() => {
-    setCurrentPage(1); // Reset to first page on search change
+    setCurrentPage(1);
   }, [search]);
 
   const filterData = () => {
@@ -183,6 +191,24 @@ function PageContent() {
     startIndex + itemsPerPage
   );
 
+  const ClickBackPage = async () => {
+    try {
+      await asset_log(usedecoded.username, resultGroupBranchNo, 'ปุ่มย้อนกลับ', 'ปุ่มย้อนกลับหน้าเเรก','', '', '');
+      window.location.href = "/home";
+    } catch (error) {
+      console.error("Error action:", error);
+    }
+  };
+
+  const ClickLogoBackPage = async () => {
+    try {
+      await asset_log(usedecoded.username, resultGroupBranchNo, 'Logo', 'Logo ย้อนกลับหน้าเเรก','', '', '');
+      window.location.href = "/home";
+    } catch (error) {
+      console.error("Error action:", error);
+    }
+  };
+
   return (
     <div>
       {loading ? (
@@ -193,7 +219,7 @@ function PageContent() {
         <div className="background2">
           <div className="flex flex-col justify-center items-center min-h-screen">
             <div className="absolute top-0 left-0 right-0 lg:h-60 md:h-60 sm:h-48 h-48 bg-blue-950 transform rounded-b-3xl">
-              <a className="btn btn-ghost mt-5 ml-1 text-white" href="/home">
+              <a className="btn btn-ghost mt-5 ml-1 text-white" onClick={ClickBackPage}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="30"
@@ -207,7 +233,7 @@ function PageContent() {
                 </svg>
               </a>
               <div className="flex flex-col justify-center items-center mt-1">
-                <a href="/home">
+                <a onClick={ClickLogoBackPage}>
                   <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-7">
                     <Image
                       src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
