@@ -72,3 +72,16 @@ model tblfilemanagement {
   @@map("tblfilemanagement")
 }
 
+model Asset_Log {
+  ID                      Int        @id @default(autoincrement()) @map("ID")
+  Create_by               String?     @map("Create_by")
+  Branch                  String?     @map("Branch")
+  Action                  String?     @map("Action")
+  Action_detail           String?     @map("Action_detail")
+  Status                  String?     @map("Status")
+  Asset                   String?     @map("Asset")
+  Branch_asset            String?     @map("Branch_asset")
+
+  @@map("Asset_Log")
+}
+

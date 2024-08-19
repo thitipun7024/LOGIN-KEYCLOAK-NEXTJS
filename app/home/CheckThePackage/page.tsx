@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
 import Image from "next/image";
+import asset_log from "./../../../function/asset_log";
 
 function PageContent() {
   const { data: session, status } = useSession();
@@ -19,9 +20,8 @@ function PageContent() {
   const [resultGroupBranchNo, setResultGroupBranch] = useState(null);
   const [count, setCount] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [usedecoded, setUseDecoded] = useState<Token | null>(null);
   const itemsPerPage = 10;
-
-  //console.log(resultGroupBranchNo)
 
   const handlePreviousPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
@@ -38,6 +38,7 @@ function PageContent() {
   useEffect(() => {
     if (session) {
       const decoded = jwtDecode<Token>(session.accessToken);
+      setUseDecoded(decoded);
 
       const findGroupBranch = decoded.groups.find((group) => {
         return (
@@ -166,13 +167,18 @@ function PageContent() {
 
   //Function
   const ClickDetailAsset = async (row) => {
-    sessionStorage.setItem("NoAsset", row.Asset);
-    window.location.href = `/home/CheckThePackage/DetailAsset`;
+    try {
+      await asset_log(usedecoded.username, resultGroupBranchNo, 'ปุ่มรายละเอียดสินทรัพย์ที่ยังไม่ถูกตรวจนับ', 'ปุ่มเข้่าหน้ารายละเอียดสินทรัพย์ที่ยังไม่ถูกตรวจนับ','', row.Asset, row.Cost_Ctr);
+      sessionStorage.setItem("NoAsset", row.Asset);
+      window.location.href = `/home/CheckThePackage/DetailAsset`;
+    } catch (error) {
+      console.error("Error ScanBarcode action:", error);
+    }
   };
   //Function
 
   useEffect(() => {
-    setCurrentPage(1); // Reset to first page on search change
+    setCurrentPage(1);
   }, [search]);
 
   useEffect(() => {
@@ -190,6 +196,33 @@ function PageContent() {
         row.Asset_description.toLowerCase().includes(search.toLowerCase()) ||
         row.Asset.toLowerCase().includes(search.toLowerCase())
     );
+  };
+
+  const ClickScanBarcose = async () => {
+    try {
+      await asset_log(usedecoded.username, resultGroupBranchNo, 'ปุ่มเเสกนบาร์โค้ด', 'ปุ่มเข้่าหน้าเเสกนบาร์โค้ด','', '', '');
+      window.location.href = "/home/ScanBarcode";
+    } catch (error) {
+      console.error("Error ScanBarcode action:", error);
+    }
+  };
+
+  const ClickBackPage = async () => {
+    try {
+      await asset_log(usedecoded.username, resultGroupBranchNo, 'ปุ่มย้อนกลับ', 'ปุ่มย้อนกลับหน้าเเรก','', '', '');
+      window.location.href = "/home";
+    } catch (error) {
+      console.error("Error ScanBarcode action:", error);
+    }
+  };
+
+  const ClickLogoBackPage = async () => {
+    try {
+      await asset_log(usedecoded.username, resultGroupBranchNo, 'Logo', 'Logo ย้อนกลับหน้าเเรก','', '', '');
+      window.location.href = "/home";
+    } catch (error) {
+      console.error("Error ScanBarcode action:", error);
+    }
   };
 
   if (status === "loading") {
@@ -224,7 +257,7 @@ function PageContent() {
         <div className="background2">
           <div className="flex flex-col justify-center items-center min-h-screen">
             <div className="absolute top-0 left-0 right-0 lg:h-60 md:h-60 sm:h-48 h-48 bg-blue-950 transform rounded-b-3xl">
-              <a className="btn btn-ghost mt-5 ml-1 text-white" href="/home">
+              <a className="btn btn-ghost mt-5 ml-1 text-white" onClick={ClickBackPage}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="30"
@@ -238,7 +271,7 @@ function PageContent() {
                 </svg>
               </a>
               <div className="flex flex-col justify-center items-center mt-1">
-                <a href="/home">
+                <a onClick={ClickLogoBackPage}>
                   <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-7">
                     <Image
                       src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
@@ -282,7 +315,7 @@ function PageContent() {
 
                 <div className="mt-8"></div>
                 <h1 className="mb-5 mt-10 lg:text-4xl md:text-3xl sm:text-2xl text-3xl font-bold">
-                  ไม่มีรายการทรัพย์สิน
+                  ไม่มีรายการสินทรัพย์
                 </h1>
               </div>
             </div>
@@ -292,7 +325,7 @@ function PageContent() {
         <div className="background2">
           <div className="flex flex-col justify-center items-center min-h-screen">
             <div className="absolute top-0 left-0 right-0 lg:h-60 md:h-60 sm:h-48 h-48 bg-blue-950 transform rounded-b-3xl">
-              <a className="btn btn-ghost mt-5 ml-1 text-white" href="/home">
+              <a className="btn btn-ghost mt-5 ml-1 text-white" onClick={ClickBackPage}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="30"
@@ -306,7 +339,7 @@ function PageContent() {
                 </svg>
               </a>
               <div className="flex flex-col justify-center items-center mt-1">
-                <a href="/home">
+                <a onClick={ClickLogoBackPage}>
                   <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-7">
                     <Image
                       src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
@@ -325,14 +358,14 @@ function PageContent() {
                   <input
                     type="text"
                     className="grow lg:w-1/3 md:w-2/3 sm:w-4/5 w-4/5"
-                    placeholder="ค้นหาข้อมูลทรัพย์สิน....."
+                    placeholder="ค้นหาข้อมูลสินทรัพย์....."
                     value={search}
                     onChange={handleChange}
                   />
                   <div className="flex justify-end lg:-ml-1 md:-ml-8 sm:-mr-5 -mr-5">
                     <a
                       className="btn btn-md btn-ghost"
-                      href="/home/ScanBarcode"
+                      onClick={ClickScanBarcose}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -350,7 +383,7 @@ function PageContent() {
 
                 <div className="mt-8"></div>
                 <h1 className="mb-5 mt-2 lg:text-4xl md:text-3xl sm:text-2xl text-3xl font-bold">
-                  รายการทรัพย์สิน
+                  รายการสินทรัพย์
                 </h1>
 
                 <div className="justify-end items-end text-right lg:w-7/12 md:w-8/12 sm:w-10/12 w-10/12">

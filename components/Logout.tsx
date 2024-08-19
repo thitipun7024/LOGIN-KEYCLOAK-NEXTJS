@@ -1,11 +1,14 @@
 "use client";
 import federatedLogout from "@/utils/federatedLogout";
 import "../app/globals.css";
-export default function Logout() {
+export default function Logout({onClick}) {
   return (
     <div>
       <button 
-        onClick={() => federatedLogout()}
+        onClick={() => {
+          onClick();
+          federatedLogout(); 
+        }}
         className="btn btn-error"
       >
         ยืนยัน
