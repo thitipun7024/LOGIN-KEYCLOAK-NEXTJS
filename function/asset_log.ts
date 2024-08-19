@@ -1,7 +1,7 @@
-export default async function action_log(Create_by: string, Branch: string, Action: string, ActionDetail: string, Asset: string, BranchAsset: string) {
+export default async function action_log(Create_by: string, Branch: string, Action: string, ActionDetail: string,Status: string, Asset: string, BranchAsset: string) {
     try {
         const dbResponse = await fetch(
-          `/api/asset/LogAsset?Create_by=${Create_by}&Branch=${Branch}&Action=${Action}&ActionDetail=${ActionDetail}&Asset=${Asset}&BranchAsset=${BranchAsset}`,
+          `/api/asset/LogAsset?Create_by=${Create_by}&Branch=${Branch}&Action=${Action}&ActionDetail=${ActionDetail}&Status=${Status}&Asset=${Asset}&BranchAsset=${BranchAsset}`,
           { 
             method: "POST",
             cache: "no-store"

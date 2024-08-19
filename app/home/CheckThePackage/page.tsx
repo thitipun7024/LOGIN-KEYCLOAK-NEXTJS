@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "next-auth/jwt";
 import Image from "next/image";
+import asset_log from "./../../../function/asset_log";
 
 function PageContent() {
   const { data: session, status } = useSession();
@@ -19,6 +20,7 @@ function PageContent() {
   const [resultGroupBranchNo, setResultGroupBranch] = useState(null);
   const [count, setCount] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [usedecoded, setUseDecoded] = useState<Token | null>(null);
   const itemsPerPage = 10;
 
   //console.log(resultGroupBranchNo)
@@ -38,6 +40,7 @@ function PageContent() {
   useEffect(() => {
     if (session) {
       const decoded = jwtDecode<Token>(session.accessToken);
+      setUseDecoded(decoded);
 
       const findGroupBranch = decoded.groups.find((group) => {
         return (
@@ -166,8 +169,13 @@ function PageContent() {
 
   //Function
   const ClickDetailAsset = async (row) => {
-    sessionStorage.setItem("NoAsset", row.Asset);
-    window.location.href = `/home/CheckThePackage/DetailAsset`;
+    try {
+      await asset_log(usedecoded.username, resultGroupBranchNo, 'ปุ่มรายละเอียดสินทรัพย์ที่ยังไม่ถูกตรวจนับ', 'ปุ่มเข้่าหน้ารายละเอียดสินทรัพย์ที่ยังไม่ถูกตรวจนับ','', row.Asset, row.Cost_Ctr);
+      sessionStorage.setItem("NoAsset", row.Asset);
+      window.location.href = `/home/CheckThePackage/DetailAsset`;
+    } catch (error) {
+      console.error("Error ScanBarcode action:", error);
+    }
   };
   //Function
 
@@ -191,6 +199,15 @@ function PageContent() {
         row.Asset.toLowerCase().includes(search.toLowerCase())
     );
   };
+
+  const ClickScanBarcose = async () => {
+    try {
+      await asset_log(usedecoded.username, resultGroupBranchNo, 'ปุ่มเเสกนบาร์โค้ด', 'ปุ่มเข้่าหน้าเเสกนบาร์โค้ด','', '', '');
+      window.location.href = "/home/ScanBarcode";
+    } catch (error) {
+      console.error("Error ScanBarcode action:", error);
+    }
+  }
 
   if (status === "loading") {
     return (
@@ -332,7 +349,7 @@ function PageContent() {
                   <div className="flex justify-end lg:-ml-1 md:-ml-8 sm:-mr-5 -mr-5">
                     <a
                       className="btn btn-md btn-ghost"
-                      href="/home/ScanBarcode"
+                      onClick={ClickScanBarcose}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

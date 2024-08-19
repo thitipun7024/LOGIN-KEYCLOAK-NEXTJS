@@ -189,7 +189,7 @@ export default function Page() {
 
   const ClickCheckThePackagelog = async () => {
     try {
-      await asset_log(usedecoded.username, resultGroupBranch, 'ปุ่มตรวจนับสินทรัพย์', 'ปุ่มเข้าหน้าตรวจนับสินทรัพย์', '', '');
+      await asset_log(usedecoded.username, resultGroupBranch, 'ปุ่มตรวจนับสินทรัพย์', 'ปุ่มเข้าหน้าตรวจนับสินทรัพย์','', '', '');
       window.location.href = "/home/CheckThePackage";
     } catch (error) {
       console.error("Error logging action:", error);
@@ -198,7 +198,7 @@ export default function Page() {
 
   const ClickCheckedlog = async () => {
     try {
-      await asset_log(usedecoded.username, resultGroupBranch, 'ปุ่มสินทรัพย์ที่ถูกตรวจนับเเล้ว', 'ปุ่มเข้่าหน้าสินทรัพย์ที่ถูกตรวจนับเเล้ว', '', '');
+      await asset_log(usedecoded.username, resultGroupBranch, 'ปุ่มสินทรัพย์ที่ถูกตรวจนับเเล้ว', 'ปุ่มเข้่าหน้าสินทรัพย์ที่ถูกตรวจนับเเล้ว','', '', '');
       window.location.href = "/home/Checked";
     } catch (error) {
       console.error("Error logging action:", error);
@@ -207,7 +207,7 @@ export default function Page() {
 
   const ClickLogout = async () => {
     try {
-      await asset_log(usedecoded.username, resultGroupBranch, 'ปุ่มออกจากระบบ', 'ออกจากระบบ', '', '');
+      await asset_log(usedecoded.username, resultGroupBranch, 'ปุ่มออกจากระบบ', 'ออกจากระบบ', '', '','');
     } catch (error) {
       console.error("Error logging action:", error);
     }

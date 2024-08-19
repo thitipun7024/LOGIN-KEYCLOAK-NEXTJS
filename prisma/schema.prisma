@@ -79,6 +79,7 @@ model Asset_Log {
   Branch                  String?     @map("Branch")
   Action                  String?     @map("Action")
   Action_detail           String?     @map("Action_detail")
+  Status                  String?     @map("Status")
   Asset                   String?     @map("Asset")
   Branch_asset            String?     @map("Branch_asset")
 
