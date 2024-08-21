@@ -144,13 +144,19 @@ function PageContent() {
 
     const sortedData = rows.sort((a, b) => {
       const isAWaitingApproval =
-        (a.Status === "1" && a.Asset_Status === "") ||
-        (a.Status === "7" && a.Asset_Status === "") ||
-        (a.Status === "14" && a.Asset_Status === "");
+        (a.Status === "1" && a.Asset_Status === "1") ||
+        (a.Status === "7" && a.Asset_Status === "7") ||
+        (a.Status === "14" && a.Asset_Status === "14")||
+        (a.Status === "1" && a.Asset_Status === "17") ||
+        (a.Status === "7" && a.Asset_Status === "17") ||
+        (a.Status === "14" && a.Asset_Status === "17");
       const isBWaitingApproval =
-        (b.Status === "1" && b.Asset_Status === "") ||
-        (b.Status === "7" && b.Asset_Status === "") ||
-        (b.Status === "14" && b.Asset_Status === "");
+      (b.Status === "1" && b.Asset_Status === "1") ||
+      (b.Status === "7" && b.Asset_Status === "7") ||
+      (b.Status === "14" && b.Asset_Status === "14")||
+      (b.Status === "1" && b.Asset_Status === "17") ||
+      (b.Status === "7" && b.Asset_Status === "17") ||
+      (b.Status === "14" && b.Asset_Status === "17");
 
       if (isAWaitingApproval && !isBWaitingApproval) {
         return -1; // a comes before b
@@ -256,28 +262,11 @@ function PageContent() {
                     value={search}
                     onChange={handleChange}
                   />
-                  <div className="flex justify-end lg:-ml-1 md:-ml-8 sm:-mr-5 -mr-5">
-                    <a
-                      className="btn btn-md btn-ghost"
-                      href="/home/ScanBarcode"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="25"
-                        height="25"
-                        fill="currentColor"
-                        className="bi bi-upc-scan"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z" />
-                      </svg>
-                    </a>
-                  </div>
                 </label>
 
                 <div className="mt-8"></div>
                 <h1 className="mb-5 mt-10 lg:text-4xl md:text-3xl sm:text-2xl text-3xl font-bold">
-                  ไม่มีรายการทรัพย์สิน
+                  ไม่มีรายการสินทรัพย์
                 </h1>
               </div>
             </div>
@@ -328,7 +317,7 @@ function PageContent() {
 
             <div className="mt-8"></div>
             <h1 className="mb-5 mt-2 lg:text-4xl md:text-3xl sm:text-2xl text-3xl font-bold">
-              รายการทรัพย์สิน
+              รายการสินทรัพย์
             </h1>
 
             <div className="container contents">
@@ -360,37 +349,55 @@ function PageContent() {
                           {row.Asset}
                         </h2>
 
-                        {row.Status === "1" && row.Asset_Status === "2" && (
+                        {row.Status === "2" && row.Asset_Status === "1" && (
                           <div className="badge border-0 badge-md bg-green-600 text-white">
                             ปกติ
                           </div>
                         )}
 
-                        {row.Status === "1" && row.Asset_Status === "" && (
+                        {row.Status === "17" && row.Asset_Status === "1" && (
                           <div className="badge border-0 badge-md bg-orange-500 text-white">
                             รอการอนุมัติ
                           </div>
                         )}
 
-                        {row.Status === "7" && row.Asset_Status === "2" && (
+                        {row.Status === "1" && row.Asset_Status === "1" && (
+                          <div className="badge border-0 badge-md bg-orange-500 text-white">
+                            รอการอนุมัติ
+                          </div>
+                        )}
+
+                        {row.Status === "2" && row.Asset_Status === "7" && (
                           <div className="badge border-0 badge-md bg-blue-500 text-white">
                             โยกย้าย
                           </div>
                         )}
 
-                        {row.Status === "7" && row.Asset_Status === "" && (
+                        {row.Status === "17" && row.Asset_Status === "7" && (
                           <div className="badge border-0 badge-md bg-orange-500 text-white">
                             รอการอนุมัติ
                           </div>
                         )}
 
-                        {row.Status === "14" && row.Asset_Status === "2" && (
+                        {row.Status === "7" && row.Asset_Status === "7" && (
+                          <div className="badge border-0 badge-md bg-orange-500 text-white">
+                            รอการอนุมัติ
+                          </div>
+                        )}
+
+                        {row.Status === "2" && row.Asset_Status === "14" && (
                           <div className="badge border-0 badge-md bg-slate-500 text-white">
                             อื่นๆ
                           </div>
                         )}
 
-                        {row.Status === "14" && row.Asset_Status === "" && (
+                        {row.Status === "17" && row.Asset_Status === "14" && (
+                          <div className="badge border-0 badge-md bg-orange-500 text-white">
+                            รอการอนุมัติ
+                          </div>
+                        )}
+
+                        {row.Status === "14" && row.Asset_Status === "14" && (
                           <div className="badge border-0 badge-md bg-orange-500 text-white">
                             รอการอนุมัติ
                           </div>

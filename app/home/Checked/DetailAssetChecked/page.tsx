@@ -16,7 +16,6 @@ export default function Page() {
   const [urlImage, setUrlImage] = useState("");
   const [usedecoded, setUseDecoded] = useState<Token | null>(null);
 
-  // console.log(process.env.NEXT_PUBLIC_SMARTCARD_URI)
  useEffect(() => {
 
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
@@ -265,7 +264,7 @@ export default function Page() {
                     <div className="card lg:w-9/12 md:w-3/4 sm:w-3/4 w-11/12 bg-blue-950 text-neutral-content shadow-xl flex flex-row items-center">
                       <div className="card-body">
                         <h2 className="text-center lg:text-4xl md:text-3xl sm:text-xl text-2xl -mt-5 text-yellow-400 font-bold">
-                          รายละเอียด
+                          รายละเอียดสินทรัพย์
                         </h2>
                         <hr className="border-t-2 border-yellow-400 mt-2" />
 
@@ -285,7 +284,7 @@ export default function Page() {
 
                           <div className="flex flex-col items-center text-center">
                             <h2 className=" font-bold text-white mb-1 lg:text-xl md:text-2xl sm:text-md text-lg">
-                              ชื่อทรัพย์สิน
+                              ชื่อสินทรัพย์
                             </h2>
                             <p className="lg:text-xl md:text-lg sm:text-md text-md text-white">
                               {data ? (
@@ -298,7 +297,7 @@ export default function Page() {
 
                           <div className="flex flex-col items-center">
                             <h2 className=" font-bold text-white mb-1 lg:text-xl md:text-2xl sm:text-md text-lg">
-                              ประเภทพัสดุ
+                              ประเภทสินทรัพย์
                             </h2>
                             <p className="lg:text-xl md:text-lg sm:text-md text-md text-white">
                               {data ? (

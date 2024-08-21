@@ -5,11 +5,12 @@ export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
     const BranchCodeSearch = searchParams.get("resultGroupBranch")
     const SakHQCodeSearch = searchParams.get("SakHQ")
-    const StatusWFA = "7";
-    const StatusN = "1";
-    const StatusO = "14";
-    const Asset_StatusA = "2";
-    const Asset_StatusNA = "";
+    const Aset_StatusWFA = "7";
+    const Asset_StatusN = "1";
+    const Asset_StatusO = "14";
+    const StatusNA = "17";
+    const StatusA = "2";
+    
 
     if (!BranchCodeSearch && !SakHQCodeSearch) {
         return NextResponse.json({ message: "ไม่มีข้อมูล" }, { status: 200 });
@@ -27,16 +28,19 @@ export async function GET(req: NextRequest) {
                     },
                     { 
                         OR: [
-                            {Status: StatusWFA},
-                            {Status: StatusN},
-                            {Status: StatusO}
+                            {Status: Aset_StatusWFA},
+                            {Status: Asset_StatusN},
+                            {Status: Asset_StatusO},
+                            {Status: StatusNA},
+                            {Status: StatusA}
                         ]
                          
                     },
                     { 
                         OR: [
-                            {Asset_Status: Asset_StatusA},
-                            {Asset_Status: Asset_StatusNA},
+                            {Asset_Status: Aset_StatusWFA},
+                            {Asset_Status: Asset_StatusN},
+                            {Asset_Status: Asset_StatusO},
                         ]
                          
                     }
