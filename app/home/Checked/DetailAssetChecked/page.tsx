@@ -331,17 +331,17 @@ export default function Page() {
                               สถานะ
                             </h2>
 
-                            {data.Status === "1" && (
+                            {data.Asset_Status === "1" && (
                               <div className="lg:text-xl md:text-lg sm:text-md text-md badge badge-lg w-20">
                                 ปกติ
                               </div>
                             )}
-                            {data.Status === "7" && (
+                            {data.Asset_Status === "7" && (
                               <div className="lg:text-lg md:text-md sm:text-md text-md badge badge-lg lg:w-28 md:w-20 sm:w-20 w-20">
                                 โยกย้าย
                               </div>
                             )}
-                            {data.Status === "14" && (
+                            {data.Asset_Status === "14" && (
                               <div className="lg:text-xl md:text-lg sm:text-md text-md badge badge-lg w-20">
                                 อื่นๆ
                               </div>
@@ -349,7 +349,7 @@ export default function Page() {
                           </div>
                         </div>
 
-                        {data.Status === "1" && (
+                        {data.Asset_Status === "1" && (
                           <div className="flex flex-col items-center justify-center mt-10">
                             <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
                               <Image
@@ -376,7 +376,7 @@ export default function Page() {
                           </div>
                         )}
 
-                        {data.Status === "7" && (
+                        {data.Asset_Status === "7" && (
                           <div className="flex flex-col items-center justify-center mt-10">
                             <textarea
                               className="textarea textarea-bordered lg:w-4/6 md:w-4/5 sm:w-4/5 w-full text-black lg:text-base md:text-base sm:text-baseb"
@@ -388,7 +388,7 @@ export default function Page() {
                           </div>
                         )}
 
-                        {data.Status === "14" && (
+                        {data.Asset_Status === "14" && (
                           <div>
                             <div className="flex flex-col items-center justify-center mt-10">
                               <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
