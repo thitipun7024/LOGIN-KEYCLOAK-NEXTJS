@@ -311,7 +311,7 @@ export default function Page() {
                 <div className="flex flex-col items-center">
                   <div className="card lg:w-48 md:w-40 sm:w-28 w-28 h-20 text-white bg-blue-950">
                     <div className="card-body items-center text-center ">
-                      <h2 className="lg:text-lg md:text-lg sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-32 md:w-32 sm:w-20 w-24">
+                      <h2 className="lg:text-lg md:text-lg sm:text-xs text-xs font-bold lg:-mt-5 md:-mt-5 sm:-mt-3 -mt-3 lg:w-36 md:w-36 sm:w-20 w-24">
                         สินทรัพย์ทั้งหมด
                       </h2>
                       <a className="lg:text-xl md:text-xl sm:text-xl text-xl font-bold -mt-1">
