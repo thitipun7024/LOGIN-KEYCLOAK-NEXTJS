@@ -277,7 +277,7 @@ function PageContent() {
 
                 <div className="mt-8"></div>
                 <h1 className="mb-5 mt-10 lg:text-4xl md:text-3xl sm:text-2xl text-3xl font-bold">
-                  ไม่มีรายการทรัพย์สิน
+                  ไม่มีรายการสินทรัพย์
                 </h1>
               </div>
             </div>
@@ -328,7 +328,7 @@ function PageContent() {
 
             <div className="mt-8"></div>
             <h1 className="mb-5 mt-2 lg:text-4xl md:text-3xl sm:text-2xl text-3xl font-bold">
-              รายการทรัพย์สิน
+              รายการสินทรัพย์
             </h1>
 
             <div className="container contents">

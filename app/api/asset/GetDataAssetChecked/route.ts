@@ -8,8 +8,10 @@ export async function GET(req: NextRequest) {
     const StatusWFA = "7";
     const StatusN = "1";
     const StatusO = "14";
+    const StatusWFAA = "17";
     const Asset_StatusA = "2";
     const Asset_StatusNA = "";
+    
 
     if (!BranchCodeSearch && !SakHQCodeSearch) {
         return NextResponse.json({ message: "ไม่มีข้อมูล" }, { status: 200 });
@@ -29,7 +31,8 @@ export async function GET(req: NextRequest) {
                         OR: [
                             {Status: StatusWFA},
                             {Status: StatusN},
-                            {Status: StatusO}
+                            {Status: StatusO},
+                            {Status: StatusWFAA}
                         ]
                          
                     },
