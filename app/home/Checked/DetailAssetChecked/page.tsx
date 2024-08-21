@@ -392,26 +392,33 @@ export default function Page() {
                           <div>
                             <div className="flex flex-col items-center justify-center mt-10">
                               <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
-                                <Image
-                                 src={`${urlImage}${dataFileImage.map(
-                                  (file) => file.fileUpload
-                                )}`}
-                                  alt="Uploaded"
-                                  style={{
-                                    width: "100%",
-                                    height: "100%",
-                                  }}
-                                  width={1200}
-                                  height={0}
-                                  priority
-                                  onClick={() =>
-                                    (
-                                      document.getElementById(
-                                        "pic"
-                                      ) as HTMLDialogElement
-                                    ).showModal()
-                                  }
-                                />
+                                {dataFileImage ? (
+                                  <Image
+                                  src={`${urlImage}${dataFileImage.map(
+                                   (file) => file.fileUpload
+                                 )}`}
+                                   alt="Uploaded"
+                                   style={{
+                                     width: "100%",
+                                     height: "100%",
+                                   }}
+                                   width={1200}
+                                   height={0}
+                                   priority
+                                   onClick={() =>
+                                     (
+                                       document.getElementById(
+                                         "pic"
+                                       ) as HTMLDialogElement
+                                     ).showModal()
+                                   }
+                                 />
+                                ): (
+                                  <p className="lg:text-xl md:text-lg sm:text-md text-md text-white">
+                                    ไม่มีรูปภาพ
+                                  </p>
+                                )}
+                                
                               </div>
 
                               <div></div>
