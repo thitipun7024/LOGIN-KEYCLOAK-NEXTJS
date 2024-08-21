@@ -9,6 +9,7 @@ export async function GET(req: NextRequest) {
   const StatusN = "1";
   const StatusO = "14";
   const StatusWFAA = "17";
+  const StatusWFAAA = "2";
 
 
   try {
@@ -26,7 +27,8 @@ export async function GET(req: NextRequest) {
               { Status: StatusWFA },
               { Status: StatusN },
               { Status: StatusO },
-              { Status: StatusWFAA }
+              { Status: StatusWFAA },
+              { Status: StatusWFAAA }
             ]
 
           },
