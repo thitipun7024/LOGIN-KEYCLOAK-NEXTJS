@@ -387,14 +387,14 @@ export default function Page() {
                             ></textarea>
                           </div>
                         )}
-                        
+
                         {data.Asset_Status === "14" && (
                           <div>
                             <div className="flex flex-col items-center justify-center mt-10">
                               <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
-                                {dataFileImage && dataFileImage.length > 0 ? (
+                                {dataFileImage && dataFileImage.length > 0 && dataFileImage.some(file => file.fileUpload) ? (
                                   <Image
-                                    src={`${urlImage}${dataFileImage[0].fileUpload}`}
+                                    src={`${urlImage}${dataFileImage.find(file => file.fileUpload)?.fileUpload}`}
                                     alt="Uploaded"
                                     style={{
                                       width: "100%",
@@ -404,9 +404,7 @@ export default function Page() {
                                     height={0}
                                     priority
                                     onClick={() =>
-                                      (
-                                        document.getElementById("pic") as HTMLDialogElement
-                                      ).showModal()
+                                      (document.getElementById("pic") as HTMLDialogElement).showModal()
                                     }
                                   />
                                 ) : (
