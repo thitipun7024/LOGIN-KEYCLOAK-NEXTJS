@@ -12,12 +12,13 @@ export default function Page() {
   const [dataAsset, setDataAsset] = useState([]);
   const [resultGroupBranch, setResultGroupBranch] = useState(null);
   const [dataBranchCode, setDataBranchCode] = useState([]);
-  const [dataFileImage, setDataFileImage] = useState([{fileUpload:'2024/08/LoadingImage.png'}]);
+  const [dataFileImage, setDataFileImage] = useState([
+    { fileUpload: "2024/08/LoadingImage.png" },
+  ]);
   const [urlImage, setUrlImage] = useState("");
   const [usedecoded, setUseDecoded] = useState<Token | null>(null);
 
- useEffect(() => {
-
+  useEffect(() => {
     const dataDetailAsset = sessionStorage.getItem("NoAsset");
     if (dataDetailAsset) {
       const parsedDataDetailAsset = JSON.parse(dataDetailAsset);
@@ -26,7 +27,7 @@ export default function Page() {
       console.log("ไม่มีข้อมูลใน sessionStorage");
     }
   }, []);
-    
+
   useEffect(() => {
     if (session) {
       const decoded = jwtDecode<Token>(session.accessToken);
@@ -139,28 +140,24 @@ export default function Page() {
     }
   }, [dataAsset]);
 
-
   useEffect(() => {
     if (session) {
       const fetchUrlImage = async () => {
         try {
-          const responseFileImage = await fetch(
-            `/api/asset/GetImageURL`,
-            {
-              method: "POST",
-              headers: {
-                "Cache-Control": "no-cache",
-                Pragma: "no-cache",
-              },
-            }
-          );
+          const responseFileImage = await fetch(`/api/asset/GetImageURL`, {
+            method: "POST",
+            headers: {
+              "Cache-Control": "no-cache",
+              Pragma: "no-cache",
+            },
+          });
 
           const dataFileImage = await responseFileImage.json();
-          
-          if (dataFileImage !== null || dataFileImage !== '') {
+
+          if (dataFileImage !== null || dataFileImage !== "") {
             setUrlImage(dataFileImage.uri);
           } else {
-            setUrlImage('');
+            setUrlImage("");
           }
         } catch (error) {
           console.error("Error fetching file image:", error);
@@ -189,7 +186,15 @@ export default function Page() {
 
   const ClickBackPage = async () => {
     try {
-      await asset_log(usedecoded.username, resultGroupBranch, "ปุ่มย้อนกลับ", "ปุ่มย้อนกลับไปสู่หน้ารายการสินทรัพย์ที่ถูกครวจนับเเล้ว", "", "", "");
+      await asset_log(
+        usedecoded.username,
+        resultGroupBranch,
+        "ปุ่มย้อนกลับ",
+        "ปุ่มย้อนกลับไปสู่หน้ารายการสินทรัพย์ที่ถูกครวจนับเเล้ว",
+        "",
+        "",
+        ""
+      );
       window.location.href = "/home/Checked";
     } catch (error) {
       console.error("Error action:", error);
@@ -198,11 +203,23 @@ export default function Page() {
 
   const ClickLogoBackPage = async () => {
     try {
-      await asset_log(usedecoded.username, resultGroupBranch, 'Logo', 'Logo ย้อนกลับหน้าเเรก','', '', '');
+      await asset_log(
+        usedecoded.username,
+        resultGroupBranch,
+        "Logo",
+        "Logo ย้อนกลับหน้าเเรก",
+        "",
+        "",
+        ""
+      );
       window.location.href = "/home";
     } catch (error) {
       console.error("Error action:", error);
     }
+  };
+
+  const con = () => {
+    console.log("tser");
   };
 
   return (
@@ -353,9 +370,7 @@ export default function Page() {
                           <div className="flex flex-col items-center justify-center mt-10">
                             <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
                               <Image
-                                src={`${urlImage}${dataFileImage.map(
-                                  (file) => file.fileUpload
-                                )}`}
+                                src={`${urlImage}${dataFileImage.map((file) => file.fileUpload)}`}
                                 alt="Uploaded"
                                 style={{
                                   width: "100%",
@@ -390,11 +405,11 @@ export default function Page() {
 
                         {data.Asset_Status === "14" && (
                           <div>
-                            <div className="flex flex-col items-center justify-center mt-10">
-                              <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
-                                {dataFileImage && dataFileImage.length > 0 && dataFileImage.some(file => file.fileUpload) ? (
+                            {dataFileImage.some((file) => file.fileUpload) && (
+                              <div className="flex flex-col items-center justify-center mt-10">
+                                <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
                                   <Image
-                                    src={`${urlImage}${dataFileImage.find(file => file.fileUpload)?.fileUpload}`}
+                                    src={`${urlImage}${dataFileImage.map((file) => file.fileUpload)}`}
                                     alt="Uploaded"
                                     style={{
                                       width: "100%",
@@ -404,16 +419,16 @@ export default function Page() {
                                     height={0}
                                     priority
                                     onClick={() =>
-                                      (document.getElementById("pic") as HTMLDialogElement).showModal()
+                                      (
+                                        document.getElementById(
+                                          "pic"
+                                        ) as HTMLDialogElement
+                                      ).showModal()
                                     }
                                   />
-                                ) : (
-                                  <p className="lg:text-xl md:text-lg sm:text-md text-md text-white">
-                                    ไม่มีรูปภาพ
-                                  </p>
-                                )}
+                                </div>
                               </div>
-                            </div>
+                            )}
 
                             {data.Description && (
                               <div className="flex flex-col items-center justify-center mt-10">
@@ -455,9 +470,7 @@ export default function Page() {
             <div className="modal-box bg-black bg-opacity-10">
               <div className="max-h-screen max-w-screen">
                 <Image
-                   src={`${urlImage}${dataFileImage.map(
-                    (file) => file.fileUpload
-                  )}`}
+                  src={`${urlImage}${dataFileImage.map((file) => file.fileUpload)}`}
                   alt="Picture of the author"
                   style={{
                     width: "100%",
