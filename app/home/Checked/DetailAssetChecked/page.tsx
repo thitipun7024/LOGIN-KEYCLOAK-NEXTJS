@@ -387,52 +387,47 @@ export default function Page() {
                             ></textarea>
                           </div>
                         )}
-
+                        
                         {data.Asset_Status === "14" && (
                           <div>
                             <div className="flex flex-col items-center justify-center mt-10">
                               <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
-                                {dataFileImage ? (
+                                {dataFileImage && dataFileImage.length > 0 ? (
                                   <Image
-                                  src={`${urlImage}${dataFileImage.map(
-                                   (file) => file.fileUpload
-                                 )}`}
-                                   alt="Uploaded"
-                                   style={{
-                                     width: "100%",
-                                     height: "100%",
-                                   }}
-                                   width={1200}
-                                   height={0}
-                                   priority
-                                   onClick={() =>
-                                     (
-                                       document.getElementById(
-                                         "pic"
-                                       ) as HTMLDialogElement
-                                     ).showModal()
-                                   }
-                                 />
-                                ): (
+                                    src={`${urlImage}${dataFileImage[0].fileUpload}`}
+                                    alt="Uploaded"
+                                    style={{
+                                      width: "100%",
+                                      height: "100%",
+                                    }}
+                                    width={1200}
+                                    height={0}
+                                    priority
+                                    onClick={() =>
+                                      (
+                                        document.getElementById("pic") as HTMLDialogElement
+                                      ).showModal()
+                                    }
+                                  />
+                                ) : (
                                   <p className="lg:text-xl md:text-lg sm:text-md text-md text-white">
                                     ไม่มีรูปภาพ
                                   </p>
                                 )}
-                                
                               </div>
-
-                              <div></div>
                             </div>
 
-                            <div className="flex flex-col items-center justify-center mt-10">
-                              <textarea
-                                className="textarea textarea-bordered lg:w-4/6 md:w-4/5 sm:w-4/5 w-full text-black lg:text-base md:text-base sm:text-baseb"
-                                placeholder="กรอกรายละเอียด"
-                                defaultValue={data.Description}
-                                style={{ color: "black" }}
-                                disabled
-                              ></textarea>
-                            </div>
+                            {data.Description && (
+                              <div className="flex flex-col items-center justify-center mt-10">
+                                <textarea
+                                  className="textarea textarea-bordered lg:w-4/6 md:w-4/5 sm:w-4/5 w-full text-black lg:text-base md:text-base sm:text-base"
+                                  placeholder="กรอกรายละเอียด"
+                                  defaultValue={data.Description}
+                                  style={{ color: "black" }}
+                                  disabled
+                                ></textarea>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
