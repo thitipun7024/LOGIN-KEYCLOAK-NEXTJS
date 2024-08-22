@@ -57,23 +57,34 @@ export default function Page() {
         ) as HTMLInputElement;
         const files = fileInput.files?.[0];
         const fileToSend = files ? files : "";
-        if (!files) {
-          console.log("ไม่มีไฟล์ที่ถูกเลือก");
-        }
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "multipart/form-data");
         const formdata = new FormData();
-        formdata.append("file", fileToSend);
-        formdata.append("username", username);
+
+        let uploadResult = "";
+
+
+        if (files) {
+          formdata.append("file", fileToSend);
+          formdata.append("username", username);
+      
+          try {
+            const uploadResponse = await fetch(`/api/asset/InsertFileMinio`, {
+              method: "POST",
+              body: formdata,
+            });
+            uploadResult = await uploadResponse.json();
+          } catch (error) {
+            console.log("File upload failed:", error);
+            window.location.href = "../../../NoSuccess";
+            return;
+          }
+        } else {
+          console.log("ไม่มีไฟล์ที่ถูกเลือก");
+        }
 
         try {
-          const uploadResponse = await fetch(`/api/asset/InsertFileMinio`, {
-            method: "POST",
-            body: formdata,
-          });
-          const uploadResult = await uploadResponse.json();
-
           const response = await fetch(
             `/api/asset/InsertTrackingData?AssetCode=${noAsset}&Status=${statusselect}&Branch=${dataBranchCode.map(
               (item) => item.CostCenter
