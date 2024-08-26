@@ -149,7 +149,7 @@ export default function Page() {
           const SakHQJson = await responseSakHQ.json();
           setSakHQ(SakHQJson.CostCenter || null);
         } catch (error) {
-          console.error("Error fetching SakHQ data:", error);
+          //console.error("Error fetching SakHQ data:", error);
         }
       }
     };
@@ -248,63 +248,66 @@ export default function Page() {
                 priority
               />
             </div>
-            <div className="card bg-clip-border w-auto lg:pl-10 md:pl-4 sm:pl-0 pl-2 lg:pr-10 md:pr-4 sm:pr-0 pr-2 lg:pt-2 md:pt-4 sm:pt-0 pt-1 lg:pb-2 md:pb-4 sm:pb-0 pb-1 bg-base-100 shadow-xl flex flex-row items-center justify-center">
-              <div className="lg:h-32 h-20 lg:w-32 w-20 m-4 lg:-ml-1 ml-2">
-                <Image
-                  src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
-                  alt="alt"
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                  }}
-                  width={1200}
-                  height={0}
-                  priority
-                />
-              </div>
-              <div className="flex flex-col lg:ml-5 md:ml-5 sm:ml-5 ml-0">
-                <h2 className="lg:text-2xl md:text-1xl text-xl font-bold ">
-                {usedecoded ? usedecoded.displayName : "Loading..."}
-                </h2>
-                <h2 className="lg:text-lg md:text-lg lg:w-60 md:w-60 sm:w-full w-56 text-sm break-words whitespace-normal">
-                  {useresultGroupPosition}
-                </h2>
-                <h2 className="lg:text-lg md:text-lg text-sm">
-                  {dataBranchCode.map((item) =>
-                    item ? (
-                      item.Name
-                    ) : (
-                      <span
-                        className="loading loading-dots loading-md"
-                        key={item.CostCenter}
-                      ></span>
-                    )
-                  )}
-                </h2>
-              </div>
-              <div className="lg:ml-2 md:ml-5 sm:ml-3 -ml-12 pr-1">
-                <button
-                  className=""
-                  onClick={() =>
-                    (
-                      document.getElementById("my_modal_1") as HTMLDialogElement
-                    ).showModal()
-                  }
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="38"
-                    height="38"
-                    fill="currentColor"
-                    className="bi bi-box-arrow-right ml-1 text-red-500"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
-                    <path d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
-                  </svg>
-                </button>
-              </div>
-            </div>
+            <div className="card bg-clip-border w-auto lg:pl-10 md:pl-4 sm:pl-0 pl-2 lg:pr-10 md:pr-4 sm:pr-0 pr-2 lg:pt-2 md:pt-4 sm:pt-0 pt-1 lg:pb-2 md:pb-4 sm:pb-0 pb-1 bg-base-100 shadow-xl flex flex-row items-center justify-between">
+  <div className="lg:h-32 h-20 lg:w-32 w-20 m-4 lg:-ml-1 ml-2">
+    <Image
+      src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
+      alt="alt"
+      style={{
+        width: "100%",
+        height: "auto",
+      }}
+      width={1200}
+      height={0}
+      priority
+    />
+  </div>
+  
+  <div className="flex flex-col lg:ml-5 md:ml-0 sm:ml-5 ml-2 flex-grow">
+    <h2 className="lg:text-2xl md:text-1xl sm:text-xl text-xl lg:w-full md:w-full sm:w-full w-full font-bold ">
+      {usedecoded ? usedecoded.displayName : "Loading..."}
+    </h2>
+    <h2 className="lg:text-lg md:text-lg sm:text-sm text-sm lg:w-full md:w-full sm:w-full w-48 break-words whitespace-normal">
+      {useresultGroupPosition}
+    </h2>
+    <h2 className="lg:text-lg md:text-lg text-sm">
+      {dataBranchCode.map((item) =>
+        item ? (
+          item.Name
+        ) : (
+          <span
+            className="loading loading-dots loading-md"
+            key={item.CostCenter}
+          ></span>
+        )
+      )}
+    </h2>
+  </div>
+
+  <div className="lg:ml-7 md:ml-7 sm:ml-2 lg:h-14 md:h-16 h-12 lg:w-14 md:w-16 w-12 ml-1 pr-1">
+    <button
+      className=""
+      onClick={() =>
+        (
+          document.getElementById("my_modal_1") as HTMLDialogElement
+        ).showModal()
+      }
+    >
+      <Image
+                src="https://minio.saksiam.co.th/public/saktech/logo/logout.png"
+                alt="Picture of the author"
+                style={{
+                  width: "100%",
+                  height: "auto",
+                }}
+                width={1200}
+                height={0}
+                priority
+              />
+    </button>
+  </div>
+</div>
+
 
             <div className="container contents">
               <div className="grid lg:gap-x-20 md:gap-x-10 sm:gap-x-1 gap-x-2 gap-y-4 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-3 grid-cols-3  mt-5 justify-center">

@@ -425,7 +425,7 @@ function PageContent() {
                             priority
                           />
                         </div>
-                        <div className="flex flex-col lg:ml-5 ml-0">
+                        <div className="flex flex-col lg:ml-5 ml-0 p-1">
                           <h1 className="lg:text-3xl md:text-1xl sm:text-xl text-sm font-bold text-white">
                             {row.Asset_description}
                           </h1>
@@ -437,7 +437,6 @@ function PageContent() {
                         <div className="flex lg:mr-10 md:mr-5 mr-4">
                           <a
                             className="btn"
-                            // href="/home/CheckThePackage/DetailAsset&NoAsset"
                             onClick={() => ClickDetailAsset(row)}
                           >
                             <svg

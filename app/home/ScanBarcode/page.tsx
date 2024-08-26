@@ -349,8 +349,8 @@ const BarcodeScanner = () => {
                 <div id="interactive" className="viewport"></div>
                 <div className="controls">
                   <div className="reader-config-group">
-                    <h4>กล้อง</h4>
-                    <select id="deviceSelection"></select>
+                    <h4 className=' items-center text-center mt-5'>กล้อง</h4>
+                    <select id="deviceSelection" className='p-2 rounded-md'></select>
                   </div>
                 </div>
               </div>

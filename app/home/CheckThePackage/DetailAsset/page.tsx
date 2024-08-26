@@ -592,7 +592,7 @@ export default function Page() {
                           {statusselect === "1" && (
                             <div className="flex flex-col items-center justify-center mt-5">
                               {selectedImage && (
-                                <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
+                                <div className="lg:h-48 md:h-32 sm:h-24 h-32 lg:w-48 md:w-32 sm:w-24 w-32 rounded-lg cursor-pointer">
                                   <Image
                                     src={
                                       selectedImage ||
@@ -658,7 +658,7 @@ export default function Page() {
                             <div>
                               <div className="flex flex-col items-center justify-center mt-5">
                                 {selectedImage && (
-                                  <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
+                                  <div className="lg:h-48 md:h-32 sm:h-24 h-32 lg:w-48 md:w-32 sm:w-24 w-32 rounded-lg cursor-pointer">
                                     <Image
                                       src={selectedImage}
                                       alt="Uploaded"
@@ -774,7 +774,7 @@ export default function Page() {
                     คุณยืนยันที่จะส่งการตรวจสินทรัพย์ใช่หรือไม่
                   </p>
                   <div className="modal-action flex items-center">
-                    <form method="dialog" className="flex items-center">
+                    <form method="dialog" className="flex items-end lg:-mr-16 md:-mr-16 sm:-mr-16 -mr-10">
                       <a
                         className="btn mr-2 bg-blue-950 text-white"
                         onClick={() => InsertTrackingData()}

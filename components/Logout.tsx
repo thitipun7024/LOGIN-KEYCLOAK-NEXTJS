@@ -9,7 +9,7 @@ export default function Logout({onClick}) {
           onClick();
           federatedLogout(); 
         }}
-        className="btn btn-error"
+        className="btn btn-error text-white"
       >
         ยืนยัน
       </button>

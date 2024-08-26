@@ -8,7 +8,7 @@ export default function page() {
   return (
         <div className='background'>
             <div className="flex justify-center items-center">
-                <div className='lg:w-1/12 md:w-3/12 w-2/5 mt-14'>
+                <div className='lg:h-52 md:h-52 sm:h-40 h-40 lg:w-52 md:w-52 sm:w40 w-40 mt-14'>
                 <Image
                     src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
                     alt="Icon Asset"
@@ -23,7 +23,7 @@ export default function page() {
                 </div>
             </div>
 
-            <div className='text-center mt-16 font-bold lg:text-6xl md:text-3xl text-3xl text-blue-950'>
+            <div className='text-center mt-16 font-bold lg:text-6xl md:text-5xl sm:text-3xl text-3xl text-blue-950'>
                 ระบบตรวจนับสินทรัพย์
             </div>
 
