@@ -774,7 +774,7 @@ export default function Page() {
                     คุณยืนยันที่จะส่งการตรวจสินทรัพย์ใช่หรือไม่
                   </p>
                   <div className="modal-action flex items-center">
-                    <form method="dialog" className="flex items-end lg:-mr-16 md:-mr-16 sm:-mr-16 -mr-10">
+                    <form method="dialog" className="flex items-end lg:-mr-16 md:-mr-16 sm:-mr-3 -mr-3">
                       <a
                         className="btn mr-2 bg-blue-950 text-white"
                         onClick={() => InsertTrackingData()}
