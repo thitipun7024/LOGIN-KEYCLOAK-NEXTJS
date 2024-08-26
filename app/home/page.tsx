@@ -284,7 +284,7 @@ export default function Page() {
     </h2>
   </div>
 
-  <div className="lg:ml-7 md:ml-7 sm:ml-2 lg:h-14 md:h-16 h-12 lg:w-14 md:w-16 w-12 ml-1 pr-1">
+  <div className="lg:ml-7 md:ml-7 sm:ml-2 lg:h-14 md:h-16 h-12 lg:w-14 md:w-16 w-12 ml-4 pr-1">
     <button
       className=""
       onClick={() =>
