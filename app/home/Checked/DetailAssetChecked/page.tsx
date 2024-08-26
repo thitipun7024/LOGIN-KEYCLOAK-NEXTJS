@@ -288,7 +288,7 @@ export default function Page() {
                         <div className="grid lg:gap-x-20 md:gap-x-20 sm:gap-x-20 gap-x-3 gap-y-10 lg:grid-cols-2 md:grid-cols-2 grid-cols-2 justify-center mt-5">
                           <div className="flex flex-col items-center">
                             <h2 className=" font-bold text-white mb-1 lg:text-xl md:text-2xl sm:text-md text-lg">
-                              Asset
+                              เลขที่สินทรัพย์
                             </h2>
                             <p className="lg:text-xl md:text-lg sm:text-md text-md text-white">
                               {data ? (
@@ -368,7 +368,7 @@ export default function Page() {
 
                         {data.Asset_Status === "1" && (
                           <div className="flex flex-col items-center justify-center mt-10">
-                            <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
+                            <div className="lg:h-48 md:h-32 sm:h-24 h-32 lg:w-48 md:w-32 sm:w-24 w-32 rounded-lg cursor-pointer">
                               <Image
                                 src={`${urlImage}${dataFileImage.map((file) => file.fileUpload)}`}
                                 alt="Uploaded"
@@ -407,7 +407,7 @@ export default function Page() {
                           <div>
                             {dataFileImage.some((file) => file.fileUpload) && (
                               <div className="flex flex-col items-center justify-center mt-10">
-                                <div className="lg:h-48 md:h-24 sm:h-24 h-32 lg:w-48 md:w-24 sm:w-24 w-32 rounded-md cursor-pointer">
+                                <div className="lg:h-48 md:h-32 sm:h-24 h-32 lg:w-48 md:w-32 sm:w-24 w-32 rounded-lg cursor-pointer">
                                   <Image
                                     src={`${urlImage}${dataFileImage.map((file) => file.fileUpload)}`}
                                     alt="Uploaded"

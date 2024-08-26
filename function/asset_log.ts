@@ -10,7 +10,7 @@ export default async function action_log(Create_by: string, Branch: string, Acti
 
         if (dbResponse.ok) {
             const dbJson = await dbResponse.json();
-            console.log("Success :", dbResponse.status);
+            //console.log("Success :", dbResponse.status);
             return dbJson;
         } else {
             console.error("Error :", dbResponse.status);
