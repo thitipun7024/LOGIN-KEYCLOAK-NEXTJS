@@ -249,7 +249,7 @@ export default function Page() {
               />
             </div>
             <div className="card bg-clip-border w-auto lg:pl-10 md:pl-4 sm:pl-0 pl-2 lg:pr-10 md:pr-4 sm:pr-0 pr-2 lg:pt-2 md:pt-4 sm:pt-0 pt-1 lg:pb-2 md:pb-4 sm:pb-0 pb-1 bg-base-100 shadow-xl flex flex-row items-center justify-between">
-  <div className="lg:h-32 h-20 lg:w-32 w-20 m-4 lg:-ml-1 ml-2">
+  <div className="lg:h-32 h-16 lg:w-32 w-16 m-4 lg:-ml-1 ml-2">
     <Image
       src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
       alt="alt"
@@ -263,8 +263,8 @@ export default function Page() {
     />
   </div>
   
-  <div className="flex flex-col lg:ml-5 md:ml-0 sm:ml-5 ml-2 flex-grow">
-    <h2 className="lg:text-2xl md:text-1xl sm:text-xl text-xl lg:w-full md:w-full sm:w-full w-full font-bold ">
+  <div className="flex flex-col lg:ml-5 md:ml-0 sm:ml-5 flex-grow">
+    <h2 className="lg:text-2xl md:text-1xl sm:text-xl text-lg lg:w-full md:w-full sm:w-full w-full font-bold ">
       {usedecoded ? usedecoded.displayName : "Loading..."}
     </h2>
     <h2 className="lg:text-lg md:text-lg sm:text-sm text-sm lg:w-full md:w-full sm:w-full w-48 break-words whitespace-normal">
@@ -284,7 +284,7 @@ export default function Page() {
     </h2>
   </div>
 
-  <div className="lg:ml-7 md:ml-7 sm:ml-2 lg:h-14 md:h-12 h-12 lg:w-14 md:w-12 w-12 ml-4 pr-1">
+  <div className="lg:ml-7 md:ml-7 sm:ml-2 lg:h-14 md:h-9 h-10 lg:w-14 md:w-12 w-10 ml-1 pr-1">
     <button
       className=""
       onClick={() =>
