@@ -303,7 +303,7 @@ export default function Page() {
               </div>
 
               <div className="flex flex-col flex-grow text-center">
-                <h2 className="lg:text-2xl md:text-1xl sm:text-xl text-lg lg:w-full md:w-full sm:w-full w-full font-extrabold ">
+                <h2 className="lg:text-2xl md:text-2xl sm:text-xl text-lg lg:w-full md:w-full sm:w-full w-full font-extrabold ">
                   {usedecoded ? usedecoded.displayName : "Loading..."}
                 </h2>
                 <h2 className="lg:text-lg md:text-lg sm:text-sm text-sm lg:w-full md:w-60 sm:w-full w-48 break-words whitespace-normal">
@@ -323,7 +323,7 @@ export default function Page() {
                 </h2>
               </div>
 
-              <div className="lg:ml-7 md:ml-6 sm:ml-2 lg:h-14 md:h-9 h-10 lg:w-14 md:w-12 w-10 ml-2 pr-1">
+              <div className="lg:ml-10 md:ml-6 sm:ml-2 lg:h-14 md:h-9 h-10 lg:w-14 md:w-12 w-10 ml-2 pr-1">
                 <button
                   className=""
                   onClick={() =>
