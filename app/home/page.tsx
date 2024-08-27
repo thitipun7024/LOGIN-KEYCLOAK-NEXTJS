@@ -271,9 +271,9 @@ export default function Page() {
   return (
     <div className="background2">
       <div className="flex flex-col justify-center items-center min-h-screen">
-        <div className="absolute top-0 left-0 right-0 lg:h-64 md:h-56 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
+        <div className="absolute top-0 left-0 right-0 lg:h-64 md:h-60 sm:h-48 h-44 bg-blue-950 transform rounded-b-3xl">
           <div className="flex flex-col justify-center items-center mt-16">
-            <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-5">
+            <div className="lg:h-32 md:h-32 sm:h-24 h-20 lg:w-48 md:w-48 sm:w-24 w-36 lg:-mt-12 md:-mt-12 sm:-mt-16 -mt-12 mb-7">
               <Image
                 src="https://minio.saksiam.co.th/public/saktech/logo/LOGO-ASSET-V2.png"
                 alt="Picture of the author"
@@ -288,7 +288,7 @@ export default function Page() {
             </div>
             <div className="card bg-clip-border w-auto lg:pl-10 md:pl-4 sm:pl-0 pl-2 lg:pr-10 md:pr-4 sm:pr-0 pr-2 lg:pt-2 md:pt-4 sm:pt-0 pt-1 lg:pb-2 md:pb-4 sm:pb-0 pb-1 bg-base-100 shadow-xl flex flex-row items-center justify-between">
               <div className="flex flex-row items-center justify-between m-1">
-              <div className="lg:h-32 md:h-32 sm:h-16 h-16 lg:w-32 md:w-32 sm:w-16 w-16 mr-1">
+              <div className="lg:h-32 md:h-28 sm:h-16 h-16 lg:w-32 md:w-28 sm:w-16 w-16 lg:mr-6 md:mr-3 sm:mr-2 mr-2">
                 <Image
                   src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
                   alt="alt"
@@ -303,10 +303,10 @@ export default function Page() {
               </div>
 
               <div className="flex flex-col flex-grow text-center">
-                <h2 className="lg:text-2xl md:text-1xl sm:text-xl text-lg lg:w-full md:w-full sm:w-full w-full font-extrabold ">
+                <h2 className="lg:text-2xl md:text-2xl sm:text-xl text-lg lg:w-full md:w-full sm:w-full w-full font-extrabold ">
                   {usedecoded ? usedecoded.displayName : "Loading..."}
                 </h2>
-                <h2 className="lg:text-lg md:text-lg sm:text-sm text-sm lg:w-full md:w-full sm:w-full w-48 break-words whitespace-normal">
+                <h2 className="lg:text-lg md:text-lg sm:text-sm text-sm lg:w-full md:w-60 sm:w-full w-48 break-words whitespace-normal">
                   {useresultGroupPosition}
                 </h2>
                 <h2 className="lg:text-lg md:text-lg text-sm">
@@ -323,7 +323,7 @@ export default function Page() {
                 </h2>
               </div>
 
-              <div className="lg:ml-7 md:ml-7 sm:ml-2 lg:h-14 md:h-9 h-10 lg:w-14 md:w-12 w-10 ml-3 pr-1">
+              <div className="lg:ml-10 md:ml-6 sm:ml-2 lg:h-14 md:h-9 h-10 lg:w-14 md:w-12 w-10 ml-2 pr-1">
                 <button
                   className=""
                   onClick={() =>
