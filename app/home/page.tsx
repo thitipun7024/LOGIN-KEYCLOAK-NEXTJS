@@ -16,10 +16,16 @@ export default function Page() {
   const [countChecked, setCountChecked] = useState(null);
   const [dataBranchCode, setDataBranchCode] = useState([]);
   const [hasFetched, setHasFetched] = useState(false);
-  const [resultGroupBranch, setResultGroupBranch] = useState<string | null>(null);
-  const [resultGroupBaD_TH, setResultGroupBaD_TH] = useState<string | null>(null);
+  const [resultGroupBranch, setResultGroupBranch] = useState<string | null>(
+    null
+  );
+  const [resultGroupBaD_TH, setResultGroupBaD_TH] = useState<string | null>(
+    null
+  );
   const [usedecoded, setUseDecoded] = useState<Token | null>(null);
-  const [useresultGroupPosition, setUseResultGroupPosition] = useState<string | null>(null);
+  const [useresultGroupPosition, setUseResultGroupPosition] = useState<
+    string | null
+  >(null);
 
   useEffect(() => {
     if (session && session.accessToken) {
@@ -29,17 +35,22 @@ export default function Page() {
       // ดึงข้อมูลที่เป็น ข้อมูลฝ่าย หรือ ข้อมูล Branch
       const findGroupBranch = decoded.groups.find((group) => {
         return (
-          group.includes("/group/SAK BRANCH/") || group.includes("/group/SAK HQ/")
+          group.includes("/group/SAK BRANCH/") ||
+          group.includes("/group/SAK HQ/")
         );
       });
-      const resultBranch = findGroupBranch ? findGroupBranch.split("/").pop() : "primary";
+      const resultBranch = findGroupBranch
+        ? findGroupBranch.split("/").pop()
+        : "primary";
       setResultGroupBranch(resultBranch);
 
       // ดึงข้อมูลที่เป็นข้อมูลตำเเหน่งของพนักงาน
       const findGroupPosition = decoded.groups.find((group) => {
         return group.includes("/group/SAK POSITION_TH/");
       });
-      const resultGroupPosition = findGroupPosition ? findGroupPosition.split("/").pop() : "primary";
+      const resultGroupPosition = findGroupPosition
+        ? findGroupPosition.split("/").pop()
+        : "primary";
       setUseResultGroupPosition(resultGroupPosition);
 
       // ดึงข้อมูลที่เป็นข้อมูลชื่อสาขา/หน่วย เเละ ฝ่ายภาษาไทย
@@ -49,7 +60,9 @@ export default function Page() {
           group.includes("/group/SAK DEPARTMENT-TH/")
         );
       });
-      const resultBaD_TH = findGroupBaD ? findGroupBaD.split("/").pop() : "พี่เคนไม่เพิ่มให้";
+      const resultBaD_TH = findGroupBaD
+        ? findGroupBaD.split("/").pop()
+        : "พี่เคนไม่เพิ่มให้";
       setResultGroupBaD_TH(resultBaD_TH);
     }
   }, [session]);
@@ -176,7 +189,9 @@ export default function Page() {
           );
 
           const dataBranchCode = await responseDetailAsset.json();
-          setDataBranchCode(Array.isArray(dataBranchCode) ? dataBranchCode : []);
+          setDataBranchCode(
+            Array.isArray(dataBranchCode) ? dataBranchCode : []
+          );
           setHasFetched(true);
         } catch (error) {
           console.error("Error fetching detail asset:", error);
@@ -189,7 +204,15 @@ export default function Page() {
 
   const ClickCheckThePackagelog = async () => {
     try {
-      await asset_log(usedecoded.username, resultGroupBranch, 'ปุ่มตรวจนับสินทรัพย์', 'ปุ่มเข้าหน้าตรวจนับสินทรัพย์','', '', '');
+      await asset_log(
+        usedecoded.username,
+        resultGroupBranch,
+        "ปุ่มตรวจนับสินทรัพย์",
+        "ปุ่มเข้าหน้าตรวจนับสินทรัพย์",
+        "",
+        "",
+        ""
+      );
       window.location.href = "/home/CheckThePackage";
     } catch (error) {
       console.error("Error logging action:", error);
@@ -198,21 +221,36 @@ export default function Page() {
 
   const ClickCheckedlog = async () => {
     try {
-      await asset_log(usedecoded.username, resultGroupBranch, 'ปุ่มสินทรัพย์ที่ถูกตรวจนับเเล้ว', 'ปุ่มเข้่าหน้าสินทรัพย์ที่ถูกตรวจนับเเล้ว','', '', '');
+      await asset_log(
+        usedecoded.username,
+        resultGroupBranch,
+        "ปุ่มสินทรัพย์ที่ถูกตรวจนับเเล้ว",
+        "ปุ่มเข้่าหน้าสินทรัพย์ที่ถูกตรวจนับเเล้ว",
+        "",
+        "",
+        ""
+      );
       window.location.href = "/home/Checked";
-    } catch (error) {
-      console.error("Error logging action:", error);
-    }
-  }
-
-  const ClickLogout = async () => {
-    try {
-      await asset_log(usedecoded.username, resultGroupBranch, 'ปุ่มออกจากระบบ', 'ออกจากระบบ', '', '','');
     } catch (error) {
       console.error("Error logging action:", error);
     }
   };
 
+  const ClickLogout = async () => {
+    try {
+      await asset_log(
+        usedecoded.username,
+        resultGroupBranch,
+        "ปุ่มออกจากระบบ",
+        "ออกจากระบบ",
+        "",
+        "",
+        ""
+      );
+    } catch (error) {
+      console.error("Error logging action:", error);
+    }
+  };
 
   if (status === "loading") {
     return (
@@ -249,65 +287,66 @@ export default function Page() {
               />
             </div>
             <div className="card bg-clip-border w-auto lg:pl-10 md:pl-4 sm:pl-0 pl-2 lg:pr-10 md:pr-4 sm:pr-0 pr-2 lg:pt-2 md:pt-4 sm:pt-0 pt-1 lg:pb-2 md:pb-4 sm:pb-0 pb-1 bg-base-100 shadow-xl flex flex-row items-center justify-between">
-  <div className="lg:h-32 h-16 lg:w-32 w-16 m-4 lg:-ml-1 ml-2">
-    <Image
-      src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
-      alt="alt"
-      style={{
-        width: "100%",
-        height: "auto",
-      }}
-      width={1200}
-      height={0}
-      priority
-    />
-  </div>
-  
-  <div className="flex flex-col lg:ml-5 md:ml-0 sm:ml-5 flex-grow">
-    <h2 className="lg:text-2xl md:text-1xl sm:text-xl text-lg lg:w-full md:w-full sm:w-full w-full font-bold ">
-      {usedecoded ? usedecoded.displayName : "Loading..."}
-    </h2>
-    <h2 className="lg:text-lg md:text-lg sm:text-sm text-sm lg:w-full md:w-full sm:w-full w-48 break-words whitespace-normal">
-      {useresultGroupPosition}
-    </h2>
-    <h2 className="lg:text-lg md:text-lg text-sm">
-      {dataBranchCode.map((item) =>
-        item ? (
-          item.Name
-        ) : (
-          <span
-            className="loading loading-dots loading-md"
-            key={item.CostCenter}
-          ></span>
-        )
-      )}
-    </h2>
-  </div>
+              <div className="flex flex-row items-center justify-between m-1">
+              <div className="lg:h-32 md:h-32 sm:h-16 h-16 lg:w-32 md:w-32 sm:w-16 w-16 mr-1">
+                <Image
+                  src="https://minio.saksiam.co.th/public/saktech/logo/logo-sak-ai-2.png"
+                  alt="alt"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                  }}
+                  width={1000}
+                  height={0}
+                  priority
+                />
+              </div>
 
-  <div className="lg:ml-7 md:ml-7 sm:ml-2 lg:h-14 md:h-9 h-10 lg:w-14 md:w-12 w-10 ml-1 pr-1">
-    <button
-      className=""
-      onClick={() =>
-        (
-          document.getElementById("my_modal_1") as HTMLDialogElement
-        ).showModal()
-      }
-    >
-      <Image
-                src="https://minio.saksiam.co.th/public/saktech/logo/logout.png"
-                alt="Picture of the author"
-                style={{
-                  width: "100%",
-                  height: "auto",
-                }}
-                width={1200}
-                height={0}
-                priority
-              />
-    </button>
-  </div>
-</div>
+              <div className="flex flex-col flex-grow text-center">
+                <h2 className="lg:text-2xl md:text-1xl sm:text-xl text-lg lg:w-full md:w-full sm:w-full w-full font-extrabold ">
+                  {usedecoded ? usedecoded.displayName : "Loading..."}
+                </h2>
+                <h2 className="lg:text-lg md:text-lg sm:text-sm text-sm lg:w-full md:w-full sm:w-full w-48 break-words whitespace-normal">
+                  {useresultGroupPosition}
+                </h2>
+                <h2 className="lg:text-lg md:text-lg text-sm">
+                  {dataBranchCode.map((item) =>
+                    item ? (
+                      item.Name
+                    ) : (
+                      <span
+                        className="loading loading-dots loading-md"
+                        key={item.CostCenter}
+                      ></span>
+                    )
+                  )}
+                </h2>
+              </div>
 
+              <div className="lg:ml-7 md:ml-7 sm:ml-2 lg:h-14 md:h-9 h-10 lg:w-14 md:w-12 w-10 ml-3 pr-1">
+                <button
+                  className=""
+                  onClick={() =>
+                    (
+                      document.getElementById("my_modal_1") as HTMLDialogElement
+                    ).showModal()
+                  }
+                >
+                  <Image
+                    src="https://minio.saksiam.co.th/public/saktech/logo/logout.png"
+                    alt="Picture of the author"
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                    }}
+                    width={1200}
+                    height={0}
+                    priority
+                  />
+                </button>
+              </div>
+              </div>
+            </div>
 
             <div className="container contents">
               <div className="grid lg:gap-x-20 md:gap-x-10 sm:gap-x-1 gap-x-2 gap-y-4 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-3 grid-cols-3  mt-5 justify-center">
